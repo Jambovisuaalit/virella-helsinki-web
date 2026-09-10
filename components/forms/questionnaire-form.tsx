@@ -6,29 +6,29 @@ const fieldClassName =
 
 type QuestionnaireFormProps = {
   questionnaire: QuestionnaireDefinition;
-  orderId?: string;
+  sessionId?: string;
 };
 
-export function QuestionnaireForm({ questionnaire, orderId }: QuestionnaireFormProps) {
+export function QuestionnaireForm({ questionnaire, sessionId }: QuestionnaireFormProps) {
   const product = products[questionnaire.productKey];
-  const hasOrder = Boolean(orderId);
+  const hasOrder = Boolean(sessionId);
 
   return (
     <div>
       <div className="mb-8 rounded-xl border border-border bg-cloud p-5">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Kyselyn kytkentä</p>
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Tilaus ja alkukysely</p>
         <p className="mt-2 font-bold">{product.name}</p>
         <p className="mt-1 text-sm leading-6 text-muted">
           {hasOrder
-            ? `Tilaustunniste: ${orderId}`
-            : "Esikatselutila. Tilaustunniste liitetään kyselyyn maksuvaiheen jälkeen."}
+            ? `Maksettu tilaus: ${sessionId}`
+            : "Esikatselutila. Lomakkeen voi lähettää vasta maksetun tilauksen jälkeen."}
         </p>
       </div>
 
-      <form className="space-y-6" aria-label={questionnaire.title}>
+      <form action="/api/questionnaire" method="post" className="space-y-6" aria-label={questionnaire.title}>
         <input type="hidden" name="questionnaireId" value={questionnaire.id} />
         <input type="hidden" name="productId" value={questionnaire.productId} />
-        {orderId ? <input type="hidden" name="orderId" value={orderId} /> : null}
+        {sessionId ? <input type="hidden" name="sessionId" value={sessionId} /> : null}
 
         {questionnaire.fields.map((field) => (
           <div key={field.name}>
@@ -44,12 +44,12 @@ export function QuestionnaireForm({ questionnaire, orderId }: QuestionnaireFormP
           </div>
         ))}
 
-        <div className="rounded-xl border border-border bg-background p-4 text-sm leading-6 text-muted">
-          Kyselyn lähetys aktivoidaan, kun maksuvaihe ja tilausten tallennus toteutetaan. Tässä vaiheessa lomake varmistaa oikean tuotteen ja tilaustunnisteen kulun käyttöliittymässä.
-        </div>
+        <p className="rounded-xl border border-border bg-background p-4 text-sm leading-6 text-muted">
+          Lähetys tarkistaa palvelimelta, että maksu, tuote ja alkukysely kuuluvat samaan Stripe-tilaukseen.
+        </p>
 
-        <button type="button" disabled className="min-h-12 w-full cursor-not-allowed rounded-xl bg-mist px-5 py-3 text-sm font-bold text-muted sm:w-auto">
-          Lähetys aktivoidaan maksuvaiheen yhteydessä
+        <button type="submit" disabled={!hasOrder} className="min-h-12 w-full rounded-xl bg-action px-5 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:bg-mist disabled:text-muted sm:w-auto">
+          {hasOrder ? "Lähetä alkukysely" : "Maksa palvelu ennen lähettämistä"}
         </button>
       </form>
     </div>
