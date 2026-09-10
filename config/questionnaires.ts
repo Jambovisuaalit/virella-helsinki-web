@@ -18,6 +18,23 @@ export type QuestionnaireDefinition = {
 };
 
 export const questionnaires = {
+  websiteFix: {
+    id: "verkkosivu-kuntoon-alkukysely",
+    productKey: "websiteFix",
+    productId: products.websiteFix.id,
+    title: "Verkkosivu kuntoon 72 h -aloituskysely",
+    description: "Anna tarvittavat lähtötiedot nykyisestä sivustosta ja tärkeimmästä yhteydenottotavoitteesta. Älä lähetä salasanoja lomakkeella.",
+    fields: [
+      { name: "companyName", label: "Yrityksen nimi", type: "text", required: true },
+      { name: "website", label: "Nykyinen verkkosivusto", type: "url", required: true, placeholder: "https://" },
+      { name: "goal", label: "Mikä on sivuston tärkein tavoite?", type: "textarea", required: true, placeholder: "Esim. tarjouspyyntö, ajanvaraus tai puhelu" },
+      { name: "platform", label: "Millä alustalla sivusto on tehty?", type: "text", placeholder: "Esim. WordPress, Wix, Webflow tai muu" },
+      { name: "contactPath", label: "Miten yhteydenotot tulevat nyt?", type: "textarea", placeholder: "Esim. lomake sähköpostiin, puhelu tai WhatsApp" },
+      { name: "access", label: "Miten tarvittavat käyttöoikeudet voidaan antaa?", type: "textarea", placeholder: "Kuvaa tapa. Älä kirjoita salasanoja tähän." },
+      { name: "averageCustomerValue", label: "Mikä on tyypillisen uuden asiakkaan tai kaupan arvo?", type: "text", placeholder: "Arvio riittää" },
+      { name: "priority", label: "Mikä sivustossa häiritsee eniten juuri nyt?", type: "textarea" },
+    ],
+  },
   instagram: {
     id: "instagram-alkukysely",
     productKey: "instagram",
