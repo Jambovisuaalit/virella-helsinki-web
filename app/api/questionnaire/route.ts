@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getQuestionnaireByProductId } from "@/config/questionnaires";
 import { products } from "@/config/products";
 import { sendAdminNotification } from "@/lib/email/admin-notification";
+import { saveOnboardingSubmission, upsertPaidOrder } from "@/lib/supabase/order-store";
 import { getCheckoutSession, getProductKeyById, updateCheckoutSessionMetadata } from "@/lib/stripe/stripe-api";
 
 function safeMetadataValue(value: FormDataEntryValue | null) {
@@ -47,6 +48,11 @@ export async function POST(request: Request) {
       Object.entries(answers).map(([key, value]) => [`q_${key}`, value]),
     );
 
+    // Webhook is primary, but this upsert makes onboarding resilient if the webhook was delayed.
+    await upsertPaidOrder(session);
+    await saveOnboardingSubmission({ stripeSessionId: sessionId, questionnaireId, answers });
+
+    // Supabase is the persistent source of truth; Stripe metadata remains a lightweight admin fallback.
     await updateCheckoutSessionMetadata(sessionId, {
       questionnaireStatus: "completed",
       questionnaireCompletedAt: completedAt,

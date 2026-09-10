@@ -7,6 +7,8 @@ Canonical repository for the new Virella Helsinki web application.
 - `develop` — active development and Vercel Preview target
 - `main` — production branch
 
+A push to `develop` is used to verify the Vercel Preview Git integration before production promotion.
+
 ## Quality gate
 
 Before promotion or merge:

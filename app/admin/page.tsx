@@ -6,7 +6,14 @@ import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
 import { getQuestionnaireByProductId } from "@/config/questionnaires";
 import { products } from "@/config/products";
-import { getCheckoutSession, getProductKeyById, listCheckoutSessions, type StripeCheckoutSession } from "@/lib/stripe/stripe-api";
+import {
+  getOnboardingSubmissionByOrderId,
+  getOrderByStripeSessionId,
+  listOrders,
+  type StoredOnboardingSubmission,
+  type StoredOrder,
+} from "@/lib/supabase/order-store";
+import { getProductKeyById } from "@/lib/stripe/stripe-api";
 
 export const metadata: Metadata = {
   title: "Admin | Virella Helsinki",
@@ -31,28 +38,36 @@ function euro(amount: number | null, currency: string | null) {
   }).format(amount / 100);
 }
 
-function OrderDetail({ session }: { session: StripeCheckoutSession }) {
-  const metadata = session.metadata ?? {};
-  const productKey = metadata.productId ? getProductKeyById(metadata.productId) : undefined;
+function statusLabel(status: string) {
+  if (status === "completed") return "valmis";
+  if (status === "pending") return "odottaa";
+  return status;
+}
+
+function OrderDetail({ order, onboarding }: { order: StoredOrder; onboarding: StoredOnboardingSubmission | null }) {
+  const productKey = getProductKeyById(order.product_id);
   const product = productKey ? products[productKey] : undefined;
-  const questionnaire = metadata.productId ? getQuestionnaireByProductId(metadata.productId) : undefined;
+  const questionnaire = getQuestionnaireByProductId(order.product_id);
+  const answers = onboarding?.answers ?? {};
 
   return (
     <div className="rounded-[20px] border border-border bg-surface p-5 shadow-[0_8px_40px_-12px_rgba(31,36,46,0.12)] sm:p-8">
       <div className="flex flex-col gap-3 border-b border-border pb-6 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand">Tilaus</p>
-          <h2 className="mt-2 text-2xl font-bold">{product?.name ?? metadata.productId ?? "Tuntematon tuote"}</h2>
-          <p className="mt-2 break-all text-sm text-muted">{session.id}</p>
+          <h2 className="mt-2 text-2xl font-bold">{product?.name ?? order.product_id}</h2>
+          <p className="mt-2 break-all text-sm text-muted">{order.stripe_session_id}</p>
         </div>
-        <span className="w-fit rounded-lg bg-cloud px-3 py-1.5 text-sm font-bold text-brand">{session.payment_status}</span>
+        <span className="w-fit rounded-lg bg-cloud px-3 py-1.5 text-sm font-bold text-brand">{order.payment_status}</span>
       </div>
 
       <dl className="grid gap-5 py-6 sm:grid-cols-2">
-        <div><dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Summa</dt><dd className="mt-1 font-bold">{euro(session.amount_total, session.currency)}</dd></div>
-        <div><dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Asiakas</dt><dd className="mt-1 font-bold">{session.customer_details?.email ?? "—"}</dd></div>
-        <div><dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Alkukysely</dt><dd className="mt-1 font-bold">{metadata.questionnaireStatus ?? "pending"}</dd></div>
-        <div><dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Kyselytunniste</dt><dd className="mt-1 text-sm">{metadata.questionnaireId ?? "—"}</dd></div>
+        <div><dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Summa</dt><dd className="mt-1 font-bold">{euro(order.amount_total, order.currency)}</dd></div>
+        <div><dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Asiakas</dt><dd className="mt-1 font-bold">{order.customer_email ?? "—"}</dd></div>
+        <div><dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Alkukysely</dt><dd className="mt-1 font-bold">{statusLabel(order.questionnaire_status)}</dd></div>
+        <div><dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Kyselytunniste</dt><dd className="mt-1 text-sm">{order.questionnaire_id ?? "—"}</dd></div>
+        <div><dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Maksettu</dt><dd className="mt-1 text-sm">{order.paid_at ? new Date(order.paid_at).toLocaleString("fi-FI") : "—"}</dd></div>
+        <div><dt className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Onboarding vastaanotettu</dt><dd className="mt-1 text-sm">{onboarding ? new Date(onboarding.submitted_at).toLocaleString("fi-FI") : "—"}</dd></div>
       </dl>
 
       {questionnaire ? (
@@ -62,7 +77,7 @@ function OrderDetail({ session }: { session: StripeCheckoutSession }) {
             {questionnaire.fields.map((field) => (
               <div key={field.name}>
                 <dt className="text-sm font-bold">{field.label}</dt>
-                <dd className="mt-1 whitespace-pre-wrap text-sm leading-6 text-muted">{metadata[`q_${field.name}`] || "—"}</dd>
+                <dd className="mt-1 whitespace-pre-wrap text-sm leading-6 text-muted">{answers[field.name] || "—"}</dd>
               </div>
             ))}
           </dl>
@@ -106,15 +121,20 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     );
   }
 
-  let selected: StripeCheckoutSession | null = null;
-  let sessions: StripeCheckoutSession[] = [];
+  let selected: StoredOrder | null = null;
+  let onboarding: StoredOnboardingSubmission | null = null;
+  let orders: StoredOrder[] = [];
   let loadError = false;
 
   try {
-    if (sessionId) selected = await getCheckoutSession(sessionId);
-    else sessions = await listCheckoutSessions();
+    if (sessionId) {
+      selected = await getOrderByStripeSessionId(sessionId);
+      if (selected) onboarding = await getOnboardingSubmissionByOrderId(selected.id);
+    } else {
+      orders = await listOrders();
+    }
   } catch (err) {
-    console.error("Admin order load failed", err);
+    console.error("Admin Supabase order load failed", err);
     loadError = true;
   }
 
@@ -125,27 +145,32 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         <SectionContainer className="py-12 md:py-20">
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand">Admin</p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand">Admin · Supabase</p>
               <h1 className="mt-3 text-4xl font-extrabold tracking-[-0.04em]">Tilaukset ja alkukyselyt</h1>
             </div>
             {sessionId ? <Link href="/admin" className="text-sm font-bold text-brand">← Kaikki tilaukset</Link> : null}
           </div>
 
-          {loadError ? <p className="rounded-xl border border-border bg-surface p-5 text-sm text-muted">Tilaustietoja ei voitu ladata. Tarkista Stripe-testitilan ympäristömuuttujat.</p> : null}
-          {selected ? <OrderDetail session={selected} /> : null}
+          {loadError ? <p className="rounded-xl border border-border bg-surface p-5 text-sm text-muted">Tilaustietoja ei voitu ladata Supabasesta. Tarkista server-side ympäristömuuttujat.</p> : null}
+          {sessionId && !selected && !loadError ? <p className="rounded-xl border border-border bg-surface p-5 text-sm text-muted">Tilausta ei löytynyt Supabasesta.</p> : null}
+          {selected ? <OrderDetail order={selected} onboarding={onboarding} /> : null}
 
           {!sessionId && !loadError ? (
             <div className="grid gap-3">
-              {sessions.length === 0 ? <p className="rounded-xl border border-border bg-surface p-5 text-sm text-muted">Virella-tilauksia ei löytynyt.</p> : null}
-              {sessions.map((session) => (
-                <Link key={session.id} href={`/admin?session_id=${encodeURIComponent(session.id)}`} className="grid gap-2 rounded-xl border border-border bg-surface p-5 transition hover:-translate-y-0.5 sm:grid-cols-[1fr_auto] sm:items-center">
-                  <div>
-                    <p className="font-bold">{session.metadata?.productId ?? "Tuntematon tuote"}</p>
-                    <p className="mt-1 text-sm text-muted">{session.customer_details?.email ?? "Ei sähköpostia"} · alkukysely {session.metadata?.questionnaireStatus ?? "pending"}</p>
-                  </div>
-                  <p className="font-bold text-brand">{euro(session.amount_total, session.currency)}</p>
-                </Link>
-              ))}
+              {orders.length === 0 ? <p className="rounded-xl border border-border bg-surface p-5 text-sm text-muted">Virella-tilauksia ei löytynyt.</p> : null}
+              {orders.map((order) => {
+                const productKey = getProductKeyById(order.product_id);
+                const product = productKey ? products[productKey] : undefined;
+                return (
+                  <Link key={order.id} href={`/admin?session_id=${encodeURIComponent(order.stripe_session_id)}`} className="grid gap-2 rounded-xl border border-border bg-surface p-5 transition hover:-translate-y-0.5 sm:grid-cols-[1fr_auto] sm:items-center">
+                    <div>
+                      <p className="font-bold">{product?.name ?? order.product_id}</p>
+                      <p className="mt-1 text-sm text-muted">{order.customer_email ?? "Ei sähköpostia"} · alkukysely {statusLabel(order.questionnaire_status)}</p>
+                    </div>
+                    <p className="font-bold text-brand">{euro(order.amount_total, order.currency)}</p>
+                  </Link>
+                );
+              })}
             </div>
           ) : null}
         </SectionContainer>
