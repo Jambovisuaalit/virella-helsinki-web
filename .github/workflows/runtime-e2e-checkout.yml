@@ -1,0 +1,33 @@
+name: Runtime E2E checkout QA
+
+on:
+  push:
+    branches:
+      - qa/runtime-e2e-20260911
+
+permissions:
+  contents: read
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Stripe Checkout session through Virella
+        shell: bash
+        env:
+          APP_URL: https://virella-helsinki-web.vercel.app
+        run: |
+          set -euo pipefail
+          curl -sS -D /tmp/headers -o /tmp/body \
+            -X POST \
+            -H 'Content-Type: application/x-www-form-urlencoded' \
+            --data 'productId=verkkosivu-kuntoon' \
+            "$APP_URL/api/checkout"
+          location="$(awk 'BEGIN{IGNORECASE=1} /^location:/ {sub(/^location:[[:space:]]*/, ""); sub(/\r$/, ""); print}' /tmp/headers | tail -n 1)"
+          if [[ -z "$location" || "$location" != https://checkout.stripe.com/* ]]; then
+            echo 'Checkout did not redirect to Stripe.'
+            cat /tmp/headers
+            cat /tmp/body
+            exit 1
+          fi
+          echo 'CHECKOUT_REDIRECT=PASS'
