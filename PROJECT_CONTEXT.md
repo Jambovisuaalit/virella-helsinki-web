@@ -84,17 +84,25 @@ Until those checks pass, do not report `develop → Preview` as complete.
 2. Global navigation/footer — NEXT
 3. Homepage
 4. Services overview
-5. Instagram page
-6. LinkedIn page
-7. Landing Page + SEO
+5. Instagram page — IMPLEMENTED, pending full QA
+6. LinkedIn page — IMPLEMENTED, pending full QA
+7. Landing Page + SEO — IMPLEMENTED, pending full QA
 8. LVI landing page
 9. Checkout
-10. Questionnaire
+10. Questionnaire — STRUCTURE IMPLEMENTED; final order persistence waits for checkout/order backend
 11. SEO
 12. Analytics
 13. Full QA
 14. Production migration only after explicit approval
 
+## Current acceptance notes
+
+- Instagram and LinkedIn pages use the exact same shared `ServiceLandingPage` component as Landing Page + SEO.
+- Instagram and LinkedIn customer-facing copy is Finnish; platform names and product terms such as Instagram, LinkedIn, Stories, Reels and SEO remain proper product/industry terms.
+- Three questionnaire definitions map directly to centralized product IDs.
+- The questionnaire route preserves `product` and optional `order` identifiers in hidden fields.
+- Final server-side verification that an `order` belongs to the expected product cannot be marked complete until checkout/order persistence exists.
+
 ## Foundation status
 
-The shared foundation now includes centralized configuration for brand, business information, products, tax messaging, navigation and SEO, plus reusable UI primitives. Existing layout/header/footer consume the centralized configuration instead of duplicating core business facts.
+The shared foundation includes centralized configuration for brand, business information, products, tax messaging, navigation and SEO, plus reusable UI primitives. Existing layout/header/footer consume the centralized configuration instead of duplicating core business facts.
