@@ -1,8 +1,29 @@
 import type { StripeCheckoutSession } from "@/lib/stripe/stripe-api";
 
-type StoredOrder = {
+export type StoredOrder = {
   id: string;
   stripe_session_id: string;
+  product_id: string;
+  product_key: string;
+  amount_total: number | null;
+  currency: string | null;
+  payment_status: string;
+  customer_email: string | null;
+  customer_name: string | null;
+  questionnaire_id: string | null;
+  questionnaire_status: string;
+  paid_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type StoredOnboardingSubmission = {
+  id: string;
+  order_id: string;
+  questionnaire_id: string;
+  answers: Record<string, string>;
+  submitted_at: string;
+  created_at: string;
 };
 
 function getSupabaseConfig() {
@@ -38,7 +59,7 @@ async function supabaseRequest<T>(path: string, init?: RequestInit) {
 export async function upsertPaidOrder(session: StripeCheckoutSession) {
   const metadata = session.metadata ?? {};
   const rows = await supabaseRequest<StoredOrder[]>(
-    "orders?on_conflict=stripe_session_id&select=id,stripe_session_id",
+    "orders?on_conflict=stripe_session_id&select=*",
     {
       method: "POST",
       headers: { Prefer: "resolution=merge-duplicates,return=representation" },
@@ -70,7 +91,7 @@ export async function saveOnboardingSubmission(params: {
   answers: Record<string, string>;
 }) {
   const orders = await supabaseRequest<StoredOrder[]>(
-    `orders?stripe_session_id=eq.${encodeURIComponent(params.stripeSessionId)}&select=id,stripe_session_id&limit=1`,
+    `orders?stripe_session_id=eq.${encodeURIComponent(params.stripeSessionId)}&select=*&limit=1`,
   );
   const order = orders[0];
   if (!order) throw new Error("Supabase order not found for onboarding submission");
@@ -99,4 +120,23 @@ export async function saveOnboardingSubmission(params: {
   });
 
   return order;
+}
+
+export async function getOrderByStripeSessionId(stripeSessionId: string) {
+  const rows = await supabaseRequest<StoredOrder[]>(
+    `orders?stripe_session_id=eq.${encodeURIComponent(stripeSessionId)}&select=*&limit=1`,
+  );
+  return rows[0] ?? null;
+}
+
+export async function listOrders(limit = 50) {
+  const safeLimit = Math.min(Math.max(Math.trunc(limit), 1), 100);
+  return supabaseRequest<StoredOrder[]>(`orders?select=*&order=created_at.desc&limit=${safeLimit}`);
+}
+
+export async function getOnboardingSubmissionByOrderId(orderId: string) {
+  const rows = await supabaseRequest<StoredOnboardingSubmission[]>(
+    `onboarding_submissions?order_id=eq.${encodeURIComponent(orderId)}&select=*&order=submitted_at.desc&limit=1`,
+  );
+  return rows[0] ?? null;
 }
