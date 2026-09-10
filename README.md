@@ -1,24 +1,17 @@
-# Virella Helsinki Web
+# Virella Helsinki
 
-Virella Helsingin verkkosivuston uusi Next.js-sovellus.
+New Virella Helsinki web application.
 
-## Stack
+Canonical repository: `Jambovisuaalit/virella-helsinki-web`
 
-- Next.js App Router
-- React
-- TypeScript
-- Tailwind CSS
-- ESLint
-- npm
+## Branches
 
-## Development
+- `develop` — active development and Vercel Preview target
+- `main` — production branch
 
-```bash
-npm install
-npm run dev
-```
+## Quality gate
 
-## Quality checks
+Run before commit:
 
 ```bash
 npm run typecheck
@@ -26,12 +19,4 @@ npm run lint
 npm run build
 ```
 
-## Branches
-
-- `main` — production-ready branch
-- `develop` — integration / Vercel Preview branch
-- feature branches — short-lived development branches
-
-## Vercel
-
-Repository is prepared for a later Vercel Git integration. Do not attach the production domain until preview QA has passed.
+See `AGENTS.md` for permanent engineering and design rules and `PROJECT_CONTEXT.md` for current project status.
