@@ -20,7 +20,6 @@ type ServiceLandingPageProps = {
 export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
   const product = products[productKey];
   const content = servicePageContent[productKey];
-  const monthly = product.billing === "month";
 
   return (
     <>
@@ -42,9 +41,9 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand">Hinta</p>
               <div className="mt-4 flex items-end gap-2">
                 <p className="text-4xl font-extrabold tracking-[-0.04em] text-foreground">{euro.format(product.price)}</p>
-                {monthly ? <p className="pb-1 text-sm font-semibold text-muted">/ kk</p> : null}
+                {product.billing === "month" ? <p className="pb-1 text-sm font-semibold text-muted">/ kk</p> : null}
               </div>
-              {product.totalPrice ? (
+              {product.billing === "month" ? (
                 <p className="mt-2 text-sm text-muted">{product.commitmentMonths} kk, yhteensä {euro.format(product.totalPrice)}</p>
               ) : (
                 <p className="mt-2 text-sm text-muted">Kertamaksu</p>
