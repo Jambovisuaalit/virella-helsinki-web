@@ -1,6 +1,22 @@
 import type { Product } from "@/types/product";
 
 export const products = {
+  websiteFix: {
+    id: "verkkosivu-kuntoon",
+    name: "Verkkosivu kuntoon 72 h",
+    price: 690,
+    billing: "one_time",
+    features: [
+      "Nykyisen verkkosivun konversioauditointi",
+      "Etusivun pääviestin ja CTA-polun korjaus",
+      "Mobiilin kriittisten käytettävyysongelmien korjaus",
+      "Yhteydenottolomakkeen tai yhteydenottopolun tarkistus ja korjaus",
+      "Palvelun ja luottamuselementtien selkeytys",
+      "Perustason SEO- ja metatietotarkistus",
+      "Ennen/jälkeen-yhteenveto tehdyistä muutoksista",
+      "Yksi koottu korjauskierros",
+    ],
+  },
   instagram: {
     id: "instagram",
     name: "Instagram 3 kk -kampanja",
