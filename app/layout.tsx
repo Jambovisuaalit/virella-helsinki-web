@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { seoConfig } from "@/config/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -11,8 +12,11 @@ const inter = Inter({
 const isIndexable = process.env.SITE_INDEXABLE === "true";
 
 export const metadata: Metadata = {
-  title: "Virella Helsinki",
-  description: "Virella Helsinki — uusi verkkosivusto rakenteilla.",
+  title: {
+    default: seoConfig.defaultTitle,
+    template: seoConfig.titleTemplate,
+  },
+  description: seoConfig.defaultDescription,
   robots: {
     index: isIndexable,
     follow: isIndexable,
