@@ -1,11 +1,13 @@
-import { products, type ProductId } from "@/config/products";
-import { taxConfig } from "@/config/tax";
-import { servicePageContent } from "@/content/fi/services";
+import { BuyButton } from "@/components/commerce/buy-button";
+import { MobilePurchaseBar } from "@/components/commerce/mobile-purchase-bar";
 import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { products, type ProductId } from "@/config/products";
+import { taxConfig } from "@/config/tax";
+import { servicePageContent } from "@/content/fi/services";
 
 const euro = new Intl.NumberFormat("fi-FI", {
   style: "currency",
@@ -24,31 +26,32 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
   return (
     <>
       <SiteHeader />
-      <main>
+      <main className="pb-56 md:pb-0">
         <section className="border-b border-border">
-          <SectionContainer className="grid gap-10 py-16 md:grid-cols-[1.15fr_0.85fr] md:items-center md:py-24 lg:gap-16">
+          <SectionContainer className="grid gap-10 py-14 md:grid-cols-[1.15fr_0.85fr] md:items-center md:py-24 lg:gap-16">
             <div className="max-w-[720px]">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">{content.eyebrow}</p>
               <h1 className="mt-5 text-[2.55rem] font-extrabold leading-[1.02] tracking-[-0.045em] sm:text-5xl md:text-[3.75rem]">{content.title}</h1>
               <p className="mt-6 max-w-[680px] text-base leading-7 text-muted sm:text-lg sm:leading-8">{content.lead}</p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <ButtonLink href="#sisalto">Katso mitä palveluun kuuluu</ButtonLink>
-                <ButtonLink href={`/alkukysely?product=${product.id}`} variant="secondary">Esikatsele aloituskyselyä</ButtonLink>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <BuyButton productId={product.id} label={`Osta ${product.name}`} />
+                <ButtonLink href="#sisalto" variant="secondary">Katso mitä saat</ButtonLink>
               </div>
             </div>
 
             <Card className="p-6 sm:p-8">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand">Hinta</p>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand">Kiinteä hinta</p>
               <div className="mt-4 flex items-end gap-2">
                 <p className="text-4xl font-extrabold tracking-[-0.04em] text-foreground">{euro.format(product.price)}</p>
                 {product.billing === "month" ? <p className="pb-1 text-sm font-semibold text-muted">/ kk</p> : null}
               </div>
               {product.billing === "month" ? (
-                <p className="mt-2 text-sm text-muted">{product.commitmentMonths} kk, yhteensä {euro.format(product.totalPrice)}</p>
+                <p className="mt-2 text-sm text-muted">{product.commitmentMonths} kk · yhteensä {euro.format(product.totalPrice)}</p>
               ) : (
                 <p className="mt-2 text-sm text-muted">Kertamaksu</p>
               )}
               <p className="mt-5 border-t border-border pt-5 text-sm leading-6 text-muted">{taxConfig.publicMessage}</p>
+              <BuyButton productId={product.id} className="mt-6" />
             </Card>
           </SectionContainer>
         </section>
@@ -57,8 +60,8 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
           <SectionContainer className="py-16 md:py-24">
             <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
               <div className="max-w-[560px]">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">Palvelun sisältö</p>
-                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Näet ennen aloittamista, mitä saat.</h2>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">Selkeä scope</p>
+                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Näet ennen ostamista, mitä palveluun kuuluu.</h2>
                 <p className="mt-4 text-base leading-7 text-muted sm:text-lg">{content.summary}</p>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -110,7 +113,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
           <SectionContainer className="py-16 md:py-24">
             <div className="max-w-[760px]">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">Usein kysyttyä</p>
-              <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Selkeät vastaukset ennen aloittamista.</h2>
+              <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Selkeät vastaukset ennen ostamista.</h2>
               <div className="mt-8 divide-y divide-border border-y border-border">
                 {content.faq.map((item) => (
                   <div key={item.question} className="py-6">
@@ -127,15 +130,16 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
           <SectionContainer className="py-16 md:py-20">
             <div className="flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
               <div className="max-w-[680px]">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/65 sm:text-sm">Seuraava askel</p>
-                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Täytä aloituskysely tilauksen yhteydessä.</h2>
-                <p className="mt-4 text-base leading-7 text-white/75">Aloituskysely on tuotekohtainen ja säilyttää tilauksen tunnisteen, kun maksuvaihe liitetään mukaan.</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/65 sm:text-sm">Osta ilman myyntipalaveria</p>
+                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Maksa verkossa ja täytä alkukysely.</h2>
+                <p className="mt-4 text-base leading-7 text-white/75">Maksun jälkeen oikea tuotekohtainen alkukysely avautuu automaattisesti. Tilaus, kysely ja admin-näkymä käyttävät samaa tilaustunnistetta.</p>
               </div>
-              <ButtonLink href={`/alkukysely?product=${product.id}`} className="shrink-0 border-white/20 bg-white text-brand hover:bg-cloud" variant="secondary">Esikatsele kyselyä</ButtonLink>
+              <BuyButton productId={product.id} label="Osta nyt" className="shrink-0" />
             </div>
           </SectionContainer>
         </section>
       </main>
+      <MobilePurchaseBar currentProduct={productKey} />
       <SiteFooter />
     </>
   );

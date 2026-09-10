@@ -5,20 +5,21 @@ import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
 import { getQuestionnaireByProductId } from "@/config/questionnaires";
+import { getCheckoutSession } from "@/lib/stripe/stripe-api";
 
 export const metadata: Metadata = {
   title: "Aloituskysely | Virella Helsinki",
   description: "Virella Helsingin palvelukohtainen aloituskysely.",
-  robots: {
-    index: false,
-    follow: false,
-  },
+  robots: { index: false, follow: false },
 };
+
+export const dynamic = "force-dynamic";
 
 type QuestionnairePageProps = {
   searchParams: Promise<{
     product?: string | string[];
-    order?: string | string[];
+    session_id?: string | string[];
+    submitted?: string | string[];
   }>;
 };
 
@@ -34,8 +35,21 @@ function first(value: string | string[] | undefined) {
 
 export default async function QuestionnairePage({ searchParams }: QuestionnairePageProps) {
   const params = await searchParams;
-  const productId = first(params.product);
-  const orderId = first(params.order);
+  const sessionId = first(params.session_id);
+  const submitted = first(params.submitted) === "1";
+  let productId = first(params.product);
+  let orderValid = false;
+
+  if (sessionId) {
+    try {
+      const session = await getCheckoutSession(sessionId);
+      productId = session.metadata?.productId;
+      orderValid = session.payment_status === "paid" && Boolean(productId);
+    } catch (error) {
+      console.error("Questionnaire order lookup failed", error);
+    }
+  }
+
   const questionnaire = productId ? getQuestionnaireByProductId(productId) : undefined;
 
   return (
@@ -43,31 +57,38 @@ export default async function QuestionnairePage({ searchParams }: QuestionnaireP
       <SiteHeader />
       <main>
         <SectionContainer className="py-16 md:py-24">
-          {questionnaire ? (
+          {submitted && questionnaire ? (
+            <div className="mx-auto max-w-[720px] rounded-[20px] border border-border bg-surface p-6 shadow-[0_8px_40px_-12px_rgba(31,36,46,0.12)] sm:p-10">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand">Valmis</p>
+              <h1 className="mt-4 text-4xl font-extrabold tracking-[-0.04em]">Alkukysely vastaanotettu.</h1>
+              <p className="mt-5 text-base leading-7 text-muted">{questionnaire.title} on liitetty maksettuun tilaukseen. Tiedot näkyvät admin-sivulla samalla tilaustunnisteella.</p>
+              <Link href="/" className="mt-8 inline-flex min-h-12 items-center justify-center rounded-xl border border-border bg-background px-5 py-3 text-sm font-bold text-brand">Takaisin etusivulle</Link>
+            </div>
+          ) : questionnaire ? (
             <div className="mx-auto grid max-w-[960px] gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">Aloituskysely</p>
                 <h1 className="mt-4 text-4xl font-extrabold leading-[1.05] tracking-[-0.04em] sm:text-5xl">{questionnaire.title}</h1>
                 <p className="mt-5 text-base leading-7 text-muted sm:text-lg">{questionnaire.description}</p>
                 <p className="mt-6 rounded-xl border border-border bg-cloud p-4 text-sm leading-6 text-muted">
-                  Tämä kysely käyttää tuotetunnistetta <strong className="text-foreground">{questionnaire.productId}</strong>. Maksuvaihe lisää lisäksi tilauksen tunnisteen osoitteen <strong className="text-foreground">order</strong>-parametriin.
+                  {orderValid
+                    ? "Maksu on vahvistettu. Lomake on sidottu tähän tilaukseen eikä tuotetta voi vaihtaa lähetyksen yhteydessä."
+                    : "Esikatselutila. Maksun jälkeen palaat tähän samaan tuotekohtaiseen kyselyyn maksetun tilaustunnisteen kanssa."}
                 </p>
               </div>
 
               <div className="rounded-[20px] border border-border bg-surface p-5 shadow-[0_8px_40px_-12px_rgba(31,36,46,0.12)] sm:p-8">
-                <QuestionnaireForm questionnaire={questionnaire} orderId={orderId} />
+                <QuestionnaireForm questionnaire={questionnaire} sessionId={orderValid ? sessionId : undefined} />
               </div>
             </div>
           ) : (
             <div className="mx-auto max-w-[720px]">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">Aloituskysely</p>
               <h1 className="mt-4 text-4xl font-extrabold leading-[1.05] tracking-[-0.04em] sm:text-5xl">Valitse palvelu ennen aloituskyselyä.</h1>
-              <p className="mt-5 text-base leading-7 text-muted sm:text-lg">Aloituskysely on aina sidottu yhteen Virella-palveluun. Avaa ensin oikea palvelusivu.</p>
+              <p className="mt-5 text-base leading-7 text-muted sm:text-lg">Aloituskysely on aina sidottu yhteen Virella-palveluun.</p>
               <div className="mt-8 grid gap-3 sm:grid-cols-3">
                 {serviceLinks.map(([label, href]) => (
-                  <Link key={href} href={href} className="rounded-xl border border-border bg-surface p-4 font-bold text-brand transition hover:-translate-y-0.5 hover:shadow-[0_8px_32px_-16px_rgba(31,36,46,0.18)]">
-                    {label}
-                  </Link>
+                  <Link key={href} href={href} className="rounded-xl border border-border bg-surface p-4 font-bold text-brand">{label}</Link>
                 ))}
               </div>
             </div>

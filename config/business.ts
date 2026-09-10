@@ -5,4 +5,5 @@ export const businessConfig = {
   city: "Helsinki",
   country: "Finland",
   email: "hello@virellahelsinki.com",
+  adminEmail: "jami@virellahelsinki.com",
 } as const;
