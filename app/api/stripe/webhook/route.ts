@@ -2,6 +2,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { products } from "@/config/products";
 import { sendAdminNotification } from "@/lib/email/admin-notification";
+import { upsertPaidOrder } from "@/lib/supabase/order-store";
 import type { StripeCheckoutSession } from "@/lib/stripe/stripe-api";
 
 function verifyStripeSignature(payload: string, signatureHeader: string) {
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
     data: { object: StripeCheckoutSession };
   };
 
-  if (event.type !== "checkout.session.completed") {
+  if (event.type !== "checkout.session.completed" && event.type !== "checkout.session.async_payment_succeeded") {
     return NextResponse.json({ received: true });
   }
 
@@ -48,6 +49,12 @@ export async function POST(request: Request) {
 
   if (!product || session.metadata?.productId !== product.id) {
     return NextResponse.json({ error: "invalid_product_metadata" }, { status: 400 });
+  }
+
+  await upsertPaidOrder(session);
+
+  if (session.payment_status !== "paid") {
+    return NextResponse.json({ received: true, orderStored: true });
   }
 
   const origin = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin;
@@ -73,5 +80,5 @@ export async function POST(request: Request) {
     ].join("\n"),
   });
 
-  return NextResponse.json({ received: true });
+  return NextResponse.json({ received: true, orderStored: true });
 }
