@@ -78,30 +78,10 @@ Required deployment correction before normal development flow is considered comp
 
 Until those checks pass, do not report `develop → Preview` as complete.
 
-## Deployment guardrails
+## Development priority
 
-1. Do not attach `virellahelsinki.com` during staging setup.
-2. Do not modify the current production Vercel project as part of staging work.
-3. Keep the new Virella rebuild in a separate Vercel project.
-4. Keep previews and staging non-indexable.
-5. Require successful typecheck, lint and production build before production promotion.
-6. Verify homepage, `/api/health`, HTTPS, metadata, redirects and forms before any domain cutover.
-7. Do not delete or disconnect the old production deployment before the replacement has passed full QA and explicit cutover approval has been given.
-
-## Current development goal
-
-Build the new Virella Helsinki website incrementally in `develop`.
-
-Do not recreate the complete site in one commit.
-
-Use the approved Business DNA, centralized product configuration, mobile-first UI and Next.js App Router architecture defined in `AGENTS.md`.
-
-The current homepage is a technical placeholder. Final marketing copy, information architecture and production SEO metadata are separate implementation phases.
-
-## Priority
-
-1. Foundation and shared design system
-2. Global navigation/footer
+1. Foundation and shared design system — DONE on `develop`
+2. Global navigation/footer — NEXT
 3. Homepage
 4. Services overview
 5. Instagram page
@@ -115,13 +95,6 @@ The current homepage is a technical placeholder. Final marketing copy, informati
 13. Full QA
 14. Production migration only after explicit approval
 
-## Working rule
+## Foundation status
 
-Before implementing any feature, read both:
-
-- `AGENTS.md`
-- `PROJECT_CONTEXT.md`
-
-`AGENTS.md` defines persistent engineering, UX, design and business rules.
-
-`PROJECT_CONTEXT.md` defines the current project state, deployment status, active priorities and blockers.
+The shared foundation now includes centralized configuration for brand, business information, products, tax messaging, navigation and SEO, plus reusable UI primitives. Existing layout/header/footer consume the centralized configuration instead of duplicating core business facts.
