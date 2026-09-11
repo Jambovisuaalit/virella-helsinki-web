@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { seoConfig } from "@/config/seo";
 import "./globals.css";
 
@@ -9,24 +10,31 @@ const inter = Inter({
   display: "swap",
 });
 
-const isIndexable = process.env.SITE_INDEXABLE === "true";
+const isProduction = process.env.VERCEL_ENV === "production";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(seoConfig.siteUrl),
   title: {
     default: seoConfig.defaultTitle,
     template: seoConfig.titleTemplate,
   },
   description: seoConfig.defaultDescription,
+  alternates: {
+    canonical: "/",
+  },
   robots: {
-    index: isIndexable,
-    follow: isIndexable,
+    index: isProduction,
+    follow: isProduction,
   },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fi">
-      <body className={inter.variable}>{children}</body>
+      <body className={inter.variable}>
+        {children}
+        <PageViewTracker enabled={isProduction} />
+      </body>
     </html>
   );
 }

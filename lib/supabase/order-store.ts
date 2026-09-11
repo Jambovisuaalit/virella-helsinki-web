@@ -27,10 +27,22 @@ export type StoredOnboardingSubmission = {
 };
 
 function getSupabaseConfig() {
-  const url = process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !serviceRoleKey) throw new Error("Supabase server configuration is missing");
-  return { url: url.replace(/\/$/, ""), serviceRoleKey };
+  const rawUrl = process.env.SUPABASE_URL;
+  const rawServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!rawUrl || !rawServiceRoleKey) throw new Error("Supabase server configuration is missing");
+
+  return {
+    url: rawUrl.trim().replace(/\/$/, ""),
+    serviceRoleKey: rawServiceRoleKey.trim(),
+  };
+}
+
+function getAuthHeaders(key: string): Record<string, string> {
+  const headers: Record<string, string> = { apikey: key };
+  if (!key.startsWith("sb_secret_")) {
+    headers.Authorization = `Bearer ${key}`;
+  }
+  return headers;
 }
 
 async function supabaseRequest<T>(path: string, init?: RequestInit) {
@@ -38,8 +50,7 @@ async function supabaseRequest<T>(path: string, init?: RequestInit) {
   const response = await fetch(`${url}/rest/v1/${path}`, {
     ...init,
     headers: {
-      apikey: serviceRoleKey,
-      Authorization: `Bearer ${serviceRoleKey}`,
+      ...getAuthHeaders(serviceRoleKey),
       "Content-Type": "application/json",
       ...(init?.headers ?? {}),
     },

@@ -1,3 +1,4 @@
+import { BuyButton } from "@/components/commerce/buy-button";
 import { products, type ProductId } from "@/config/products";
 
 const euro = new Intl.NumberFormat("fi-FI", {
@@ -36,12 +37,12 @@ export function MobilePurchaseBar({ currentProduct }: { currentProduct: ProductI
                   {product.billing === "month" ? `${product.commitmentMonths} kk · yht. ${euro.format(product.totalPrice)}` : "kertamaksu"}
                 </p>
               </div>
-              <form action="/api/checkout" method="post">
-                <input type="hidden" name="productId" value={product.id} />
-                <button type="submit" className="min-h-10 rounded-lg bg-action px-3 text-xs font-bold text-white">
-                  Osta
-                </button>
-              </form>
+              <BuyButton
+                productId={product.id}
+                label="Osta"
+                source="mobile_purchase_bar"
+                buttonClassName="min-h-10 rounded-lg bg-action px-3 text-xs font-bold text-white"
+              />
             </div>
           );
         })}
