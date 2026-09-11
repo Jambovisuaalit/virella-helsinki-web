@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { VercelAnalytics } from "@/components/analytics/vercel-analytics";
+import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { seoConfig } from "@/config/seo";
 import "./globals.css";
 
@@ -33,7 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="fi">
       <body className={inter.variable}>
         {children}
-        <VercelAnalytics />
+        <PageViewTracker enabled={isProduction} />
       </body>
     </html>
   );
