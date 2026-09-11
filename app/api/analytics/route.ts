@@ -3,7 +3,7 @@ import { products } from "@/config/products";
 import { isAnalyticsEventName } from "@/lib/analytics/events";
 import { saveAnalyticsEvent } from "@/lib/supabase/analytics-store";
 
-const productIds = new Set(Object.values(products).map((product) => product.id));
+const productIds = new Set<string>(Object.values(products).map((product) => product.id));
 const safeSourcePattern = /^[a-z0-9_-]{1,64}$/i;
 
 function cleanOptionalString(value: unknown, maxLength: number) {
