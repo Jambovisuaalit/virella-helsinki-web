@@ -1,29 +1,22 @@
-export type AnalyticsEventName =
-  | "service_view"
-  | "purchase_click"
-  | "checkout_started"
-  | "checkout_success"
-  | "questionnaire_started"
-  | "questionnaire_completed"
-  | "contact_submit";
+import type { AnalyticsEventData, AnalyticsEventName } from "@/lib/analytics/events";
 
-export type AnalyticsEventData = {
-  productId?: string;
-  source?: string;
-};
-
-declare global {
-  interface Window {
-    va?: (...args: unknown[]) => void;
-    vaq?: unknown[][];
-  }
-}
+export type { AnalyticsEventName } from "@/lib/analytics/events";
 
 export function trackAnalyticsEvent(name: AnalyticsEventName, data: AnalyticsEventData = {}) {
   if (typeof window === "undefined") return;
 
-  window.va?.("event", {
-    name,
-    data,
-  });
+  const payload = {
+    eventName: name,
+    productId: data.productId,
+    source: data.source,
+    path: window.location.pathname,
+  };
+
+  void fetch("/api/analytics", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    keepalive: true,
+    body: JSON.stringify(payload),
+  }).catch(() => undefined);
 }
