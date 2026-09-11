@@ -8,10 +8,13 @@ export type AnalyticsEventRecord = {
 };
 
 function getSupabaseConfig() {
-  const url = process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !serviceRoleKey) throw new Error("Supabase server configuration is missing");
-  return { url: url.replace(/\/$/, ""), serviceRoleKey };
+  const rawUrl = process.env.SUPABASE_URL;
+  const rawServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!rawUrl || !rawServiceRoleKey) throw new Error("Supabase server configuration is missing");
+
+  const url = rawUrl.trim().replace(/\/$/, "");
+  const serviceRoleKey = rawServiceRoleKey.trim();
+  return { url, serviceRoleKey };
 }
 
 function getAuthHeaders(key: string): Record<string, string> {
@@ -20,6 +23,13 @@ function getAuthHeaders(key: string): Record<string, string> {
     headers.Authorization = `Bearer ${key}`;
   }
   return headers;
+}
+
+function keyType(key: string) {
+  if (key.startsWith("sb_secret_")) return "secret";
+  if (key.startsWith("sb_publishable_")) return "publishable";
+  if (key.startsWith("eyJ")) return "legacy_jwt";
+  return "unknown";
 }
 
 export async function saveAnalyticsEvent(event: AnalyticsEventRecord) {
@@ -41,7 +51,11 @@ export async function saveAnalyticsEvent(event: AnalyticsEventRecord) {
   });
 
   if (!response.ok) {
-    console.error("Analytics event store failed", response.status);
+    console.error("Analytics event store failed", {
+      status: response.status,
+      supabaseHost: new URL(url).host,
+      keyType: keyType(serviceRoleKey),
+    });
     throw new Error("Analytics event store failed");
   }
 }
