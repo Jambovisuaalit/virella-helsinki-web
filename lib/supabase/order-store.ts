@@ -27,10 +27,14 @@ export type StoredOnboardingSubmission = {
 };
 
 function getSupabaseConfig() {
-  const url = process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !serviceRoleKey) throw new Error("Supabase server configuration is missing");
-  return { url: url.replace(/\/$/, ""), serviceRoleKey };
+  const rawUrl = process.env.SUPABASE_URL;
+  const rawServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!rawUrl || !rawServiceRoleKey) throw new Error("Supabase server configuration is missing");
+
+  return {
+    url: rawUrl.trim().replace(/\/$/, ""),
+    serviceRoleKey: rawServiceRoleKey.trim(),
+  };
 }
 
 function getAuthHeaders(key: string): Record<string, string> {
