@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { VercelAnalytics } from "@/components/analytics/vercel-analytics";
 import { seoConfig } from "@/config/seo";
 import "./globals.css";
 
@@ -30,7 +31,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fi">
-      <body className={inter.variable}>{children}</body>
+      <body className={inter.variable}>
+        {children}
+        <VercelAnalytics />
+      </body>
     </html>
   );
 }
