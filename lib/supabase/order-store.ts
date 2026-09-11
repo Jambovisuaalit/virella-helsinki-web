@@ -33,10 +33,12 @@ function getSupabaseConfig() {
   return { url: url.replace(/\/$/, ""), serviceRoleKey };
 }
 
-function getAuthHeaders(key: string) {
-  return key.startsWith("sb_secret_")
-    ? { apikey: key }
-    : { apikey: key, Authorization: `Bearer ${key}` };
+function getAuthHeaders(key: string): Record<string, string> {
+  const headers: Record<string, string> = { apikey: key };
+  if (!key.startsWith("sb_secret_")) {
+    headers.Authorization = `Bearer ${key}`;
+  }
+  return headers;
 }
 
 async function supabaseRequest<T>(path: string, init?: RequestInit) {
