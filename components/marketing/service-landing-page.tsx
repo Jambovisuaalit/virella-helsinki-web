@@ -1,3 +1,4 @@
+import { FunnelEvent } from "@/components/analytics/funnel-event";
 import { BuyButton } from "@/components/commerce/buy-button";
 import { MobilePurchaseBar } from "@/components/commerce/mobile-purchase-bar";
 import { SectionContainer } from "@/components/layout/section-container";
@@ -25,6 +26,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
 
   return (
     <>
+      <FunnelEvent name="service_view" productId={product.id} />
       <SiteHeader />
       <main className="pb-56 md:pb-0">
         <section className="border-b border-border">
@@ -34,7 +36,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
               <h1 className="mt-5 text-[2.55rem] font-extrabold leading-[1.02] tracking-[-0.045em] sm:text-5xl md:text-[3.75rem]">{content.title}</h1>
               <p className="mt-6 max-w-[680px] text-base leading-7 text-muted sm:text-lg sm:leading-8">{content.lead}</p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <BuyButton productId={product.id} label={`Osta ${product.name}`} />
+                <BuyButton productId={product.id} label={`Osta ${product.name}`} source="hero" />
                 <ButtonLink href="#sisalto" variant="secondary">Katso mitä saat</ButtonLink>
               </div>
             </div>
@@ -51,7 +53,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
                 <p className="mt-2 text-sm text-muted">Kertamaksu</p>
               )}
               <p className="mt-5 border-t border-border pt-5 text-sm leading-6 text-muted">{taxConfig.publicMessage}</p>
-              <BuyButton productId={product.id} className="mt-6" />
+              <BuyButton productId={product.id} className="mt-6" source="pricing_card" />
             </Card>
           </SectionContainer>
         </section>
@@ -134,7 +136,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
                 <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Maksa verkossa ja täytä alkukysely.</h2>
                 <p className="mt-4 text-base leading-7 text-white/75">Maksun jälkeen oikea tuotekohtainen alkukysely avautuu automaattisesti. Tilaus, kysely ja admin-näkymä käyttävät samaa tilaustunnistetta.</p>
               </div>
-              <BuyButton productId={product.id} label="Osta nyt" className="shrink-0" />
+              <BuyButton productId={product.id} label="Osta nyt" className="shrink-0" source="final_cta" />
             </div>
           </SectionContainer>
         </section>
