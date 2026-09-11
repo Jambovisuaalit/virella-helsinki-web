@@ -1,0 +1,37 @@
+name: Production checkout smoke
+
+on:
+  push:
+    branches:
+      - qa/checkout-smoke-20260911-2
+
+permissions:
+  contents: read
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify production checkout redirects
+        shell: bash
+        env:
+          APP_URL: https://virellahelsinki.com
+        run: |
+          set -euo pipefail
+          for product in instagram linkedin landing-page-seo; do
+            echo "Checking $product"
+            curl -sS -D /tmp/headers -o /tmp/body \
+              -X POST \
+              -H 'Content-Type: application/x-www-form-urlencoded' \
+              --data-urlencode "productId=$product" \
+              "$APP_URL/api/checkout"
+            status="$(awk 'NR==1 {print $2}' /tmp/headers)"
+            location="$(awk 'BEGIN{IGNORECASE=1} /^location:/ {sub(/^location:[[:space:]]*/, ""); sub(/\r$/, ""); print}' /tmp/headers | tail -n 1)"
+            if [[ "$status" != "303" || "$location" != https://checkout.stripe.com/* ]]; then
+              echo "Checkout smoke failed for $product"
+              cat /tmp/headers
+              cat /tmp/body
+              exit 1
+            fi
+          done
+          echo 'CHECKOUT_SMOKE=PASS'
