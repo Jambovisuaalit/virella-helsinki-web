@@ -33,13 +33,18 @@ function getSupabaseConfig() {
   return { url: url.replace(/\/$/, ""), serviceRoleKey };
 }
 
+function getAuthHeaders(key: string) {
+  return key.startsWith("sb_secret_")
+    ? { apikey: key }
+    : { apikey: key, Authorization: `Bearer ${key}` };
+}
+
 async function supabaseRequest<T>(path: string, init?: RequestInit) {
   const { url, serviceRoleKey } = getSupabaseConfig();
   const response = await fetch(`${url}/rest/v1/${path}`, {
     ...init,
     headers: {
-      apikey: serviceRoleKey,
-      Authorization: `Bearer ${serviceRoleKey}`,
+      ...getAuthHeaders(serviceRoleKey),
       "Content-Type": "application/json",
       ...(init?.headers ?? {}),
     },
