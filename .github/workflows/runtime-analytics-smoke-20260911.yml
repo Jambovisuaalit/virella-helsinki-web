@@ -1,0 +1,30 @@
+name: Production analytics smoke
+
+on:
+  push:
+    branches:
+      - qa/analytics-smoke-20260911
+
+permissions:
+  contents: read
+
+jobs:
+  analytics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write privacy-safe analytics event through production API
+        shell: bash
+        run: |
+          set -euo pipefail
+          status="$(curl -sS -o /tmp/body -w '%{http_code}' \
+            -X POST \
+            -H 'Origin: https://virellahelsinki.com' \
+            -H 'Content-Type: application/json' \
+            --data '{"eventName":"service_view","productId":"instagram","source":"github_actions_smoke","path":"/qa-analytics-smoke?secret=must-not-store"}' \
+            'https://virellahelsinki.com/api/analytics')"
+          if [[ "$status" != "204" ]]; then
+            echo "Expected 204, got $status"
+            cat /tmp/body
+            exit 1
+          fi
+          echo 'ANALYTICS_WRITE=PASS'
