@@ -3,6 +3,8 @@ import { SectionContainer } from "@/components/layout/section-container";
 import { brandConfig } from "@/config/brand";
 import { primaryNavigation } from "@/config/navigation";
 
+const isPreview = process.env.VERCEL_ENV !== "production";
+
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-background/90 backdrop-blur-md">
@@ -22,9 +24,11 @@ export function SiteHeader() {
               </Link>
             ))}
           </nav>
-          <span className="rounded-lg border border-brand/15 bg-brand/5 px-2.5 py-1 text-xs font-semibold text-brand">
-            Preview
-          </span>
+          {isPreview ? (
+            <span className="rounded-lg border border-brand/15 bg-brand/5 px-2.5 py-1 text-xs font-semibold text-brand">
+              Preview
+            </span>
+          ) : null}
         </div>
       </SectionContainer>
     </header>
