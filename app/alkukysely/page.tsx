@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FunnelEvent } from "@/components/analytics/funnel-event";
 import { QuestionnaireForm } from "@/components/forms/questionnaire-form";
 import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
@@ -8,7 +9,7 @@ import { getQuestionnaireByProductId } from "@/config/questionnaires";
 import { getCheckoutSession } from "@/lib/stripe/stripe-api";
 
 export const metadata: Metadata = {
-  title: "Aloituskysely | Virella Helsinki",
+  title: "Aloituskysely",
   description: "Virella Helsingin palvelukohtainen aloituskysely.",
   robots: { index: false, follow: false },
 };
@@ -51,9 +52,16 @@ export default async function QuestionnairePage({ searchParams }: QuestionnaireP
   }
 
   const questionnaire = productId ? getQuestionnaireByProductId(productId) : undefined;
+  const trackedProductId = orderValid && questionnaire ? questionnaire.productId : undefined;
 
   return (
     <>
+      {trackedProductId ? (
+        <FunnelEvent
+          name={submitted ? "questionnaire_completed" : "questionnaire_started"}
+          productId={trackedProductId}
+        />
+      ) : null}
       <SiteHeader />
       <main>
         <SectionContainer className="py-16 md:py-24">
