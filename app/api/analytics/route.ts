@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { products } from "@/config/products";
 import { isAnalyticsEventName } from "@/lib/analytics/events";
-import { saveAnalyticsEvent } from "@/lib/supabase/analytics-store";
+import { sendAnalyticsEvent } from "@/lib/supabase/analytics-ingest-client";
 
 const productIds = new Set<string>(Object.values(products).map((product) => product.id));
 const safeSourcePattern = /^[a-z0-9_-]{1,64}$/i;
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    await saveAnalyticsEvent({
+    await sendAnalyticsEvent({
       eventName: body.eventName,
       productId,
       source,
