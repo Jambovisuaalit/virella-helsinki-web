@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FunnelEvent } from "@/components/analytics/funnel-event";
 import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
@@ -7,7 +8,7 @@ import { products } from "@/config/products";
 import { getCheckoutSession, getProductKeyById } from "@/lib/stripe/stripe-api";
 
 export const metadata: Metadata = {
-  title: "Maksu vahvistettu | Virella Helsinki",
+  title: "Maksu vahvistettu",
   robots: { index: false, follow: false },
 };
 
@@ -43,6 +44,7 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
 
   return (
     <>
+      {paid && productId ? <FunnelEvent name="checkout_success" productId={productId} /> : null}
       <SiteHeader />
       <main>
         <SectionContainer className="py-16 md:py-24">
