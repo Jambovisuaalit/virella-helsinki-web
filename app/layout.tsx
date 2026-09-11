@@ -9,17 +9,21 @@ const inter = Inter({
   display: "swap",
 });
 
-const isIndexable = process.env.SITE_INDEXABLE === "true";
+const isProduction = process.env.VERCEL_ENV === "production";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(seoConfig.siteUrl),
   title: {
     default: seoConfig.defaultTitle,
     template: seoConfig.titleTemplate,
   },
   description: seoConfig.defaultDescription,
+  alternates: {
+    canonical: "/",
+  },
   robots: {
-    index: isIndexable,
-    follow: isIndexable,
+    index: isProduction,
+    follow: isProduction,
   },
 };
 
