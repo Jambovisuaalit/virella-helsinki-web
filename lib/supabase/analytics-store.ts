@@ -14,13 +14,20 @@ function getSupabaseConfig() {
   return { url: url.replace(/\/$/, ""), serviceRoleKey };
 }
 
+function getAuthHeaders(key: string): Record<string, string> {
+  const headers: Record<string, string> = { apikey: key };
+  if (!key.startsWith("sb_secret_")) {
+    headers.Authorization = `Bearer ${key}`;
+  }
+  return headers;
+}
+
 export async function saveAnalyticsEvent(event: AnalyticsEventRecord) {
   const { url, serviceRoleKey } = getSupabaseConfig();
   const response = await fetch(`${url}/rest/v1/analytics_events`, {
     method: "POST",
     headers: {
-      apikey: serviceRoleKey,
-      Authorization: `Bearer ${serviceRoleKey}`,
+      ...getAuthHeaders(serviceRoleKey),
       "Content-Type": "application/json",
       Prefer: "return=minimal",
     },
