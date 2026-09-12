@@ -12,7 +12,11 @@ export function PageViewTracker({ enabled }: { enabled: boolean }) {
   useEffect(() => {
     if (!enabled || !pathname) return;
     if (excludedPrefixes.some((prefix) => pathname.startsWith(prefix))) return;
-    trackAnalyticsEvent("page_view");
+
+    const track = () => trackAnalyticsEvent("page_view");
+    track();
+    window.addEventListener("virella:analytics-consent", track);
+    return () => window.removeEventListener("virella:analytics-consent", track);
   }, [enabled, pathname]);
 
   return null;
