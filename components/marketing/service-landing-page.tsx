@@ -55,11 +55,11 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
 
               {isConversionFix ? (
                 <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted">
-                  <span>Ei myyntipalaveripakkoa</span>
+                  <span>Ei pakollista myyntipalaveria</span>
                   <span className="hidden text-border sm:inline">•</span>
                   <span>Ei salasanoja lomakkeella</span>
                   <span className="hidden text-border sm:inline">•</span>
-                  <span>Yksi korjauskierros</span>
+                  <span>Yksi korjauskierros mukana</span>
                 </div>
               ) : null}
             </div>
@@ -82,7 +82,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
                 {isConversionFix ? (
                   <div className="mt-7 grid grid-cols-3 gap-2 border-y border-border/70 py-5 text-center">
                     <div><p className="text-xl font-extrabold tracking-[-0.04em] text-brand">72 h</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.09em] text-muted">toimitus</p></div>
-                    <div><p className="text-xl font-extrabold tracking-[-0.04em] text-brand">8</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.09em] text-muted">scope-kohtaa</p></div>
+                    <div><p className="text-xl font-extrabold tracking-[-0.04em] text-brand">8</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.09em] text-muted">korjauskohtaa</p></div>
                     <div><p className="text-xl font-extrabold tracking-[-0.04em] text-brand">1</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.09em] text-muted">kierros</p></div>
                   </div>
                 ) : null}
@@ -98,8 +98,8 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
           <SectionContainer className="py-20 sm:py-24 lg:py-28">
             <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
               <div className="max-w-[540px]">
-                <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand">Selkeä scope</p>
-                <h2 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl">{isConversionFix ? "Mitä 690 € toimitukseen kuuluu." : "Näet ennen ostamista, mitä palveluun kuuluu."}</h2>
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand">{isConversionFix ? "Mitä saat" : "Sisältö"}</p>
+                <h2 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl">{isConversionFix ? "Mitä 690 €:lla korjataan." : "Näet ennen ostamista, mitä palveluun kuuluu."}</h2>
                 <p className="mt-5 text-base leading-7 text-muted sm:text-lg">{content.summary}</p>
               </div>
 
@@ -175,9 +175,9 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
               <div className="pointer-events-none absolute -right-12 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
               <div className="relative flex flex-col gap-9 md:flex-row md:items-end md:justify-between">
                 <div className="max-w-[720px]">
-                  <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">{isConversionFix ? "Conversion Fix · 690 € · 72 h" : "Aloita verkossa"}</p>
-                  <h2 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl">{isConversionFix ? "Korjaa ensin se, mikä estää asiakasta ottamasta yhteyttä." : "Maksa verkossa ja täytä aloituskysely."}</h2>
-                  <p className="mt-5 max-w-[680px] text-base leading-7 text-white/70">{isConversionFix ? "Toimitus alkaa, kun maksu, aloituskysely ja toteutukseen tarvittavat käyttöoikeudet tai materiaalit ovat käytettävissä." : "Maksun jälkeen tuotekohtainen aloituskysely avautuu automaattisesti ja toimitus voidaan käynnistää."}</p>
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">{isConversionFix ? "Conversion Fix · 690 € · toimitus 72 h" : "Aloita verkossa"}</p>
+                  <h2 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl">{isConversionFix ? "Tee yhteydenotosta asiakkaalle helpompi." : "Maksa verkossa ja täytä aloituskysely."}</h2>
+                  <p className="mt-5 max-w-[680px] text-base leading-7 text-white/70">{isConversionFix ? "Kiinteä 690 € kertamaksu. 72 tunnin toimitusaika alkaa, kun maksu, aloituskysely ja toteutukseen tarvittavat materiaalit tai käyttöoikeudet ovat käytettävissä." : "Maksun jälkeen tuotekohtainen aloituskysely avautuu automaattisesti ja toimitus voidaan käynnistää."}</p>
                 </div>
                 <BuyButton productId={product.id} label={isConversionFix ? "Osta Conversion Fix · 690 €" : "Osta nyt"} className="shrink-0" source="final_cta" />
               </div>
