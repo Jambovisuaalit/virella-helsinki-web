@@ -25,7 +25,7 @@ jobs:
           npm install --no-save --package-lock=false playwright@1.55.0
           npx playwright install --with-deps chromium
 
-      - name: Extract existing QA script and patch current Stripe DOM handling
+      - name: Extract existing QA script and patch current production UI handling
         shell: bash
         run: |
           set -euo pipefail
@@ -44,6 +44,7 @@ jobs:
           script = script.replace(email_target, "  await page.waitForTimeout(1500);\n" + email_target, 1)
           script = script.replace('[page, ...page.frames()]', '[page]')
           script = script.replace('input[name=\"postalCode\"]', 'input[name=\"billingPostalCode\"]')
+          script = script.replace('/Lähetä alkukysely/i', '/Lähetä aloituskysely/i')
 
           submit_target = "  let submit = page.getByRole('button', { name: /Maksa|Pay|Osta|Purchase/i }).last();"
           disclosure = "  const checkboxes = page.locator('input[type=\"checkbox\"]');\n  if (await checkboxes.count() > 1) {\n    try { await checkboxes.last().check(); } catch {}\n  }\n\n"
