@@ -23,13 +23,14 @@ type ServiceLandingPageProps = {
 export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
   const product = products[productKey];
   const content = servicePageContent[productKey];
+  const isConversionFix = productKey === "websiteFix";
 
   return (
     <>
       <FunnelEvent name="service_view" productId={product.id} />
       <SiteHeader />
-      <main className="pb-56 md:pb-0">
-        <section className="border-b border-border">
+      <main className="pb-24 md:pb-0">
+        <section className={`border-b border-border ${isConversionFix ? "bg-[radial-gradient(circle_at_top_right,rgba(19,91,108,0.10),transparent_38%)]" : ""}`}>
           <SectionContainer className="grid gap-10 py-14 md:grid-cols-[1.15fr_0.85fr] md:items-center md:py-24 lg:gap-16">
             <div className="max-w-[720px]">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">{content.eyebrow}</p>
@@ -39,10 +40,11 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
                 <BuyButton productId={product.id} label={`Osta ${product.name}`} source="hero" />
                 <ButtonLink href="#sisalto" variant="secondary">Katso mitä saat</ButtonLink>
               </div>
+              {isConversionFix ? <p className="mt-4 text-sm leading-6 text-muted">Ei myyntipalaveria ennen ostoa · Ei salasanoja lomakkeella · Yksi koottu korjauskierros</p> : null}
             </div>
 
-            <Card className="p-6 sm:p-8">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand">Kiinteä hinta</p>
+            <Card className={`${isConversionFix ? "border-brand/20 shadow-[0_28px_80px_-38px_rgba(31,36,46,0.35)]" : ""} p-6 sm:p-8`}>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand">{isConversionFix ? "Conversion Fix" : "Kiinteä hinta"}</p>
               <div className="mt-4 flex items-end gap-2">
                 <p className="text-4xl font-extrabold tracking-[-0.04em] text-foreground">{euro.format(product.price)}</p>
                 {product.billing === "month" ? <p className="pb-1 text-sm font-semibold text-muted">/ kk</p> : null}
@@ -52,8 +54,17 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
               ) : (
                 <p className="mt-2 text-sm text-muted">Kertamaksu</p>
               )}
-              <p className="mt-5 border-t border-border pt-5 text-sm leading-6 text-muted">{taxConfig.publicMessage}</p>
-              <BuyButton productId={product.id} className="mt-6" source="pricing_card" />
+
+              {isConversionFix ? (
+                <div className="mt-6 grid grid-cols-3 gap-2 border-y border-border py-5 text-center">
+                  <div><p className="font-extrabold text-brand">72 h</p><p className="mt-1 text-[11px] leading-4 text-muted">toimitus</p></div>
+                  <div><p className="font-extrabold text-brand">8</p><p className="mt-1 text-[11px] leading-4 text-muted">scope-kohtaa</p></div>
+                  <div><p className="font-extrabold text-brand">1</p><p className="mt-1 text-[11px] leading-4 text-muted">korjauskierros</p></div>
+                </div>
+              ) : null}
+
+              <p className={`${isConversionFix ? "mt-5" : "mt-5 border-t border-border pt-5"} text-sm leading-6 text-muted`}>{taxConfig.publicMessage}</p>
+              <BuyButton productId={product.id} label={isConversionFix ? "Osta Conversion Fix" : undefined} className="mt-6" source="pricing_card" />
             </Card>
           </SectionContainer>
         </section>
@@ -63,7 +74,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
             <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
               <div className="max-w-[560px]">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">Selkeä scope</p>
-                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Näet ennen ostamista, mitä palveluun kuuluu.</h2>
+                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">{isConversionFix ? "Mitä 690 € toimitukseen kuuluu." : "Näet ennen ostamista, mitä palveluun kuuluu."}</h2>
                 <p className="mt-4 text-base leading-7 text-muted sm:text-lg">{content.summary}</p>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -133,10 +144,10 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
             <div className="flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
               <div className="max-w-[680px]">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/65 sm:text-sm">Osta ilman myyntipalaveria</p>
-                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Maksa verkossa ja täytä alkukysely.</h2>
-                <p className="mt-4 text-base leading-7 text-white/75">Maksun jälkeen oikea tuotekohtainen alkukysely avautuu automaattisesti. Tilaus, kysely ja admin-näkymä käyttävät samaa tilaustunnistetta.</p>
+                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">{isConversionFix ? "Korjaa näkyvin myyntipullonkaula ensin." : "Maksa verkossa ja täytä alkukysely."}</h2>
+                <p className="mt-4 text-base leading-7 text-white/75">Maksun jälkeen oikea tuotekohtainen alkukysely avautuu automaattisesti. Tilaus ja kysely käyttävät samaa tilaustunnistetta.</p>
               </div>
-              <BuyButton productId={product.id} label="Osta nyt" className="shrink-0" source="final_cta" />
+              <BuyButton productId={product.id} label={isConversionFix ? "Osta Conversion Fix · 690 €" : "Osta nyt"} className="shrink-0" source="final_cta" />
             </div>
           </SectionContainer>
         </section>
