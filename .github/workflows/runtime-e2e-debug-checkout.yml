@@ -1,0 +1,50 @@
+name: Runtime E2E checkout DOM debug
+
+on:
+  push:
+    branches:
+      - qa/runtime-e2e-20260911
+
+permissions:
+  contents: read
+
+jobs:
+  debug-checkout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Install browser runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/virella-e2e-debug
+          cd /tmp/virella-e2e-debug
+          npm init -y >/dev/null 2>&1
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Inspect Stripe Checkout DOM
+        shell: bash
+        env:
+          APP_URL: https://virellahelsinki.com
+        run: |
+          set -euo pipefail
+          cd /tmp/virella-e2e-debug
+          cat > debug.mjs <<'NODE'
+          import { chromium } from 'playwright';
+          const browser = await chromium.launch({ headless: true });
+          const page = await browser.newPage({ locale: 'fi-FI' });
+          try {
+            await page.goto(`${process.env.APP_URL}/verkkosivu-kuntoon`, { waitUntil: 'domcontentloaded' });
+            await page.getByRole('button', { name: /Osta/i }).first().click();
+            await page.waitForURL(/checkout\.stripe\.com\//, { timeout: 45000 });
+            await page.waitForTimeout(1500);
+            console.log(`CHECKOUT_URL=${page.url()}`);
+            console.log('INPUTS=' + JSON.stringify(await page.locator('input').evaluateAll((els) => els.map((e) => ({type:e.type,name:e.getAttribute('name'),autocomplete:e.getAttribute('autocomplete'),placeholder:e.getAttribute('placeholder'),aria:e.getAttribute('aria-label')})))));
+            console.log('BUTTONS=' + JSON.stringify(await page.locator('button').evaluateAll((els) => els.map((e) => (e.innerText || e.getAttribute('aria-label') || '').trim()).filter(Boolean))));
+            console.log('BODY=' + (await page.locator('body').innerText()).slice(0,5000));
+          } finally {
+            await browser.close();
+          }
+          NODE
+          node debug.mjs
