@@ -3,6 +3,7 @@ import type { AnalyticsEventData, AnalyticsEventName } from "@/lib/analytics/eve
 export type { AnalyticsEventName } from "@/lib/analytics/events";
 
 const STORAGE_KEY = "virella_analytics_consent";
+const GA_MEASUREMENT_ID = "G-43VQ8505YL";
 
 type GtagWindow = Window & {
   dataLayer?: unknown[];
@@ -24,6 +25,22 @@ function getGtag() {
     target.dataLayer?.push(args);
   };
   return target.gtag;
+}
+
+export function initializeAnalytics() {
+  if (typeof window === "undefined" || !hasAnalyticsConsent()) return;
+
+  const gtag = getGtag();
+  gtag("js", new Date());
+  gtag("config", GA_MEASUREMENT_ID, { send_page_view: false });
+
+  if (document.getElementById("virella-ga4-script")) return;
+
+  const script = document.createElement("script");
+  script.id = "virella-ga4-script";
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+  document.head.appendChild(script);
 }
 
 function eventNameForGa4(name: AnalyticsEventName) {
