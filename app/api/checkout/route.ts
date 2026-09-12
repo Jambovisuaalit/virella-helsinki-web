@@ -11,6 +11,18 @@ export async function POST(request: Request) {
   }
 
   const origin = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin;
+  const isProduction = process.env.VERCEL_ENV === "production";
+  const stripeKey = process.env.STRIPE_SECRET_KEY?.trim() ?? "";
+  const liveCheckoutEnabled =
+    process.env.LIVE_CHECKOUT_ENABLED === "true" && stripeKey.startsWith("sk_live_");
+
+  // Public production must never send a real customer into Stripe Test Mode.
+  // Live checkout is enabled only after the live Stripe key and webhook gate are both verified.
+  if (isProduction && !liveCheckoutEnabled) {
+    const contactUrl = new URL("/aloita", origin);
+    contactUrl.searchParams.set("product", productId);
+    return NextResponse.redirect(contactUrl, 303);
+  }
 
   try {
     const session = await createCheckoutSession(productKey, origin);
@@ -18,9 +30,9 @@ export async function POST(request: Request) {
     return NextResponse.redirect(session.url, 303);
   } catch (error) {
     console.error("Checkout creation failed", error);
-    return NextResponse.json(
-      { error: "checkout_unavailable", message: "Maksua ei voitu käynnistää. Yritä uudelleen tai ota yhteyttä." },
-      { status: 503 },
-    );
+    const contactUrl = new URL("/aloita", origin);
+    contactUrl.searchParams.set("product", productId);
+    contactUrl.searchParams.set("checkout_error", "1");
+    return NextResponse.redirect(contactUrl, 303);
   }
 }
