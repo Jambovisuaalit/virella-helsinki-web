@@ -20,7 +20,7 @@ jobs:
             -X POST \
             -H 'Origin: https://virellahelsinki.com' \
             -H 'Content-Type: application/json' \
-            --data '{"eventName":"service_view","productId":"verkkosivu-kuntoon","source":"github_actions_oidc_smoke","path":"/qa-analytics-oidc-smoke?secret=must-not-store"}' \
+            --data '{"eventName":"service_view","productId":"verkkosivu-kuntoon","source":"github_actions_oidc_smoke_2","path":"/qa-analytics-oidc-smoke?secret=must-not-store"}' \
             'https://virellahelsinki.com/api/analytics')"
           if [[ "$status" != "204" ]]; then
             echo "Expected 204, got $status"
