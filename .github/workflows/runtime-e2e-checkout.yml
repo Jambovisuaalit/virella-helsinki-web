@@ -11,24 +11,110 @@ permissions:
 jobs:
   checkout:
     runs-on: ubuntu-latest
+    timeout-minutes: 12
     steps:
-      - name: Create Stripe Checkout session through Virella
+      - name: Install browser runner
         shell: bash
-        env:
-          APP_URL: https://virella-helsinki-web.vercel.app
         run: |
           set -euo pipefail
-          curl -sS -D /tmp/headers -o /tmp/body \
-            -X POST \
-            -H 'Content-Type: application/x-www-form-urlencoded' \
-            --data 'productId=verkkosivu-kuntoon' \
-            "$APP_URL/api/checkout"
-          location="$(awk 'BEGIN{IGNORECASE=1} /^location:/ {sub(/^location:[[:space:]]*/, ""); sub(/\r$/, ""); print}' /tmp/headers | tail -n 1)"
-          if [[ -z "$location" || "$location" != https://checkout.stripe.com/* ]]; then
-            echo 'Checkout did not redirect to Stripe.'
-            cat /tmp/headers
-            cat /tmp/body
-            exit 1
-          fi
-          echo 'CHECKOUT_REDIRECT=PASS'
-          echo 'CONVERSION_FIX_SESSION_CREATED=PASS'
+          mkdir -p /tmp/virella-e2e
+          cd /tmp/virella-e2e
+          npm init -y >/dev/null 2>&1
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Purchase Conversion Fix and submit onboarding
+        shell: bash
+        env:
+          APP_URL: https://virellahelsinki.com
+        run: |
+          set -euo pipefail
+          cd /tmp/virella-e2e
+          cat > e2e.mjs <<'NODE'
+          import { chromium } from 'playwright';
+
+          const appUrl = process.env.APP_URL;
+          const browser = await chromium.launch({ headless: true });
+          const page = await browser.newPage({ locale: 'fi-FI' });
+          page.setDefaultTimeout(30000);
+
+          async function firstVisible(contexts, selectors) {
+            for (const context of contexts) {
+              for (const selector of selectors) {
+                const locator = context.locator(selector).first();
+                if (await locator.count()) {
+                  try { if (await locator.isVisible()) return locator; } catch {}
+                }
+              }
+            }
+            return null;
+          }
+
+          async function fillField(selectors, value, required = true) {
+            const locator = await firstVisible([page, ...page.frames()], selectors);
+            if (!locator) {
+              if (required) throw new Error(`Missing field: ${selectors.join(', ')}`);
+              return false;
+            }
+            await locator.fill(value);
+            return true;
+          }
+
+          try {
+            await page.goto(`${appUrl}/verkkosivu-kuntoon`, { waitUntil: 'domcontentloaded' });
+            const landingText = await page.locator('body').innerText();
+            if (!landingText.includes('690') || !landingText.includes('Conversion Fix')) {
+              throw new Error('Conversion Fix 690 EUR landing content missing');
+            }
+
+            await page.getByRole('button', { name: /Osta/i }).first().click();
+            await page.waitForURL(/checkout\.stripe\.com\//, { timeout: 45000 });
+            console.log(`CHECKOUT_REDIRECT=PASS ${page.url()}`);
+
+            await fillField(['input[type="email"]', 'input[name="email"]'], 'e2e.conversion.fix@example.com');
+            const cardChoice = page.getByText(/^(Kortti|Card)$/i).first();
+            if (await cardChoice.count()) {
+              try { if (await cardChoice.isVisible()) await cardChoice.click(); } catch {}
+            }
+
+            const stripeTestCard = '42'.repeat(8);
+            await fillField(['input[name="cardNumber"]', 'input[autocomplete="cc-number"]'], stripeTestCard);
+            await fillField(['input[name="cardExpiry"]', 'input[autocomplete="cc-exp"]'], ['12', '34'].join(''));
+            await fillField(['input[name="cardCvc"]', 'input[autocomplete="cc-csc"]'], ['1', '2', '3'].join(''));
+            await fillField(['input[name="billingName"]', 'input[autocomplete="name"]'], 'Virella E2E', false);
+
+            const country = await firstVisible([page, ...page.frames()], ['select[name="billingCountry"]', 'select[autocomplete="country"]']);
+            if (country) { try { await country.selectOption('FI'); } catch {} }
+            await fillField(['input[name="postalCode"]', 'input[autocomplete="postal-code"]'], '00100', false);
+
+            let submit = page.getByRole('button', { name: /Maksa|Pay|Osta|Purchase/i }).last();
+            if (!(await submit.count())) submit = page.locator('button[type="submit"]').last();
+            await submit.click();
+            await page.waitForURL(/virellahelsinki\.com\/checkout\/success\?session_id=cs_test_/, { timeout: 60000 });
+
+            const successUrl = new URL(page.url());
+            const sessionId = successUrl.searchParams.get('session_id');
+            if (!sessionId?.startsWith('cs_test_')) throw new Error('Missing Stripe test session id');
+            await page.getByText('Maksu vastaanotettu.', { exact: false }).waitFor({ state: 'visible', timeout: 30000 });
+            console.log('STRIPE_PAYMENT_UI=PASS');
+            console.log(`SESSION_ID=${sessionId}`);
+
+            await page.getByRole('link', { name: /Täytä alkukysely/i }).click();
+            await page.waitForURL(/\/alkukysely\?session_id=cs_test_/, { timeout: 30000 });
+            await page.locator('[name="companyName"]').fill('Virella E2E Test');
+            await page.locator('[name="website"]').fill('https://example.com');
+            await page.locator('[name="goal"]').fill('Automated conversion validation.');
+            await page.locator('[name="platform"]').fill('Test');
+            await page.locator('[name="contactPath"]').fill('Test form');
+            await page.locator('[name="averageCustomerValue"]').fill('1000 EUR');
+            await page.locator('[name="priority"]').fill('Automated QA only');
+            await page.getByRole('button', { name: /Lähetä alkukysely/i }).click();
+            await page.waitForURL(/submitted=1/, { timeout: 45000 });
+            await page.getByText('Alkukysely vastaanotettu.', { exact: false }).waitFor({ state: 'visible' });
+            console.log('QUESTIONNAIRE_SUBMIT=PASS');
+            console.log('E2E=PASS');
+          } finally {
+            await browser.close();
+          }
+          NODE
+          node e2e.mjs
