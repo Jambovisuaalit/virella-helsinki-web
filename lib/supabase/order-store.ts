@@ -1,6 +1,15 @@
 import { getVercelOidcToken } from "@vercel/oidc";
 import type { StripeCheckoutSession } from "@/lib/stripe/stripe-api";
 
+export type DeliveryStatus =
+  | "awaiting_onboarding"
+  | "ready"
+  | "in_progress"
+  | "client_review"
+  | "revision"
+  | "completed"
+  | "cancelled";
+
 export type StoredOrder = {
   id: string;
   stripe_session_id: string;
@@ -13,6 +22,9 @@ export type StoredOrder = {
   customer_name: string | null;
   questionnaire_id: string | null;
   questionnaire_status: string;
+  delivery_status: DeliveryStatus;
+  delivery_started_at: string | null;
+  delivery_completed_at: string | null;
   paid_at: string | null;
   created_at: string;
   updated_at: string;
@@ -24,6 +36,16 @@ export type StoredOnboardingSubmission = {
   questionnaire_id: string;
   answers: Record<string, string>;
   submitted_at: string;
+  created_at: string;
+};
+
+export type StoredDeliveryEvent = {
+  id: string;
+  order_id: string;
+  from_status: DeliveryStatus | null;
+  to_status: DeliveryStatus;
+  note: string | null;
+  actor: string;
   created_at: string;
 };
 
@@ -52,7 +74,9 @@ async function orderStoreRequest<T>(payload: Record<string, unknown>) {
   if (!response.ok) {
     const detail = await response.text();
     console.error("Supabase order store edge error", response.status, detail);
-    throw new Error("Supabase order store request failed");
+    const error = new Error("Supabase order store request failed");
+    Object.assign(error, { status: response.status, detail });
+    throw error;
   }
 
   return response.json() as Promise<T>;
@@ -82,6 +106,21 @@ export async function saveOnboardingSubmission(params: {
   return result.order;
 }
 
+export async function transitionDeliveryState(params: {
+  orderId: string;
+  nextStatus: DeliveryStatus;
+  note?: string;
+}) {
+  const result = await orderStoreRequest<{ order: StoredOrder }>({
+    action: "set_delivery_status",
+    orderId: params.orderId,
+    nextStatus: params.nextStatus,
+    note: params.note ?? "",
+  });
+  if (!result.order) throw new Error("Supabase delivery transition returned no order");
+  return result.order;
+}
+
 export async function getOrderByStripeSessionId(stripeSessionId: string) {
   const result = await orderStoreRequest<{ order: StoredOrder | null }>({
     action: "get_order_by_session",
@@ -105,4 +144,12 @@ export async function getOnboardingSubmissionByOrderId(orderId: string) {
     orderId,
   });
   return result.submission;
+}
+
+export async function getDeliveryEventsByOrderId(orderId: string) {
+  const result = await orderStoreRequest<{ events: StoredDeliveryEvent[] }>({
+    action: "get_delivery_events",
+    orderId,
+  });
+  return result.events;
 }
