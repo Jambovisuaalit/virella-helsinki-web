@@ -66,21 +66,27 @@ export async function POST(request: Request) {
       .map((field) => `${field.label}: ${answers[field.name] || "—"}`)
       .join("\n");
 
-    await sendAdminNotification({
-      subject: `Alkukysely vastaanotettu — ${product.name}`,
-      idempotencyKey: `questionnaire-${sessionId}`,
-      text: [
-        "Virella Helsinki — alkukysely vastaanotettu",
-        "",
-        `Tuote: ${product.name}`,
-        `Stripe-session: ${sessionId}`,
-        `Valmistui: ${completedAt}`,
-        "",
-        answerText,
-        "",
-        `Avaa admin-näkymä: ${adminUrl}`,
-      ].join("\n"),
-    });
+    // Notification delivery is secondary. A missing or failing email integration must not turn
+    // an already-persisted onboarding submission into a customer-facing 503 response.
+    try {
+      await sendAdminNotification({
+        subject: `Alkukysely vastaanotettu — ${product.name}`,
+        idempotencyKey: `questionnaire-${sessionId}`,
+        text: [
+          "Virella Helsinki — alkukysely vastaanotettu",
+          "",
+          `Tuote: ${product.name}`,
+          `Stripe-session: ${sessionId}`,
+          `Valmistui: ${completedAt}`,
+          "",
+          answerText,
+          "",
+          `Avaa admin-näkymä: ${adminUrl}`,
+        ].join("\n"),
+      });
+    } catch (notificationError) {
+      console.error("Questionnaire admin notification failed", notificationError);
+    }
 
     const redirectUrl = new URL("/alkukysely", origin);
     redirectUrl.searchParams.set("session_id", sessionId);
