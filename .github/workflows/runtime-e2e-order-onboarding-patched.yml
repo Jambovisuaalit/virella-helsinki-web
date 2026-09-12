@@ -45,6 +45,7 @@ jobs:
           script = script.replace('[page, ...page.frames()]', '[page]')
           script = script.replace('input[name=\"postalCode\"]', 'input[name=\"billingPostalCode\"]')
           script = script.replace('/Lähetä alkukysely/i', '/Lähetä aloituskysely/i')
+          script = script.replace("'Alkukysely vastaanotettu.'", "'Aloituskysely vastaanotettu.'")
 
           submit_target = "  let submit = page.getByRole('button', { name: /Maksa|Pay|Osta|Purchase/i }).last();"
           disclosure = "  const checkboxes = page.locator('input[type=\"checkbox\"]');\n  if (await checkboxes.count() > 1) {\n    try { await checkboxes.last().check(); } catch {}\n  }\n\n"
