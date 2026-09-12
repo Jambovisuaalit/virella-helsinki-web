@@ -13,26 +13,26 @@ type ServicePageContent = {
 
 export const servicePageContent: Record<ProductId, ServicePageContent> = {
   websiteFix: {
-    eyebrow: "Conversion Fix · 690 € · 72 h",
-    title: "Korjataan verkkosivusi tärkeimmät myyntiä estävät kohdat.",
-    lead: "Nykyinen sivusto kuntoon ilman täyttä verkkosivuprojektia. Korjaamme sovitun scopen kiinteällä 690 € kertamaksulla, kun lähtötiedot ja tarvittavat käyttöoikeudet ovat käytettävissä.",
-    summary: "Conversion Fix ei rakenna sivustoa uudelleen. Käymme nykyisen sivun läpi, priorisoimme yhteydenottoa heikentävät kohdat ja korjaamme sovitut konversioesteet. Lopuksi saat ennen/jälkeen-yhteenvedon sekä havainnot mahdollisista seuraavista kaupallisista pullonkauloista.",
-    audienceTitle: "Kenelle Conversion Fix sopii?",
+    eyebrow: "Conversion Fix · 690 € · toimitus 72 h",
+    title: "Sivustosi ei tarvitse aina uusimista. Sen pitää tehdä yhteydenotosta helpompi.",
+    lead: "Conversion Fix korjaa nykyisen verkkosivusi kohdat, jotka vaikeuttavat asiakkaan seuraavaa askelta. Selkeytämme viestin, toimintakehotukset, mobiilikokemuksen, yhteydenottopolun ja tärkeimmät luottamusta rakentavat kohdat kiinteällä 690 € hinnalla — ilman täyttä verkkosivuprojektia.",
+    summary: "Saat konkreettiset muutokset nykyiseen sivuun, et pelkkää auditointiraporttia. Korjaamme sovitut kohdat, tarkistamme lopputuloksen ja toimitamme ennen/jälkeen-yhteenvedon. Jos sivusto vaatii tätä laajemman uudistuksen, se erotetaan tästä työstä eikä lisätöitä tehdä ilman hyväksyntääsi.",
+    audienceTitle: "Conversion Fix sopii, kun sivu on olemassa mutta se ei ohjaa tarpeeksi selkeästi yhteydenottoon.",
     audience: [
-      "Palveluyritykselle, jonka sivusto on jo olemassa mutta yhteydenottopolku on epäselvä tai heikko",
-      "Yrittäjälle, joka haluaa konkreettisen korjauksen ilman pitkää verkkosivuprojektia",
-      "Yritykselle, joka haluaa ensin korjata näkyvän asiakaspolun ja päättää jatkosta vasta havaintojen perusteella",
+      "Asiakas ei ymmärrä heti, mitä tarjoat, kenelle palvelu on tai miksi juuri sinuun kannattaa ottaa yhteyttä",
+      "Yhteydenottopainikkeet, lomake tai mobiilikäyttö tekevät asioinnista turhan vaikeaa",
+      "Haluat korjata nykyisen sivun tärkeimmät ongelmat nopeasti ilman kuukausien verkkosivuprojektia",
     ],
     process: [
-      { title: "Maksa ja täytä aloituskysely", text: "Maksat 690 € verkossa ja annat nykyisen sivuston, tavoitteen sekä tarvittavat lähtötiedot. Salasanoja ei lähetetä lomakkeella." },
-      { title: "Auditointi ja korjaukset", text: "Tarkistamme pääviestin, CTA-polun, mobiilin käytettävyyden, yhteydenottopolun, luottamuselementit ja perustason SEO/metatiedot. Toteutamme scopeen kuuluvat priorisoidut korjaukset." },
-      { title: "Toimitus ja havainnot", text: "Saat ennen/jälkeen-yhteenvedon, yhden kootun korjauskierroksen sekä erillisen listan mahdollisista kaupallisista havainnoista. Jatkotyötä ei tehdä automaattisesti." },
+      { title: "Osta ja anna lähtötiedot", text: "Maksat 690 € verkossa ja täytät lyhyen aloituskyselyn. Tarvitsemme nykyisen sivuston osoitteen, tavoitteen sekä toteutukseen tarvittavat materiaalit tai käyttöoikeudet. Salasanoja ei lähetetä lomakkeella." },
+      { title: "Korjaamme tärkeimmät kitkakohdat", text: "Käymme läpi pääviestin, toimintakehotukset, mobiilikäytön, yhteydenottopolun, luottamusta rakentavat elementit sekä perustason SEO- ja metatiedot. Toteutamme palveluun kuuluvat sovitut korjaukset suoraan nykyiseen sivuun." },
+      { title: "Saat valmiit muutokset ja yhteenvedon", text: "Toimitamme tehdyt korjaukset, ennen/jälkeen-yhteenvedon ja yhden kootun korjauskierroksen. Jos löydämme tämän palvelun ulkopuolelle jäävän suuremman ongelman, kerromme siitä erikseen — mitään lisätyötä ei tehdä automaattisesti." },
     ],
     faq: [
-      { question: "Mitä 690 € sisältää?", answer: "Nykyisen sivuston konversioauditoinnin, etusivun pääviestin ja CTA-polun korjauksen, mobiilin kriittiset korjaukset, yhteydenottopolun tarkistuksen ja korjauksen, palvelun ja luottamuselementtien selkeytyksen, perustason SEO/metatietotarkistuksen, ennen/jälkeen-yhteenvedon sekä yhden kootun korjauskierroksen." },
-      { question: "Mitä Conversion Fix ei sisällä?", answer: "Palvelu ei sisällä kokonaan uutta verkkosivustoa, laajaa brändiuudistusta, CRM-projektia, maksettua mainontaa, jatkuvaa SEO-työtä, rajattomia sivuja tai rajattomia revisioita. Mahdolliset lisätyöt sovitaan erikseen." },
-      { question: "Milloin 72 tuntia alkaa?", answer: "Toimitusaika alkaa, kun maksu, aloituskysely ja toteutukseen tarvittavat käyttöoikeudet tai materiaalit ovat käytettävissä. Asiakkaasta tai kolmannesta osapuolesta johtuva odotus ei kuluta toimitusaikaa." },
-      { question: "Tarvitseeko minun ostaa jatkopalvelua?", answer: "Ei. Saat 690 € toimituksen itsenäisenä kokonaisuutena. Jos työn aikana löytyy suurempi mitattava myynnin tai käsittelyn pullonkaula, siitä voidaan tehdä erillinen ehdotus vain erillisellä hyväksynnällä." },
+      { question: "Mitä 690 € sisältää?", answer: "Nykyisen sivun läpikäynnin ja sovitut korjaukset kahdeksalla osa-alueella: pääviesti, toimintakehotukset, mobiilikäyttö, yhteydenottopolku, luottamusta rakentavat elementit, perustason SEO ja metatiedot, ennen/jälkeen-yhteenveto sekä yksi koottu korjauskierros." },
+      { question: "Rakennatteko tällä hinnalla kokonaan uuden verkkosivun?", answer: "Emme. Conversion Fix on tarkoitettu olemassa olevan sivuston tärkeimpien myyntiä ja yhteydenottoa heikentävien kohtien korjaamiseen. Uusi sivusto, laaja brändiuudistus, CRM, maksettu mainonta, jatkuva SEO tai laajat integraatiot sovitaan erikseen." },
+      { question: "Milloin 72 tunnin toimitusaika alkaa?", answer: "72 tuntia alkaa, kun maksu, aloituskysely ja toteutukseen tarvittavat materiaalit tai käyttöoikeudet ovat käytettävissä. Asiakkaasta tai kolmannesta osapuolesta johtuva odotus ei kuluta toimitusaikaa." },
+      { question: "Tarvitseeko minun ostaa jatkopalvelua?", answer: "Ei. Conversion Fix on itsenäinen 690 € kertatoimitus. Jos työn aikana löytyy suurempi ongelma, saat siitä erillisen havainnon ja mahdollisen ehdotuksen. Jatkotyö tehdään vain, jos hyväksyt sen erikseen." },
     ],
   },
   instagram: {
