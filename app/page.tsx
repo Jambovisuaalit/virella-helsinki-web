@@ -20,7 +20,7 @@ const conversionChecks = [
 
 const promises = [
   ["690 €", "Kiinteä kertamaksu"],
-  ["72 h", "Toimitusaika lähtötietojen jälkeen"],
+  ["72 h", "Kun lähtötiedot ovat käytettävissä"],
   ["1 kierros", "Koottu korjauskierros mukana"],
   ["Ei palaveripakkoa", "Maksa verkossa ja aloita kyselyllä"],
 ] as const;
@@ -104,8 +104,8 @@ export default function Home() {
           <SectionContainer className="py-16 md:py-24">
             <div className="max-w-[760px]">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">Palvelut</p>
-              <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Yksi pääoffer. Muut palvelut tarpeen mukaan.</h2>
-              <p className="mt-4 text-base leading-7 text-muted sm:text-lg">Conversion Fix on nopein tapa aloittaa. Sisältö- ja landing-palvelut ovat erillisiä, valmiiksi rajattuja toimituksia.</p>
+              <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Yksi selkeä tapa aloittaa.</h2>
+              <p className="mt-4 text-base leading-7 text-muted sm:text-lg">Conversion Fix korjaa nykyisen sivuston näkyvimmät myyntiesteet. Sisältö- ja landing-palvelut ovat erillisiä, valmiiksi rajattuja toimituksia.</p>
             </div>
 
             <Card className="mt-10 grid overflow-hidden border-brand/20 bg-background shadow-none lg:grid-cols-[1.25fr_0.75fr]">
@@ -158,7 +158,7 @@ export default function Home() {
               {[
                 ["01", "Valitse palvelu", "Näet hinnan, rajauksen ja toimituksen ennen päätöstä."],
                 ["02", "Maksa verkossa", "Stripe Checkout vahvistaa maksun ja liittää sen oikeaan palveluun."],
-                ["03", "Täytä alkukysely", "Virella saa toteutukseen tarvittavat tiedot ilman erillistä myyntipalaveria."],
+                ["03", "Täytä aloituskysely", "Virella saa toteutukseen tarvittavat tiedot ilman erillistä myyntipalaveria."],
               ].map(([number, title, text]) => (
                 <li key={number}>
                   <Card className="h-full p-6 shadow-none">
@@ -176,11 +176,11 @@ export default function Home() {
           <SectionContainer className="py-16 md:py-20">
             <div className="flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
               <div className="max-w-[720px]">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/65 sm:text-sm">Aloita näkyvimmästä pullonkaulasta</p>
-                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Conversion Fix · 690 € · 72 h.</h2>
-                <p className="mt-4 text-base leading-7 text-white/75">Korjataan ensin se, minkä asiakas näkee ja kokee ennen yhteydenottoa.</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/65 sm:text-sm">Conversion Fix · 690 € · 72 h</p>
+                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">Korjaa ensin se, mikä estää asiakasta ottamasta yhteyttä.</h2>
+                <p className="mt-4 text-base leading-7 text-white/75">Käymme läpi nykyisen verkkosivusi tärkeimmät myyntiesteet ja korjaamme sovitut kohdat ilman täyttä verkkosivuprojektia.</p>
               </div>
-              <ButtonLink href="/verkkosivu-kuntoon" className="shrink-0 border-white/20 bg-white text-brand hover:bg-cloud" variant="secondary">Katso Conversion Fix</ButtonLink>
+              <ButtonLink href="/verkkosivu-kuntoon" className="shrink-0 border-white/20 bg-white text-brand hover:bg-cloud" variant="secondary">Osta Conversion Fix</ButtonLink>
             </div>
           </SectionContainer>
         </section>
