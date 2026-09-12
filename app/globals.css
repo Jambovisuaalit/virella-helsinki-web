@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fcfaf8;
-  --foreground: #1f242e;
+  --background: #f7f6f2;
+  --foreground: #172126;
   --surface: #ffffff;
-  --cloud: #edf0f3;
-  --mist: #e8ebee;
-  --muted: #676f7e;
-  --border: #dae0e7;
-  --brand: #135b6c;
-  --brand-strong: #0e4654;
+  --cloud: #eef2f0;
+  --mist: #e5ebe8;
+  --muted: #66716f;
+  --border: #dce4e0;
+  --brand: #0c5a5c;
+  --brand-strong: #084548;
   --brand-foreground: #ffffff;
-  --accent: #ee522b;
-  --action: #cc3e1b;
-  --success: #21c45d;
-  --focus: #135b6c;
+  --accent: #e8613b;
+  --action: #d84a24;
+  --success: #21a85b;
+  --focus: #0c5a5c;
 }
 
 @theme inline {
@@ -40,15 +40,29 @@
 
 html {
   scroll-behavior: smooth;
+  background: var(--background);
 }
 
 body {
   margin: 0;
-  background: var(--background);
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 8% -4%, rgba(12, 90, 92, 0.05), transparent 30rem),
+    var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 button,
@@ -56,6 +70,11 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 a {
@@ -69,8 +88,22 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid var(--focus);
+  outline: 3px solid color-mix(in srgb, var(--focus) 78%, white);
   outline-offset: 3px;
+}
+
+.premium-grid {
+  background-image:
+    linear-gradient(rgba(12, 90, 92, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(12, 90, 92, 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 82%);
+}
+
+.soft-ring {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.75) inset,
+    0 24px 80px -44px rgba(23, 33, 38, 0.42);
 }
 
 @media (prefers-reduced-motion: reduce) {
