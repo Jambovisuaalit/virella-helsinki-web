@@ -14,6 +14,9 @@ export type AnalyticsEventName = (typeof analyticsEventNames)[number];
 export type AnalyticsEventData = {
   productId?: string;
   source?: string;
+  value?: number;
+  currency?: string;
+  transactionId?: string;
 };
 
 export function isAnalyticsEventName(value: unknown): value is AnalyticsEventName {

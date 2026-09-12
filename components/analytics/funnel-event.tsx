@@ -7,12 +7,22 @@ type FunnelEventProps = {
   name: AnalyticsEventName;
   productId?: string;
   source?: string;
+  value?: number;
+  currency?: string;
+  transactionId?: string;
 };
 
-export function FunnelEvent({ name, productId, source }: FunnelEventProps) {
+export function FunnelEvent({
+  name,
+  productId,
+  source,
+  value,
+  currency,
+  transactionId,
+}: FunnelEventProps) {
   useEffect(() => {
-    trackAnalyticsEvent(name, { productId, source });
-  }, [name, productId, source]);
+    trackAnalyticsEvent(name, { productId, source, value, currency, transactionId });
+  }, [name, productId, source, value, currency, transactionId]);
 
   return null;
 }

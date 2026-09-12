@@ -26,74 +26,43 @@ export type StoredOnboardingSubmission = {
   created_at: string;
 };
 
-function getSupabaseConfig() {
-  const rawUrl = process.env.SUPABASE_URL;
-  const rawServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!rawUrl || !rawServiceRoleKey) throw new Error("Supabase server configuration is missing");
+const ORDER_STORE_FUNCTION = "virella-order-store";
 
-  return {
-    url: rawUrl.trim().replace(/\/$/, ""),
-    serviceRoleKey: rawServiceRoleKey.trim(),
-  };
+function getOrderStoreConfig() {
+  const supabaseUrl = process.env.SUPABASE_URL?.trim().replace(/\/$/, "");
+  const oidcToken = process.env.VERCEL_OIDC_TOKEN?.trim();
+  if (!supabaseUrl || !oidcToken) throw new Error("Supabase order store OIDC configuration is missing");
+  return { supabaseUrl, oidcToken };
 }
 
-function getAuthHeaders(key: string): Record<string, string> {
-  const headers: Record<string, string> = { apikey: key };
-  if (!key.startsWith("sb_secret_")) {
-    headers.Authorization = `Bearer ${key}`;
-  }
-  return headers;
-}
-
-async function supabaseRequest<T>(path: string, init?: RequestInit) {
-  const { url, serviceRoleKey } = getSupabaseConfig();
-  const response = await fetch(`${url}/rest/v1/${path}`, {
-    ...init,
+async function orderStoreRequest<T>(payload: Record<string, unknown>) {
+  const { supabaseUrl, oidcToken } = getOrderStoreConfig();
+  const response = await fetch(`${supabaseUrl}/functions/v1/${ORDER_STORE_FUNCTION}`, {
+    method: "POST",
     headers: {
-      ...getAuthHeaders(serviceRoleKey),
+      Authorization: `Bearer ${oidcToken}`,
       "Content-Type": "application/json",
-      ...(init?.headers ?? {}),
     },
     cache: "no-store",
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
     const detail = await response.text();
-    console.error("Supabase order store error", response.status, detail);
-    throw new Error("Supabase request failed");
+    console.error("Supabase order store edge error", response.status, detail);
+    throw new Error("Supabase order store request failed");
   }
 
-  if (response.status === 204) return undefined as T;
   return response.json() as Promise<T>;
 }
 
 export async function upsertPaidOrder(session: StripeCheckoutSession) {
-  const metadata = session.metadata ?? {};
-  const rows = await supabaseRequest<StoredOrder[]>(
-    "orders?on_conflict=stripe_session_id&select=*",
-    {
-      method: "POST",
-      headers: { Prefer: "resolution=merge-duplicates,return=representation" },
-      body: JSON.stringify({
-        stripe_session_id: session.id,
-        product_id: metadata.productId,
-        product_key: metadata.productKey,
-        amount_total: session.amount_total,
-        currency: session.currency,
-        payment_status: session.payment_status,
-        customer_email: session.customer_details?.email ?? null,
-        customer_name: session.customer_details?.name ?? null,
-        questionnaire_id: metadata.questionnaireId ?? null,
-        questionnaire_status: metadata.questionnaireStatus ?? "pending",
-        paid_at: session.payment_status === "paid" ? new Date().toISOString() : null,
-        updated_at: new Date().toISOString(),
-      }),
-    },
-  );
-
-  const order = rows[0];
-  if (!order) throw new Error("Supabase order upsert returned no row");
-  return order;
+  const result = await orderStoreRequest<{ order: StoredOrder }>({
+    action: "upsert_paid_order",
+    session,
+  });
+  if (!result.order) throw new Error("Supabase order upsert returned no row");
+  return result.order;
 }
 
 export async function saveOnboardingSubmission(params: {
@@ -101,53 +70,37 @@ export async function saveOnboardingSubmission(params: {
   questionnaireId: string;
   answers: Record<string, string>;
 }) {
-  const orders = await supabaseRequest<StoredOrder[]>(
-    `orders?stripe_session_id=eq.${encodeURIComponent(params.stripeSessionId)}&select=*&limit=1`,
-  );
-  const order = orders[0];
-  if (!order) throw new Error("Supabase order not found for onboarding submission");
-
-  await supabaseRequest(
-    "onboarding_submissions?on_conflict=order_id,questionnaire_id",
-    {
-      method: "POST",
-      headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
-      body: JSON.stringify({
-        order_id: order.id,
-        questionnaire_id: params.questionnaireId,
-        answers: params.answers,
-        submitted_at: new Date().toISOString(),
-      }),
-    },
-  );
-
-  await supabaseRequest(`orders?id=eq.${encodeURIComponent(order.id)}`, {
-    method: "PATCH",
-    headers: { Prefer: "return=minimal" },
-    body: JSON.stringify({
-      questionnaire_status: "completed",
-      updated_at: new Date().toISOString(),
-    }),
+  const result = await orderStoreRequest<{ order: StoredOrder }>({
+    action: "save_onboarding_submission",
+    stripeSessionId: params.stripeSessionId,
+    questionnaireId: params.questionnaireId,
+    answers: params.answers,
   });
-
-  return order;
+  if (!result.order) throw new Error("Supabase onboarding save returned no order");
+  return result.order;
 }
 
 export async function getOrderByStripeSessionId(stripeSessionId: string) {
-  const rows = await supabaseRequest<StoredOrder[]>(
-    `orders?stripe_session_id=eq.${encodeURIComponent(stripeSessionId)}&select=*&limit=1`,
-  );
-  return rows[0] ?? null;
+  const result = await orderStoreRequest<{ order: StoredOrder | null }>({
+    action: "get_order_by_session",
+    stripeSessionId,
+  });
+  return result.order;
 }
 
 export async function listOrders(limit = 50) {
   const safeLimit = Math.min(Math.max(Math.trunc(limit), 1), 100);
-  return supabaseRequest<StoredOrder[]>(`orders?select=*&order=created_at.desc&limit=${safeLimit}`);
+  const result = await orderStoreRequest<{ orders: StoredOrder[] }>({
+    action: "list_orders",
+    limit: safeLimit,
+  });
+  return result.orders;
 }
 
 export async function getOnboardingSubmissionByOrderId(orderId: string) {
-  const rows = await supabaseRequest<StoredOnboardingSubmission[]>(
-    `onboarding_submissions?order_id=eq.${encodeURIComponent(orderId)}&select=*&order=submitted_at.desc&limit=1`,
-  );
-  return rows[0] ?? null;
+  const result = await orderStoreRequest<{ submission: StoredOnboardingSubmission | null }>({
+    action: "get_submission_by_order",
+    orderId,
+  });
+  return result.submission;
 }

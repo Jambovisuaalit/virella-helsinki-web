@@ -29,6 +29,8 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
   let productName = "Virella-palvelu";
   let productId: string | undefined;
   let paid = false;
+  let purchaseValue: number | undefined;
+  let purchaseCurrency: string | undefined;
 
   if (sessionId) {
     try {
@@ -37,6 +39,8 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
       const productKey = productId ? getProductKeyById(productId) : undefined;
       if (productKey) productName = products[productKey].name;
       paid = session.payment_status === "paid";
+      if (paid && typeof session.amount_total === "number") purchaseValue = session.amount_total / 100;
+      if (paid && session.currency) purchaseCurrency = session.currency.toUpperCase();
     } catch (error) {
       console.error("Checkout success lookup failed", error);
     }
@@ -44,7 +48,15 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
 
   return (
     <>
-      {paid && productId ? <FunnelEvent name="checkout_success" productId={productId} /> : null}
+      {paid && productId && sessionId ? (
+        <FunnelEvent
+          name="checkout_success"
+          productId={productId}
+          value={purchaseValue}
+          currency={purchaseCurrency}
+          transactionId={sessionId}
+        />
+      ) : null}
       <SiteHeader />
       <main>
         <SectionContainer className="py-16 md:py-24">
