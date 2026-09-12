@@ -1,0 +1,55 @@
+name: Runtime E2E order onboarding patched
+
+on:
+  push:
+    branches:
+      - qa/runtime-e2e-20260911
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install browser runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/virella-e2e-patched
+          cd /tmp/virella-e2e-patched
+          npm init -y >/dev/null 2>&1
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Extract existing QA script and add Stripe render wait
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          src = Path('.github/workflows/runtime-e2e-checkout.yml').read_text()
+          marker = "cat > e2e.mjs <<'NODE'\n"
+          start = src.index(marker) + len(marker)
+          end = src.index('\n          NODE', start)
+          lines = src[start:end].splitlines()
+          script = '\n'.join(line[10:] if line.startswith('          ') else line for line in lines) + '\n'
+          target = "  await fillField(['input[type=\"email\"]', 'input[name=\"email\"]'], 'e2e.conversion.fix@example.com');"
+          replacement = "  await page.waitForTimeout(1500);\n" + target
+          if target not in script:
+              raise SystemExit('email fill target not found')
+          script = script.replace(target, replacement, 1)
+          Path('/tmp/virella-e2e-patched/e2e.mjs').write_text(script)
+          PY
+
+      - name: Run order onboarding gate
+        shell: bash
+        env:
+          APP_URL: https://virellahelsinki.com
+        run: |
+          set -euo pipefail
+          cd /tmp/virella-e2e-patched
+          node e2e.mjs
