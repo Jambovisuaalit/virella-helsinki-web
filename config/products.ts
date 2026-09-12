@@ -3,7 +3,7 @@ import type { Product } from "@/types/product";
 export const products = {
   websiteFix: {
     id: "verkkosivu-kuntoon",
-    name: "Verkkosivu kuntoon 72 h",
+    name: "Conversion Fix",
     price: 690,
     billing: "one_time",
     features: [
