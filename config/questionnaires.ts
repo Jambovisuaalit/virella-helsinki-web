@@ -22,8 +22,8 @@ export const questionnaires = {
     id: "verkkosivu-kuntoon-alkukysely",
     productKey: "websiteFix",
     productId: products.websiteFix.id,
-    title: "Verkkosivu kuntoon 72 h -aloituskysely",
-    description: "Anna tarvittavat lähtötiedot nykyisestä sivustosta ja tärkeimmästä yhteydenottotavoitteesta. Älä lähetä salasanoja lomakkeella.",
+    title: "Conversion Fix -aloituskysely",
+    description: "Anna tarvittavat lähtötiedot nykyisestä sivustosta, tärkeimmästä yhteydenottotavoitteesta ja näkyvimmästä ongelmasta. Älä lähetä salasanoja lomakkeella.",
     fields: [
       { name: "companyName", label: "Yrityksen nimi", type: "text", required: true },
       { name: "website", label: "Nykyinen verkkosivusto", type: "url", required: true, placeholder: "https://" },
