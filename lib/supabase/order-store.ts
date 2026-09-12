@@ -1,3 +1,4 @@
+import { getVercelOidcToken } from "@vercel/oidc";
 import type { StripeCheckoutSession } from "@/lib/stripe/stripe-api";
 
 export type StoredOrder = {
@@ -28,16 +29,17 @@ export type StoredOnboardingSubmission = {
 
 const ORDER_STORE_FUNCTION = "virella-order-store";
 
-function getOrderStoreConfig() {
+function getOrderStoreUrl() {
   const supabaseUrl = process.env.SUPABASE_URL?.trim().replace(/\/$/, "");
-  const oidcToken = process.env.VERCEL_OIDC_TOKEN?.trim();
-  if (!supabaseUrl || !oidcToken) throw new Error("Supabase order store OIDC configuration is missing");
-  return { supabaseUrl, oidcToken };
+  if (!supabaseUrl) throw new Error("Supabase order store configuration is missing");
+  return `${supabaseUrl}/functions/v1/${ORDER_STORE_FUNCTION}`;
 }
 
 async function orderStoreRequest<T>(payload: Record<string, unknown>) {
-  const { supabaseUrl, oidcToken } = getOrderStoreConfig();
-  const response = await fetch(`${supabaseUrl}/functions/v1/${ORDER_STORE_FUNCTION}`, {
+  const oidcToken = await getVercelOidcToken();
+  if (!oidcToken) throw new Error("Vercel OIDC token is unavailable for order store");
+
+  const response = await fetch(getOrderStoreUrl(), {
     method: "POST",
     headers: {
       Authorization: `Bearer ${oidcToken}`,
