@@ -10,7 +10,7 @@ const euro = new Intl.NumberFormat("fi-FI", {
 const standardProductOrder: ProductId[] = ["instagram", "linkedin", "landingPageSeo"];
 
 function shortLabel(productKey: ProductId) {
-  if (productKey === "websiteFix") return "Verkkosivu kuntoon";
+  if (productKey === "websiteFix") return "Conversion Fix";
   if (productKey === "landingPageSeo") return "Landing + SEO";
   return productKey === "instagram" ? "Instagram" : "LinkedIn";
 }
