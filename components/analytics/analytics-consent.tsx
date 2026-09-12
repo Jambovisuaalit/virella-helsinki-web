@@ -55,17 +55,22 @@ export function AnalyticsConsent({ enabled }: { enabled: boolean }) {
   }
 
   return (
-    <div className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-2xl rounded-2xl border border-border bg-surface p-5 shadow-[0_24px_80px_-30px_rgba(31,36,46,0.45)] sm:inset-x-6 sm:bottom-6 sm:p-6" role="dialog" aria-label="Analytiikka-asetukset">
-      <p className="font-extrabold text-foreground">Analytiikka-asetukset</p>
-      <p className="mt-2 text-sm leading-6 text-muted">
-        Välttämättömät toiminnot ovat aina käytössä. Google Analytics käynnistyy vain, jos hyväksyt analytiikan. Lue lisää {" "}
-        <Link href="/tietosuoja" className="font-semibold text-brand underline underline-offset-4">tietosuojasta</Link>.
-      </p>
+    <div className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-xl rounded-[1.6rem] border border-white/80 bg-background/94 p-4 shadow-[0_30px_90px_-34px_rgba(23,33,38,0.55)] backdrop-blur-xl sm:inset-x-6 sm:bottom-6 sm:p-5" role="dialog" aria-label="Analytiikka-asetukset">
+      <div className="flex items-start gap-3">
+        <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-accent shadow-[0_0_0_5px_rgba(232,97,59,0.10)]" aria-hidden="true" />
+        <div>
+          <p className="font-extrabold tracking-[-0.015em] text-foreground">Analytiikka-asetukset</p>
+          <p className="mt-1.5 text-sm leading-6 text-muted">
+            Välttämättömät toiminnot ovat aina käytössä. Google Analytics käynnistyy vain, jos hyväksyt analytiikan. Lue lisää {" "}
+            <Link href="/tietosuoja" className="font-bold text-brand underline decoration-brand/25 underline-offset-4">tietosuojasta</Link>.
+          </p>
+        </div>
+      </div>
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
-        <button type="button" onClick={() => choose("denied")} className="min-h-12 rounded-xl border border-border bg-background px-4 py-3 text-sm font-bold text-foreground transition hover:bg-cloud">
+        <button type="button" onClick={() => choose("denied")} className="min-h-11 rounded-full border border-border/90 bg-surface px-4 py-2.5 text-sm font-bold text-foreground transition hover:border-brand/20 hover:bg-white">
           Vain välttämättömät
         </button>
-        <button type="button" onClick={() => choose("granted")} className="min-h-12 rounded-xl bg-action px-4 py-3 text-sm font-bold text-white transition hover:brightness-90">
+        <button type="button" onClick={() => choose("granted")} className="min-h-11 rounded-full bg-action px-4 py-2.5 text-sm font-bold text-white shadow-[0_10px_26px_-16px_rgba(216,74,36,0.7)] transition hover:brightness-[0.96]">
           Hyväksy analytiikka
         </button>
       </div>
