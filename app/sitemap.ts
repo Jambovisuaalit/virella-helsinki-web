@@ -37,7 +37,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${seoConfig.siteUrl}/verkkosivu-kuntoon`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
+    },
+    {
+      url: `${seoConfig.siteUrl}/tietosuoja`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.2,
     },
   ];
 }
