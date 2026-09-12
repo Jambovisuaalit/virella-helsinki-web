@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { ServiceLandingPage } from "@/components/marketing/service-landing-page";
 
 export const metadata: Metadata = {
-  title: "Verkkosivu kuntoon 72 h",
-  description: "Nykyisen verkkosivun tärkeimmät myyntiä estävät kohdat kuntoon kiinteällä 690 € kertamaksulla ilman pitkää projektia tai myyntipalaveria.",
+  title: "Conversion Fix — 690 €",
+  description: "Conversion Fix korjaa nykyisen verkkosivun tärkeimmät myyntiä estävät kohdat kiinteällä 690 € kertamaksulla.",
   alternates: {
     canonical: "/verkkosivu-kuntoon",
   },
