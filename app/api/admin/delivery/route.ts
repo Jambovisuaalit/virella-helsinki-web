@@ -40,6 +40,11 @@ export async function POST(request: Request) {
     return NextResponse.redirect(resultUrl, 303);
   }
 
+  if (nextStatus === "cancelled" && !note) {
+    resultUrl.searchParams.set("delivery_error", "cancel_note_required");
+    return NextResponse.redirect(resultUrl, 303);
+  }
+
   try {
     await transitionDeliveryState({ orderId, nextStatus, note });
     resultUrl.searchParams.set("delivery", "updated");
