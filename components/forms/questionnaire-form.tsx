@@ -16,12 +16,12 @@ export function QuestionnaireForm({ questionnaire, sessionId }: QuestionnaireFor
   return (
     <div>
       <div className="mb-8 rounded-xl border border-border bg-cloud p-5">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Tilaus ja alkukysely</p>
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Tilaus ja aloitus</p>
         <p className="mt-2 font-bold">{product.name}</p>
         <p className="mt-1 text-sm leading-6 text-muted">
           {hasOrder
-            ? `Maksettu tilaus: ${sessionId}`
-            : "Esikatselutila. Lomakkeen voi lähettää vasta maksetun tilauksen jälkeen."}
+            ? "Maksu on vahvistettu. Vastaukset liitetään automaattisesti tähän tilaukseen."
+            : "Voit tutustua kysymyksiin nyt. Lomakkeen lähetys avautuu maksetun tilauksen jälkeen."}
         </p>
       </div>
 
@@ -45,11 +45,11 @@ export function QuestionnaireForm({ questionnaire, sessionId }: QuestionnaireFor
         ))}
 
         <p className="rounded-xl border border-border bg-background p-4 text-sm leading-6 text-muted">
-          Lähetys tarkistaa palvelimelta, että maksu, tuote ja alkukysely kuuluvat samaan Stripe-tilaukseen.
+          Älä lähetä salasanoja tai muita kirjautumistietoja lomakkeella. Tarvittavat käyttöoikeudet voidaan sopia erikseen turvallisesti.
         </p>
 
-        <button type="submit" disabled={!hasOrder} className="min-h-12 w-full rounded-xl bg-action px-5 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:bg-mist disabled:text-muted sm:w-auto">
-          {hasOrder ? "Lähetä alkukysely" : "Maksa palvelu ennen lähettämistä"}
+        <button type="submit" disabled={!hasOrder} className="min-h-12 w-full rounded-xl bg-action px-5 py-3 text-sm font-bold text-white transition hover:brightness-90 disabled:cursor-not-allowed disabled:bg-mist disabled:text-muted disabled:hover:brightness-100 sm:w-auto">
+          {hasOrder ? "Lähetä aloituskysely" : "Maksa palvelu ennen lähettämistä"}
         </button>
       </form>
     </div>
