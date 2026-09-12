@@ -1,10 +1,12 @@
 export const primaryNavigation = [
-  { label: "Palvelumalli", href: "/#services" },
-  { label: "Design", href: "/#foundation" },
+  { label: "Conversion Fix", href: "/verkkosivu-kuntoon" },
+  { label: "Palvelut", href: "/#services" },
+  { label: "Näin toimii", href: "/#how" },
 ] as const;
 
 export const plannedRoutes = [
   "/",
+  "/verkkosivu-kuntoon",
   "/palvelut",
   "/instagram",
   "/linkedin",
