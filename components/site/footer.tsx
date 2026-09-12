@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SectionContainer } from "@/components/layout/section-container";
 import { brandConfig } from "@/config/brand";
 import { businessConfig } from "@/config/business";
@@ -9,6 +10,11 @@ export function SiteFooter() {
         <div>
           <p className="font-semibold text-white">{brandConfig.name}</p>
           <p className="mt-2">{businessConfig.legalName} · Y-tunnus {businessConfig.businessId} · {businessConfig.city}</p>
+          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+            <Link href="/tietosuoja" className="font-semibold text-white underline decoration-white/30 underline-offset-4 transition hover:decoration-white">
+              Tietosuoja ja evästeet
+            </Link>
+          </div>
         </div>
         <a
           href={`mailto:${businessConfig.email}`}
