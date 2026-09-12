@@ -31,3 +31,4 @@ jobs:
             exit 1
           fi
           echo 'CHECKOUT_REDIRECT=PASS'
+          echo 'CONVERSION_FIX_SESSION_CREATED=PASS'
