@@ -25,6 +25,7 @@ type QuestionnairePageProps = {
 };
 
 const serviceLinks = [
+  ["Conversion Fix", "/verkkosivu-kuntoon"],
   ["Instagram", "/instagram"],
   ["LinkedIn", "/linkedin"],
   ["Landing Page + SEO", "/landing-page-seo"],
@@ -64,12 +65,13 @@ export default async function QuestionnairePage({ searchParams }: QuestionnaireP
       ) : null}
       <SiteHeader />
       <main>
-        <SectionContainer className="py-16 md:py-24">
+        <SectionContainer className="py-14 md:py-24">
           {submitted && questionnaire ? (
             <div className="mx-auto max-w-[720px] rounded-[20px] border border-border bg-surface p-6 shadow-[0_8px_40px_-12px_rgba(31,36,46,0.12)] sm:p-10">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand">Valmis</p>
-              <h1 className="mt-4 text-4xl font-extrabold tracking-[-0.04em]">Alkukysely vastaanotettu.</h1>
-              <p className="mt-5 text-base leading-7 text-muted">{questionnaire.title} on liitetty maksettuun tilaukseen. Tiedot näkyvät admin-sivulla samalla tilaustunnisteella.</p>
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand text-lg font-extrabold text-white" aria-hidden="true">✓</div>
+              <p className="mt-6 text-xs font-bold uppercase tracking-[0.18em] text-brand">Valmis</p>
+              <h1 className="mt-4 text-4xl font-extrabold tracking-[-0.04em]">Aloituskysely vastaanotettu.</h1>
+              <p className="mt-5 text-base leading-7 text-muted">Kiitos. {questionnaire.title} on tallennettu tilauksellesi ja tarvittavat lähtötiedot ovat nyt Virellalla.</p>
               <Link href="/" className="mt-8 inline-flex min-h-12 items-center justify-center rounded-xl border border-border bg-background px-5 py-3 text-sm font-bold text-brand">Takaisin etusivulle</Link>
             </div>
           ) : questionnaire ? (
@@ -78,11 +80,11 @@ export default async function QuestionnairePage({ searchParams }: QuestionnaireP
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">Aloituskysely</p>
                 <h1 className="mt-4 text-4xl font-extrabold leading-[1.05] tracking-[-0.04em] sm:text-5xl">{questionnaire.title}</h1>
                 <p className="mt-5 text-base leading-7 text-muted sm:text-lg">{questionnaire.description}</p>
-                <p className="mt-6 rounded-xl border border-border bg-cloud p-4 text-sm leading-6 text-muted">
+                <div className="mt-6 rounded-xl border border-border bg-cloud p-4 text-sm leading-6 text-muted">
                   {orderValid
-                    ? "Maksu on vahvistettu. Lomake on sidottu tähän tilaukseen eikä tuotetta voi vaihtaa lähetyksen yhteydessä."
-                    : "Esikatselutila. Maksun jälkeen palaat tähän samaan tuotekohtaiseen kyselyyn maksetun tilaustunnisteen kanssa."}
-                </p>
+                    ? "Maksu on vahvistettu. Täytä alla olevat lähtötiedot, jotta työ voidaan aloittaa mahdollisimman suoraan."
+                    : "Aloituskysely tallennetaan vasta maksetun tilauksen yhteydessä. Voit tutustua kysymyksiin ennen ostoa."}
+                </div>
               </div>
 
               <div className="rounded-[20px] border border-border bg-surface p-5 shadow-[0_8px_40px_-12px_rgba(31,36,46,0.12)] sm:p-8">
@@ -90,13 +92,13 @@ export default async function QuestionnairePage({ searchParams }: QuestionnaireP
               </div>
             </div>
           ) : (
-            <div className="mx-auto max-w-[720px]">
+            <div className="mx-auto max-w-[760px]">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">Aloituskysely</p>
               <h1 className="mt-4 text-4xl font-extrabold leading-[1.05] tracking-[-0.04em] sm:text-5xl">Valitse palvelu ennen aloituskyselyä.</h1>
-              <p className="mt-5 text-base leading-7 text-muted sm:text-lg">Aloituskysely on aina sidottu yhteen Virella-palveluun.</p>
-              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              <p className="mt-5 text-base leading-7 text-muted sm:text-lg">Jokaisella palvelulla on oma lyhyt aloituskysely, jotta lähtötiedot pysyvät selkeinä.</p>
+              <div className="mt-8 grid gap-3 sm:grid-cols-2">
                 {serviceLinks.map(([label, href]) => (
-                  <Link key={href} href={href} className="rounded-xl border border-border bg-surface p-4 font-bold text-brand">{label}</Link>
+                  <Link key={href} href={href} className="rounded-xl border border-border bg-surface p-4 font-bold text-brand transition hover:border-brand/30 hover:bg-cloud">{label}</Link>
                 ))}
               </div>
             </div>
