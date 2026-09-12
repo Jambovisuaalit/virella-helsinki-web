@@ -13,24 +13,24 @@ type ServicePageContent = {
 
 export const servicePageContent: Record<ProductId, ServicePageContent> = {
   websiteFix: {
-    eyebrow: "Verkkosivu kuntoon 72 h",
+    eyebrow: "Conversion Fix · 690 € · 72 h",
     title: "Korjataan verkkosivusi tärkeimmät myyntiä estävät kohdat.",
-    lead: "Kiinteä 690 € kertamaksu. Saat nykyiseen sivustoosi rajatut, konkreettiset korjaukset ilman pitkää projektia tai myyntipalaveria. 72 tunnin toimitusaika alkaa, kun tarvittavat lähtötiedot ja käyttöoikeudet ovat käytettävissä.",
-    summary: "Tämä ei ole uusi verkkosivusto. Käymme nykyisen sivun läpi, priorisoimme tärkeimmät yhteydenottoa heikentävät kohdat ja korjaamme sovitun entry-scopen. Lopuksi saat ennen/jälkeen-yhteenvedon sekä havainnot mahdollisista seuraavista kaupallisista pullonkauloista.",
-    audienceTitle: "Kenelle 690 € korjaus sopii?",
+    lead: "Nykyinen sivusto kuntoon ilman täyttä verkkosivuprojektia. Korjaamme sovitun scopen kiinteällä 690 € kertamaksulla, kun lähtötiedot ja tarvittavat käyttöoikeudet ovat käytettävissä.",
+    summary: "Conversion Fix ei rakenna sivustoa uudelleen. Käymme nykyisen sivun läpi, priorisoimme yhteydenottoa heikentävät kohdat ja korjaamme sovitut konversioesteet. Lopuksi saat ennen/jälkeen-yhteenvedon sekä havainnot mahdollisista seuraavista kaupallisista pullonkauloista.",
+    audienceTitle: "Kenelle Conversion Fix sopii?",
     audience: [
       "Palveluyritykselle, jonka sivusto on jo olemassa mutta yhteydenottopolku on epäselvä tai heikko",
       "Yrittäjälle, joka haluaa konkreettisen korjauksen ilman pitkää verkkosivuprojektia",
-      "Yritykselle, joka haluaa ensin parantaa näkyvää asiakaspolkua ja päättää vasta datan perusteella mahdollisista jatkotoimista",
+      "Yritykselle, joka haluaa ensin korjata näkyvän asiakaspolun ja päättää jatkosta vasta havaintojen perusteella",
     ],
     process: [
       { title: "Maksa ja täytä aloituskysely", text: "Maksat 690 € verkossa ja annat nykyisen sivuston, tavoitteen sekä tarvittavat lähtötiedot. Salasanoja ei lähetetä lomakkeella." },
-      { title: "Auditointi ja korjaukset", text: "Tarkistamme sivun pääviestin, CTA-polun, mobiilin käytettävyyden, yhteydenottopolun, luottamuselementit ja perustason SEO/metatiedot. Toteutamme entry-scopeen kuuluvat priorisoidut korjaukset." },
+      { title: "Auditointi ja korjaukset", text: "Tarkistamme pääviestin, CTA-polun, mobiilin käytettävyyden, yhteydenottopolun, luottamuselementit ja perustason SEO/metatiedot. Toteutamme scopeen kuuluvat priorisoidut korjaukset." },
       { title: "Toimitus ja havainnot", text: "Saat ennen/jälkeen-yhteenvedon, yhden kootun korjauskierroksen sekä erillisen listan mahdollisista kaupallisista havainnoista. Jatkotyötä ei tehdä automaattisesti." },
     ],
     faq: [
       { question: "Mitä 690 € sisältää?", answer: "Nykyisen sivuston konversioauditoinnin, etusivun pääviestin ja CTA-polun korjauksen, mobiilin kriittiset korjaukset, yhteydenottopolun tarkistuksen ja korjauksen, palvelun ja luottamuselementtien selkeytyksen, perustason SEO/metatietotarkistuksen, ennen/jälkeen-yhteenvedon sekä yhden kootun korjauskierroksen." },
-      { question: "Mitä palvelu ei sisällä?", answer: "Palvelu ei sisällä kokonaan uutta verkkosivustoa, laajaa brändiuudistusta, CRM-projektia, maksettua mainontaa, jatkuvaa SEO-työtä, rajattomia sivuja tai rajattomia revisioita. Mahdolliset lisätyöt sovitaan erikseen." },
+      { question: "Mitä Conversion Fix ei sisällä?", answer: "Palvelu ei sisällä kokonaan uutta verkkosivustoa, laajaa brändiuudistusta, CRM-projektia, maksettua mainontaa, jatkuvaa SEO-työtä, rajattomia sivuja tai rajattomia revisioita. Mahdolliset lisätyöt sovitaan erikseen." },
       { question: "Milloin 72 tuntia alkaa?", answer: "Toimitusaika alkaa, kun maksu, aloituskysely ja toteutukseen tarvittavat käyttöoikeudet tai materiaalit ovat käytettävissä. Asiakkaasta tai kolmannesta osapuolesta johtuva odotus ei kuluta toimitusaikaa." },
       { question: "Tarvitseeko minun ostaa jatkopalvelua?", answer: "Ei. Saat 690 € toimituksen itsenäisenä kokonaisuutena. Jos työn aikana löytyy suurempi mitattava myynnin tai käsittelyn pullonkaula, siitä voidaan tehdä erillinen ehdotus vain erillisellä hyväksynnällä." },
     ],
