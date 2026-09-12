@@ -1,0 +1,2 @@
+Rerun order -> questionnaire -> onboarding persistence E2E gate on 2026-09-12.
+No production application code changes in this trigger commit.
