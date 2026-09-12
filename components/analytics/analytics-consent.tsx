@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
 const STORAGE_KEY = "virella_analytics_consent";
+const CONSENT_EVENT = "virella:analytics-consent";
 const GA_MEASUREMENT_ID = "G-43VQ8505YL";
 
 type Consent = "granted" | "denied" | null;
@@ -31,27 +32,42 @@ function loadGa4() {
   }
 }
 
-export function AnalyticsConsent({ enabled }: { enabled: boolean }) {
-  const [consent, setConsent] = useState<Consent>(null);
-  const [hydrated, setHydrated] = useState(false);
+function readConsent(): Consent {
+  if (typeof window === "undefined") return null;
+  const stored = window.localStorage.getItem(STORAGE_KEY);
+  return stored === "granted" || stored === "denied" ? stored : null;
+}
 
-  useEffect(() => {
-    if (!enabled) return;
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "granted" || stored === "denied") setConsent(stored);
-    setHydrated(true);
-  }, [enabled]);
+function getServerConsent(): Consent {
+  return null;
+}
+
+function subscribeConsent(listener: () => void) {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === STORAGE_KEY) listener();
+  };
+
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(CONSENT_EVENT, listener);
+
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(CONSENT_EVENT, listener);
+  };
+}
+
+export function AnalyticsConsent({ enabled }: { enabled: boolean }) {
+  const consent = useSyncExternalStore(subscribeConsent, readConsent, getServerConsent);
 
   useEffect(() => {
     if (enabled && consent === "granted") loadGa4();
   }, [consent, enabled]);
 
-  if (!enabled || !hydrated || consent !== null) return null;
+  if (!enabled || consent !== null) return null;
 
   function choose(value: Exclude<Consent, null>) {
     window.localStorage.setItem(STORAGE_KEY, value);
-    setConsent(value);
-    window.dispatchEvent(new Event("virella:analytics-consent"));
+    window.dispatchEvent(new Event(CONSENT_EVENT));
   }
 
   return (
@@ -61,7 +77,7 @@ export function AnalyticsConsent({ enabled }: { enabled: boolean }) {
         <div>
           <p className="font-extrabold tracking-[-0.015em] text-foreground">Analytiikka-asetukset</p>
           <p className="mt-1.5 text-sm leading-6 text-muted">
-            Välttämättömät toiminnot ovat aina käytössä. Google Analytics käynnistyy vain, jos hyväksyt analytiikan. Lue lisää {" "}
+            Välttämättömät toiminnot ovat aina käytössä. Google Analytics käynnistyy vain, jos hyväksyt analytiikan. Lue lisää{" "}
             <Link href="/tietosuoja" className="font-bold text-brand underline decoration-brand/25 underline-offset-4">tietosuojasta</Link>.
           </p>
         </div>
