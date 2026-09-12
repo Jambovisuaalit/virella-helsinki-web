@@ -1,10 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 const STORAGE_KEY = "virella_analytics_consent";
+const CONSENT_EVENT = "virella:analytics-consent";
 
 type Consent = "granted" | "denied" | null;
+
+function readConsent(): Consent {
+  if (typeof window === "undefined") return null;
+  const stored = window.localStorage.getItem(STORAGE_KEY);
+  return stored === "granted" || stored === "denied" ? stored : null;
+}
+
+function getServerConsent(): Consent {
+  return null;
+}
+
+function subscribeConsent(listener: () => void) {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === STORAGE_KEY) listener();
+  };
+
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(CONSENT_EVENT, listener);
+
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(CONSENT_EVENT, listener);
+  };
+}
 
 function removeGaCookies() {
   const rootDomain = window.location.hostname.replace(/^www\./, "");
@@ -20,18 +45,12 @@ function removeGaCookies() {
 }
 
 export function AnalyticsPreferences() {
-  const [consent, setConsent] = useState<Consent>(null);
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "granted" || stored === "denied") setConsent(stored);
-  }, []);
+  const consent = useSyncExternalStore(subscribeConsent, readConsent, getServerConsent);
 
   function update(value: Exclude<Consent, null>) {
     window.localStorage.setItem(STORAGE_KEY, value);
     if (value === "denied") removeGaCookies();
-    setConsent(value);
-    window.dispatchEvent(new Event("virella:analytics-consent"));
+    window.dispatchEvent(new Event(CONSENT_EVENT));
     if (value === "denied") window.location.reload();
   }
 
