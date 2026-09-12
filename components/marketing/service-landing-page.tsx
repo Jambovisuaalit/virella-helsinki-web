@@ -143,9 +143,9 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
           <SectionContainer className="py-16 md:py-20">
             <div className="flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
               <div className="max-w-[680px]">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/65 sm:text-sm">Osta ilman myyntipalaveria</p>
-                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">{isConversionFix ? "Korjaa näkyvin myyntipullonkaula ensin." : "Maksa verkossa ja täytä alkukysely."}</h2>
-                <p className="mt-4 text-base leading-7 text-white/75">Maksun jälkeen oikea tuotekohtainen alkukysely avautuu automaattisesti. Tilaus ja kysely käyttävät samaa tilaustunnistetta.</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/65 sm:text-sm">{isConversionFix ? "Conversion Fix · 690 € · 72 h" : "Aloita verkossa"}</p>
+                <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">{isConversionFix ? "Korjaa ensin se, mikä estää asiakasta ottamasta yhteyttä." : "Maksa verkossa ja täytä aloituskysely."}</h2>
+                <p className="mt-4 text-base leading-7 text-white/75">{isConversionFix ? "Toimitus alkaa, kun maksu, aloituskysely ja toteutukseen tarvittavat käyttöoikeudet tai materiaalit ovat käytettävissä." : "Maksun jälkeen tuotekohtainen aloituskysely avautuu automaattisesti ja toimitus voidaan käynnistää."}</p>
               </div>
               <BuyButton productId={product.id} label={isConversionFix ? "Osta Conversion Fix · 690 €" : "Osta nyt"} className="shrink-0" source="final_cta" />
             </div>
