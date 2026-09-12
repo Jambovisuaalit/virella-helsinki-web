@@ -25,7 +25,7 @@ jobs:
           npm install --no-save --package-lock=false playwright@1.55.0
           npx playwright install --with-deps chromium
 
-      - name: Extract existing QA script and add Stripe render wait
+      - name: Extract existing QA script and patch current Stripe DOM handling
         shell: bash
         run: |
           set -euo pipefail
@@ -37,11 +37,20 @@ jobs:
           end = src.index('\n          NODE', start)
           lines = src[start:end].splitlines()
           script = '\n'.join(line[10:] if line.startswith('          ') else line for line in lines) + '\n'
-          target = "  await fillField(['input[type=\"email\"]', 'input[name=\"email\"]'], 'e2e.conversion.fix@example.com');"
-          replacement = "  await page.waitForTimeout(1500);\n" + target
-          if target not in script:
+
+          email_target = "  await fillField(['input[type=\"email\"]', 'input[name=\"email\"]'], 'e2e.conversion.fix@example.com');"
+          if email_target not in script:
               raise SystemExit('email fill target not found')
-          script = script.replace(target, replacement, 1)
+          script = script.replace(email_target, "  await page.waitForTimeout(1500);\n" + email_target, 1)
+          script = script.replace('[page, ...page.frames()]', '[page]')
+          script = script.replace('input[name=\"postalCode\"]', 'input[name=\"billingPostalCode\"]')
+
+          submit_target = "  let submit = page.getByRole('button', { name: /Maksa|Pay|Osta|Purchase/i }).last();"
+          disclosure = "  const checkboxes = page.locator('input[type=\"checkbox\"]');\n  if (await checkboxes.count() > 1) {\n    try { await checkboxes.last().check(); } catch {}\n  }\n\n"
+          if submit_target not in script:
+              raise SystemExit('submit target not found')
+          script = script.replace(submit_target, disclosure + submit_target, 1)
+
           Path('/tmp/virella-e2e-patched/e2e.mjs').write_text(script)
           PY
 
