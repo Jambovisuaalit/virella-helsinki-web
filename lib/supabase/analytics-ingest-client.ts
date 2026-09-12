@@ -1,3 +1,4 @@
+import { getVercelOidcToken } from "@vercel/oidc";
 import type { AnalyticsEventName } from "@/lib/analytics/events";
 
 export type AnalyticsIngestEvent = {
@@ -8,20 +9,24 @@ export type AnalyticsIngestEvent = {
 };
 
 const ANALYTICS_FUNCTION = "virella-analytics-ingest";
+const VERCEL_PROJECT = "virella-helsinki-web";
+const VERCEL_TEAM = "info-32533854s-projects";
 
-function getAnalyticsIngestConfig() {
+function getSupabaseUrl() {
   const supabaseUrl = process.env.SUPABASE_URL?.trim().replace(/\/$/, "");
-  const oidcToken = process.env.VERCEL_OIDC_TOKEN?.trim();
-
-  if (!supabaseUrl || !oidcToken) {
-    throw new Error("Analytics ingest configuration is missing");
-  }
-
-  return { supabaseUrl, oidcToken };
+  if (!supabaseUrl) throw new Error("Analytics ingest configuration is missing");
+  return supabaseUrl;
 }
 
 export async function sendAnalyticsEvent(event: AnalyticsIngestEvent) {
-  const { supabaseUrl, oidcToken } = getAnalyticsIngestConfig();
+  const supabaseUrl = getSupabaseUrl();
+  const oidcToken = await getVercelOidcToken({
+    project: VERCEL_PROJECT,
+    team: VERCEL_TEAM,
+  });
+
+  if (!oidcToken) throw new Error("Vercel OIDC token is unavailable");
+
   const response = await fetch(`${supabaseUrl}/functions/v1/${ANALYTICS_FUNCTION}`, {
     method: "POST",
     headers: {
