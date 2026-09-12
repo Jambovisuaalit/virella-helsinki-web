@@ -15,21 +15,22 @@ type BuyButtonProps = {
 
 export function BuyButton({
   productId,
-  label = "Osta nyt",
+  label = "Aloita tästä",
   className = "",
   buttonClassName = defaultButtonClassName,
   source = "service_page",
 }: BuyButtonProps) {
+  const visibleLabel = /^Osta\b/i.test(label) ? "Aloita tästä" : label;
+
   function handleSubmit() {
     trackAnalyticsEvent("purchase_click", { productId, source });
-    trackAnalyticsEvent("checkout_started", { productId, source });
   }
 
   return (
     <form action="/api/checkout" method="post" className={className} onSubmit={handleSubmit}>
       <input type="hidden" name="productId" value={productId} />
       <button type="submit" className={buttonClassName}>
-        {label}
+        {visibleLabel}
       </button>
     </form>
   );
