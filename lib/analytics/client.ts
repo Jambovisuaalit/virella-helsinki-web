@@ -2,10 +2,20 @@ import type { AnalyticsEventData, AnalyticsEventName } from "@/lib/analytics/eve
 
 export type { AnalyticsEventName } from "@/lib/analytics/events";
 
+const STORAGE_KEY = "virella_analytics_consent";
+
 type GtagWindow = Window & {
   dataLayer?: unknown[];
   gtag?: (...args: unknown[]) => void;
 };
+
+function hasAnalyticsConsent() {
+  try {
+    return window.localStorage.getItem(STORAGE_KEY) === "granted";
+  } catch {
+    return false;
+  }
+}
 
 function getGtag() {
   const target = window as GtagWindow;
@@ -23,7 +33,7 @@ function eventNameForGa4(name: AnalyticsEventName) {
 }
 
 export function trackAnalyticsEvent(name: AnalyticsEventName, data: AnalyticsEventData = {}) {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || !hasAnalyticsConsent()) return;
 
   const params: Record<string, unknown> = {
     page_path: window.location.pathname,
