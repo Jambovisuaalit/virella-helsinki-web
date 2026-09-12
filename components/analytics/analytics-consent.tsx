@@ -2,35 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useSyncExternalStore } from "react";
+import { initializeAnalytics } from "@/lib/analytics/client";
 
 const STORAGE_KEY = "virella_analytics_consent";
 const CONSENT_EVENT = "virella:analytics-consent";
-const GA_MEASUREMENT_ID = "G-43VQ8505YL";
 
 type Consent = "granted" | "denied" | null;
-type GtagWindow = Window & {
-  dataLayer?: unknown[];
-  gtag?: (...args: unknown[]) => void;
-};
-
-function loadGa4() {
-  const target = window as GtagWindow;
-  target.dataLayer ||= [];
-  target.gtag ||= (...args: unknown[]) => {
-    target.dataLayer?.push(args);
-  };
-
-  target.gtag("js", new Date());
-  target.gtag("config", GA_MEASUREMENT_ID, { send_page_view: false });
-
-  if (!document.getElementById("virella-ga4-script")) {
-    const script = document.createElement("script");
-    script.id = "virella-ga4-script";
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    document.head.appendChild(script);
-  }
-}
 
 function readConsent(): Consent {
   if (typeof window === "undefined") return null;
@@ -60,7 +37,7 @@ export function AnalyticsConsent({ enabled }: { enabled: boolean }) {
   const consent = useSyncExternalStore(subscribeConsent, readConsent, getServerConsent);
 
   useEffect(() => {
-    if (enabled && consent === "granted") loadGa4();
+    if (enabled && consent === "granted") initializeAnalytics();
   }, [consent, enabled]);
 
   if (!enabled || consent !== null) return null;
