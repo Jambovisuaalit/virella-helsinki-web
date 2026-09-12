@@ -5,6 +5,7 @@ import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
 import { products } from "@/config/products";
+import { upsertPaidOrder } from "@/lib/supabase/order-store";
 import { getCheckoutSession, getProductKeyById } from "@/lib/stripe/stripe-api";
 
 export const metadata: Metadata = {
@@ -39,10 +40,13 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
       const productKey = productId ? getProductKeyById(productId) : undefined;
       if (productKey) productName = products[productKey].name;
       paid = session.payment_status === "paid";
-      if (paid && typeof session.amount_total === "number") purchaseValue = session.amount_total / 100;
-      if (paid && session.currency) purchaseCurrency = session.currency.toUpperCase();
+      if (paid) {
+        await upsertPaidOrder(session);
+        if (typeof session.amount_total === "number") purchaseValue = session.amount_total / 100;
+        if (session.currency) purchaseCurrency = session.currency.toUpperCase();
+      }
     } catch (error) {
-      console.error("Checkout success lookup failed", error);
+      console.error("Checkout success lookup or order persistence failed", error);
     }
   }
 
