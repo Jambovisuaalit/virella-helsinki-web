@@ -13,11 +13,14 @@ export async function POST(request: Request) {
   const origin = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin;
   const isProduction = process.env.VERCEL_ENV === "production";
   const stripeKey = process.env.STRIPE_SECRET_KEY?.trim() ?? "";
+  const liveWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET_LIVE?.trim() ?? "";
   const liveCheckoutEnabled =
-    process.env.LIVE_CHECKOUT_ENABLED === "true" && stripeKey.startsWith("sk_live_");
+    process.env.LIVE_CHECKOUT_ENABLED === "true" &&
+    stripeKey.startsWith("sk_live_") &&
+    liveWebhookSecret.startsWith("whsec_");
 
   // Public production must never send a real customer into Stripe Test Mode.
-  // Live checkout is enabled only after the live Stripe key and webhook gate are both verified.
+  // Live checkout is enabled only after an explicit flag, live Stripe key and live webhook secret are all present.
   if (isProduction && !liveCheckoutEnabled) {
     const contactUrl = new URL("/aloita", origin);
     contactUrl.searchParams.set("product", productId);
