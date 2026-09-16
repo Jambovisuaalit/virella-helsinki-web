@@ -1,5 +1,5 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { transitionDeliveryState, type DeliveryStatus } from "@/lib/supabase/order-store";
 
 const DELIVERY_STATUSES = new Set<DeliveryStatus>([
@@ -21,18 +21,14 @@ export async function POST(request: Request) {
   const origin = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin;
   const formData = await request.formData();
   const returnTo = safeReturnTo(formData.get("returnTo"));
-  const expectedToken = process.env.ADMIN_ACCESS_TOKEN;
-  const cookieStore = await cookies();
-  const authenticated = Boolean(expectedToken && cookieStore.get("virella_admin")?.value === expectedToken);
 
-  if (!authenticated) {
+  if (!await isAdminAuthenticated()) {
     return NextResponse.redirect(new URL("/admin", origin), 303);
   }
 
   const orderId = String(formData.get("orderId") ?? "").trim();
   const nextStatus = String(formData.get("nextStatus") ?? "").trim() as DeliveryStatus;
   const note = String(formData.get("note") ?? "").trim().slice(0, 500);
-
   const resultUrl = new URL(returnTo, origin);
 
   if (!orderId || !DELIVERY_STATUSES.has(nextStatus)) {
