@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import SalesPipeline from "./sales-pipeline";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 export const metadata: Metadata = {
   title: "Sales Pipeline | Virella Helsinki",
@@ -11,11 +11,6 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function SalesPage() {
-  const cookieStore = await cookies();
-  const expectedToken = process.env.ADMIN_ACCESS_TOKEN;
-  const authenticated = Boolean(expectedToken && cookieStore.get("virella_admin")?.value === expectedToken);
-
-  if (!authenticated) redirect("/admin");
-
+  if (!(await isAdminAuthenticated())) redirect("/admin");
   return <SalesPipeline />;
 }
