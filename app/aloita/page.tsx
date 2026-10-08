@@ -8,7 +8,7 @@ import { products } from "@/config/products";
 import { getProductKeyById } from "@/lib/stripe/stripe-api";
 
 export const metadata: Metadata = {
-  title: "Aloita projekti | Virella Helsinki",
+  title: "Aloita projekti",
   description: "Lähetä Virella Helsingille projektin lähtötiedot ja aloita keskustelu.",
   robots: { index: false, follow: false },
 };
@@ -39,6 +39,8 @@ export default async function StartPage({ searchParams }: StartPageProps) {
   const checkoutError = first(params.checkout_error) === "1";
   const productKey = productId ? getProductKeyById(productId) : undefined;
   const product = productKey ? products[productKey] : undefined;
+  const isSocial = product?.billing === "month";
+  const euro = new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 
   return (
     <>
@@ -55,14 +57,16 @@ export default async function StartPage({ searchParams }: StartPageProps) {
               <p className="mt-5 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8">
                 {submitted
                   ? "Virella sai lähtötietosi. Palaamme asiaan sähköpostilla seuraavaa askelta varten."
-                  : "Lähetä tärkeimmät lähtötiedot. Saat vastauksen sähköpostilla ilman erillistä myyntipalaveria tai pitkää tarjousprosessia."}
+                  : isSocial
+                    ? "Kerro yrityksestäsi ja siitä, mitä haluat tuoda esiin. Vahvistamme palvelun sisällön, lähtötiedot ja aloituksen sähköpostilla."
+                    : "Lähetä tärkeimmät lähtötiedot. Saat vastauksen sähköpostilla ilman erillistä myyntipalaveria tai pitkää tarjousprosessia."}
               </p>
 
               {!submitted ? (
                 <div className="mt-8 space-y-3 text-sm leading-6 text-muted">
-                  <p className="rounded-xl border border-border bg-surface p-4">1. Kerro yritys, verkkosivu ja tärkein tavoite.</p>
-                  <p className="rounded-xl border border-border bg-surface p-4">2. Arvioimme sopiiko rajattu toteutus tilanteeseesi.</p>
-                  <p className="rounded-xl border border-border bg-surface p-4">3. Saat selkeän seuraavan askeleen sähköpostilla.</p>
+                  <p className="rounded-xl border border-border bg-surface p-4">1. {isSocial ? "Kerro yrityksesi palvelut, kohderyhmä ja tavoite." : "Kerro yritys, verkkosivu ja tärkein tavoite."}</p>
+                  <p className="rounded-xl border border-border bg-surface p-4">2. {isSocial ? "Sovimme materiaalit, käyttöoikeudet ja sisältöjen hyväksynnän." : "Arvioimme sopiiko rajattu toteutus tilanteeseesi."}</p>
+                  <p className="rounded-xl border border-border bg-surface p-4">3. {isSocial ? "Vahvistamme maksutavan ja aloituksen sähköpostilla." : "Saat selkeän seuraavan askeleen sähköpostilla."}</p>
                 </div>
               ) : null}
             </div>
@@ -88,6 +92,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                     <div className="rounded-xl border border-brand/15 bg-brand/5 p-4">
                       <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Palvelu</p>
                       <p className="mt-1 font-bold">{product.name}</p>
+                      {product.billing === "month" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(product.price)} / kk · {product.commitmentMonths} kk minimi · yhteensä {euro.format(product.totalPrice)}</p> : null}
                     </div>
                   ) : null}
 
@@ -119,7 +124,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                     <input id="website" name="website" type="url" maxLength={300} placeholder="https://" className={fieldClassName} />
                   </div>
                   <div>
-                    <label htmlFor="message" className="text-sm font-bold">Mitä haluat saada kuntoon? *</label>
+                    <label htmlFor="message" className="text-sm font-bold">{isSocial ? "Mitä yrityksesi tekee ja kenelle? *" : "Mitä haluat saada kuntoon? *"}</label>
                     <textarea id="message" name="message" required maxLength={2000} rows={6} className={fieldClassName} />
                   </div>
 
