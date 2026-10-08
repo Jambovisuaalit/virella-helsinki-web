@@ -1,9 +1,10 @@
 import { brandConfig } from "@/config/brand";
+import { products } from "@/config/products";
 
 export const seoConfig = {
   siteName: brandConfig.name,
   siteUrl: "https://virellahelsinki.com",
-  defaultTitle: "Conversion Fix — helpompi yhteydenotto nykyiseltä verkkosivulta",
+  defaultTitle: "Markkinointi valmiina palveluna | Virella Helsinki",
   titleTemplate: `%s | ${brandConfig.name}`,
-  defaultDescription: "Conversion Fix korjaa nykyisen verkkosivusi tärkeimmät yhteydenottoa vaikeuttavat kohdat kiinteällä 690 € kertamaksulla ilman täyttä verkkosivuprojektia.",
+  defaultDescription: `Instagram- ja LinkedIn-markkinointi valmiina palveluna. Virella Helsinki hoitaa suunnittelun, sisällöt ja julkaisun. ${products.instagram.price} €/kk, ${products.instagram.commitmentMonths} kk minimi.`,
 } as const;
