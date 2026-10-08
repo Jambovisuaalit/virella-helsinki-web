@@ -5,7 +5,20 @@ import { primaryNavigation } from "@/config/navigation";
 
 const isPreview = process.env.VERCEL_ENV !== "production";
 
-export function SiteHeader() {
+export function SiteHeader({ landing = false }: { landing?: boolean }) {
+  if (landing) {
+    return (
+      <header className="landing-header">
+        <SectionContainer>
+          <div className="landing-header-inner">
+            <Link href="/" aria-label="Virella Helsinki – etusivu" className="landing-wordmark">Virella<span>Helsinki</span></Link>
+            <nav aria-label="Päänavigaatio" className="landing-navigation"><a href="#prosessi">Näin toimii</a><a href="#hinnoittelu">Hinnoittelu</a></nav>
+            <a href="#hinnoittelu" className="landing-header-cta">Valitse palvelu</a>
+          </div>
+        </SectionContainer>
+      </header>
+    );
+  }
   return (
     <header className="sticky top-0 z-50 bg-transparent pt-3">
       <SectionContainer>

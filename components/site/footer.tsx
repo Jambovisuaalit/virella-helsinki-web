@@ -14,7 +14,7 @@ export function SiteFooter() {
               <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-white">{brandConfig.name}</p>
             </div>
             <p className="mt-5 max-w-xl text-[15px] leading-7 text-white/72">
-              Selkeämpi verkkosivu. Vähemmän kitkaa ennen yhteydenottoa.
+              {brandConfig.positioning} {brandConfig.supportMessage}
             </p>
             <p className="mt-5 text-xs leading-6 text-white/52">
               {businessConfig.legalName} · Y-tunnus {businessConfig.businessId} · {businessConfig.city}
