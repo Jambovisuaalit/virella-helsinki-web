@@ -6,4 +6,6 @@ export const businessConfig = {
   country: "Finland",
   email: "hello@virellahelsinki.com",
   adminEmail: "jami@virellahelsinki.com",
+  phone: "+358 40 325 7892",
+  phoneE164: "+358403257892",
 } as const;
