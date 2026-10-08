@@ -44,6 +44,8 @@ export default function SalesPipeline() {
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
+      // Browser-only hydration runs after mount to preserve the server-rendered initial state.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (raw) setLeads(JSON.parse(raw));
     } catch {
       // Keep the dashboard usable if browser storage is unavailable/corrupt.

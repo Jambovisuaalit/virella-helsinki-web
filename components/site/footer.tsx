@@ -23,6 +23,12 @@ export function SiteFooter() {
 
           <div className="flex flex-col gap-3 sm:items-end">
             <a
+              href={`tel:${businessConfig.phoneE164}`}
+              className="font-bold text-white transition hover:text-white/80"
+            >
+              {businessConfig.phone}
+            </a>
+            <a
               href={`mailto:${businessConfig.email}`}
               className="font-bold text-white transition hover:text-white/80"
             >
