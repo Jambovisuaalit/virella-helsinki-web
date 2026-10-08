@@ -228,6 +228,6 @@ a {
   .landing-wordmark { font-size: 21px; }
   .landing-header-cta { padding: 10px; font-size: 13px; }
   .landing-hero h1 { font-size: 34px; }
-  .landing-price-card { grid-column: 2; grid-row: 1 / span 2; padding: 20px; }
+  .landing-price-card { padding: 20px; }
   .landing-price-amount { font-size: 46px; }
 }
