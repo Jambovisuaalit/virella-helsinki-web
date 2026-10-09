@@ -6,7 +6,7 @@ import { businessConfig } from "@/config/business";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/8 bg-brand py-12 text-sm text-white/70 sm:py-14">
+    <footer className="border-t border-border bg-surface py-12 text-sm text-white/70 sm:py-14">
       <SectionContainer>
         <div className="grid gap-10 sm:grid-cols-[1fr_auto] sm:items-end">
           <div>
