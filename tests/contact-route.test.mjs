@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 const root = fileURLToPath(new URL("../", import.meta.url));
 
 // Exercise the real handler and product config without sending emails or reading secrets.
-function handler({ failEmail = false } = {}) {
+function handler({ failStorage = false } = {}) {
   const notifications = [];
   const cache = new Map();
   function load(path) {
@@ -26,7 +26,7 @@ function handler({ failEmail = false } = {}) {
       require: (name) => {
         if (name === "@/lib/email/admin-notification") return {
           sendAdminNotification: async (notification) => {
-            if (failEmail) throw new Error("Simulated email outage");
+            if (failStorage) throw new Error("Simulated storage outage");
             notifications.push(notification);
             return { id: "test-email" };
           },
@@ -51,7 +51,7 @@ function request(overrides = {}, json = true) {
   });
 }
 
-test("successful intake preserves the selected service and awaits email acceptance", async () => {
+test("successful intake preserves the selected service and awaits successful persistence", async () => {
   const { POST, notifications } = handler();
   const response = await POST(request());
   assert.equal(response.status, 200);
@@ -61,8 +61,8 @@ test("successful intake preserves the selected service and awaits email acceptan
   assert.match(notifications[0].text, /LinkedIn/);
 });
 
-test("email outage reports failure rather than a received request", async () => {
-  const { POST } = handler({ failEmail: true });
+test("storage outage reports failure rather than a received request", async () => {
+  const { POST } = handler({ failStorage: true });
   const response = await POST(request());
   assert.equal(response.status, 503);
   const result = await response.json();
