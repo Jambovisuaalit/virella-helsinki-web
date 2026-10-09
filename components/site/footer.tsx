@@ -1,18 +1,16 @@
 import Link from "next/link";
 import { SectionContainer } from "@/components/layout/section-container";
 import { brandConfig } from "@/config/brand";
+import { BrandLogo } from "@/components/site/brand-logo";
 import { businessConfig } from "@/config/business";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/8 bg-brand py-12 text-sm text-white/70 sm:py-14">
+    <footer className="border-t border-border bg-surface py-12 text-sm text-white/70 sm:py-14">
       <SectionContainer>
         <div className="grid gap-10 sm:grid-cols-[1fr_auto] sm:items-end">
           <div>
-            <div className="inline-flex items-center gap-2.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-accent" aria-hidden="true" />
-              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-white">{brandConfig.name}</p>
-            </div>
+            <BrandLogo inverse />
             <p className="mt-5 max-w-xl text-[15px] leading-7 text-white/72">
               {brandConfig.positioning} {brandConfig.supportMessage}
             </p>

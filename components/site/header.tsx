@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SectionContainer } from "@/components/layout/section-container";
-import { brandConfig } from "@/config/brand";
+import { BrandLogo } from "@/components/site/brand-logo";
 import { primaryNavigation } from "@/config/navigation";
 
 const isPreview = process.env.VERCEL_ENV !== "production";
@@ -11,7 +11,7 @@ export function SiteHeader({ landing = false }: { landing?: boolean }) {
       <header className="landing-header">
         <SectionContainer>
           <div className="landing-header-inner">
-            <Link href="/" aria-label="Virella Helsinki – etusivu" className="landing-wordmark">Virella<span>Helsinki</span></Link>
+            <BrandLogo landing />
             <nav aria-label="Päänavigaatio" className="landing-navigation"><a href="#prosessi">Näin toimii</a><a href="#hinnoittelu">Hinnoittelu</a></nav>
             <a href="#hinnoittelu" className="landing-header-cta">Valitse palvelu</a>
           </div>
@@ -23,13 +23,7 @@ export function SiteHeader({ landing = false }: { landing?: boolean }) {
     <header className="sticky top-0 z-50 bg-transparent pt-3">
       <SectionContainer>
         <div className="flex min-h-14 items-center justify-between gap-4 rounded-full border border-border/80 bg-background/88 px-4 shadow-[0_16px_50px_-32px_rgba(23,33,38,0.5)] backdrop-blur-xl sm:px-5">
-          <Link
-            href="/"
-            className="group inline-flex items-center gap-2.5 text-[13px] font-extrabold uppercase tracking-[0.16em] text-brand sm:text-sm"
-          >
-            <span className="h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_0_4px_rgba(232,97,59,0.10)] transition group-hover:scale-110" aria-hidden="true" />
-            {brandConfig.name}
-          </Link>
+          <BrandLogo compact />
 
           <div className="flex items-center gap-3">
             <nav aria-label="Päänavigaatio" className="hidden items-center gap-1 text-sm font-semibold text-muted sm:flex">
