@@ -236,3 +236,14 @@ a {
 .landing-header-cta:hover { background: var(--brand-strong); }
 .landing-page .landing-primary:focus-visible, .landing-header-cta:focus-visible, .landing-navigation a:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
 @media (max-width: 359px) { .landing-channel-choice > div { grid-template-columns: 1fr; } }
+
+/* Consistent Virella identity and restrained interaction polish. */
+.brand-logo { display: inline-flex; align-items: center; gap: 10px; min-width: 0; color: var(--brand); line-height: 1; }
+.brand-logo-mark { display: inline-grid; place-items: center; width: 34px; height: 34px; flex: none; border: 1px solid currentColor; border-radius: 10px; font-size: 20px; font-weight: 800; letter-spacing: -.09em; }
+.brand-logo-name { display: grid; gap: 3px; font-weight: 800; font-size: 15px; letter-spacing: -.045em; }
+.brand-logo-name small { font-size: 10px; font-weight: 650; letter-spacing: .15em; text-transform: uppercase; }
+.brand-logo--landing .brand-logo-mark { width: 42px; height: 42px; font-size: 24px; }
+.brand-logo--landing .brand-logo-name { font-size: 20px; }
+.brand-logo--inverse { color: white; }
+.brand-logo:hover .brand-logo-mark { background: color-mix(in srgb, currentColor 7%, transparent); }
+@media(max-width: 359px) { .brand-logo--landing .brand-logo-name { font-size: 17px; } .landing-header-inner { padding-inline: 14px; gap: 8px; } .landing-header-cta { padding-inline: 10px; font-size: 12px; } }
