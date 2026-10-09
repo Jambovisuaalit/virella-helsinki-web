@@ -55,6 +55,12 @@ export async function POST(request: Request) {
   }
 
   const productName = productKey ? products[productKey].name : "Yhteydenotto";
+
+  // Preview-only QA: no email is sent and no customer lead is stored.
+  // Requires an explicit TESTI marker; production never enters this path.
+  if (process.env.VERCEL_ENV === "preview" && message.startsWith("TESTI / QA")) {
+    return NextResponse.json({ ok: true, simulated: true, redirect: "/aloita?qa=simulated" });
+  }
   const receivedAt = new Date().toISOString();
 
   try {
