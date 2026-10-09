@@ -48,7 +48,7 @@ export function AnalyticsConsent({ enabled }: { enabled: boolean }) {
   }
 
   return (
-    <div className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-xl rounded-[1.6rem] border border-white/80 bg-background/94 p-4 shadow-[0_30px_90px_-34px_rgba(23,33,38,0.55)] backdrop-blur-xl sm:inset-x-6 sm:bottom-6 sm:p-5" role="dialog" aria-label="Analytiikka-asetukset">
+    <div className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-xl rounded-[1.6rem] border border-border bg-surface/96 p-4 shadow-[0_30px_90px_-34px_rgba(23,33,38,0.55)] backdrop-blur-xl sm:inset-x-6 sm:bottom-6 sm:p-5" role="dialog" aria-label="Analytiikka-asetukset">
       <div className="flex items-start gap-3">
         <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-accent shadow-[0_0_0_5px_rgba(232,97,59,0.10)]" aria-hidden="true" />
         <div>
@@ -60,7 +60,7 @@ export function AnalyticsConsent({ enabled }: { enabled: boolean }) {
         </div>
       </div>
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
-        <button type="button" onClick={() => choose("denied")} className="min-h-11 rounded-full border border-border/90 bg-surface px-4 py-2.5 text-sm font-bold text-foreground transition hover:border-brand/20 hover:bg-white">
+        <button type="button" onClick={() => choose("denied")} className="min-h-11 rounded-full border border-border/90 bg-surface px-4 py-2.5 text-sm font-bold text-foreground transition hover:border-brand/20 hover:bg-mist">
           Vain välttämättömät
         </button>
         <button type="button" onClick={() => choose("granted")} className="min-h-11 rounded-full bg-action px-4 py-2.5 text-sm font-bold text-white shadow-[0_10px_26px_-16px_rgba(216,74,36,0.7)] transition hover:brightness-[0.96]">
