@@ -14,7 +14,8 @@ export default async function LeadsPage() {
   let leads: Array<{ path: string; lead: Lead }> = [];
   let error = "";
   try {
-    const result = await list({ prefix: "contact-leads/", limit: 100 });
+    const environment = process.env.VERCEL_ENV === "production" ? "production" : "preview";
+    const result = await list({ prefix: `contact-leads/${environment}/`, limit: 100 });
     const rows = await Promise.all(result.blobs.map(async (blob) => {
       const response = await get(blob.pathname, { access: "private" });
       if (!response || response.statusCode !== 200) return null;
