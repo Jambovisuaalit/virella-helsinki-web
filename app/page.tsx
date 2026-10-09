@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 const steps = [
-  { number: "01", title: "Sinä kerrot yrityksestäsi.", text: "Valitse Instagram tai LinkedIn. Toimita lähtötiedot, olemassa olevat kuvat ja tarvittavat käyttöoikeudet. Sovimme tavoitteet ja sisällön suunnan." },
+  { number: "01", title: "Sinä kerrot yrityksestäsi.", text: "Valitse Instagram + Facebook -paketti tai LinkedIn-palvelu. Toimita lähtötiedot, olemassa olevat kuvat ja tarvittavat käyttöoikeudet. Sovimme tavoitteet ja sisällön suunnan." },
   { number: "02", title: "Me teemme sisällöt.", text: "Virella suunnittelee aiheet, kirjoittaa tekstit ja toteuttaa julkaisut. Saat sisällöt tarkistettavaksi ja hyväksyt ne ennen julkaisua." },
   { number: "03", title: "Markkinointi pyörii.", text: "Hoidamme julkaisun sovitun suunnitelman mukaan ja kokoamme kuukausiraportin. Sinä keskityt asiakkaisiisi ja yrityksesi arkeen." },
 ] as const;
@@ -33,7 +33,7 @@ export default function Home() {
       <main id="main-content">
         <section className="landing-hero" aria-labelledby="hero-title">
           <SectionContainer>
-            <p className="landing-eyebrow">Instagram & LinkedIn yrityksille</p>
+            <p className="landing-eyebrow">Instagram + Facebook & LinkedIn yrityksille</p>
             <h1 id="hero-title">Markkinointi valmiina.<br /><span>Sinä keskityt bisnekseen.</span></h1>
             <p className="landing-lead">Ulkoista sisältösuunnittelu, tuotanto ja julkaisu Virella Helsingille. Saat säännöllisen somenäkyvyyden ilman omaa markkinointitiimiä.</p>
             <ButtonLink href="#hinnoittelu" className="landing-primary">Valitse palvelu</ButtonLink>
@@ -54,12 +54,12 @@ export default function Home() {
             <div className="landing-pricing-copy">
               <p className="landing-eyebrow">Selkeä hinta. Selkeä sisältö.</p>
               <h2 id="pricing-title">Oma sisältötiimi.<br /><span>Ilman rekrytointia.</span></h2>
-              <p>Valitse yrityksellesi sopiva kanava. Instagram näyttää tekemisesi. LinkedIn tuo asiantuntemuksesi esiin.</p>
+              <p>Valitse yrityksellesi sopiva kanava. Instagram + Facebook näyttävät tekemisesi. LinkedIn tuo asiantuntemuksesi esiin.</p>
               <p>Yksi palvelu, sovittu julkaisurytmi ja kuukausittainen raportti. Näet etukäteen, mistä maksat.</p>
             </div>
             <SocialPricingCard />
             <div className="landing-faq">
-                <details><summary>Kuuluvatko molemmat kanavat hintaan?</summary><p>Hinta koskee yhtä valittua palvelua: Instagramia tai LinkedIniä. Molemmat kanavat ovat erillisiä palveluja.</p></details>
+                <details><summary>Kuuluvatko molemmat kanavat hintaan?</summary><p>Instagram-paketti sisältää Instagramin ja Facebookin. LinkedIn on erillinen palvelu, eikä kuulu Instagram-paketin hintaan.</p></details>
                 <details><summary>Kuinka pitkä sopimus on?</summary><p>Minimisopimus on {product.commitmentMonths} kuukautta. Hinta on {euro.format(product.price)} kuukaudessa, yhteensä {euro.format(product.totalPrice)}. Maksutapa ja jatkon ehdot vahvistetaan ennen aloitusta.</p></details>
                 <details><summary>Mitä minulta tarvitaan?</summary><p>Yrityksen lähtötiedot, käytettävissä olevat kuva- ja videomateriaalit sekä julkaisun vaatimat käyttöoikeudet. Tarkistat ja hyväksyt sisällöt ennen julkaisua.</p></details>
                 <details><summary>Miten tuloksia seurataan?</summary><p>Saat kuukausiraportin valitun kanavan näkyvyydestä ja sisältöjen toimivuudesta. Sisältöä kehitetään havaintojen perusteella. Tiettyä seuraaja-, yhteydenotto- tai myyntimäärää ei luvata.</p></details>
@@ -67,7 +67,7 @@ export default function Home() {
           </SectionContainer>
         </section>
         <section id="yhteys" className="landing-contact" aria-labelledby="contact-title">
-          <SectionContainer className="landing-contact-layout"><div><p className="landing-eyebrow">Virella Helsinki</p><h2 id="contact-title">Jätetään markkinointi<br />pois tehtävälistaltasi.</h2><p>Valitse palvelu tai kysy Jamilta, kumpi kanava sopii yrityksellesi.</p></div><div className="landing-contact-actions"><ButtonLink href="#hinnoittelu" className="landing-primary">Valitse palvelu</ButtonLink><a href={`tel:${businessConfig.phoneE164}`}>{businessConfig.phone}</a></div></SectionContainer>
+          <SectionContainer className="landing-contact-layout"><div><p className="landing-eyebrow">Virella Helsinki</p><h2 id="contact-title">Jätetään markkinointi<br />pois tehtävälistaltasi.</h2><p>Valitse palvelu tai kysy Jamilta, kumpi palvelu sopii yrityksellesi.</p></div><div className="landing-contact-actions"><ButtonLink href="#hinnoittelu" className="landing-primary">Valitse palvelu</ButtonLink><a href={`tel:${businessConfig.phoneE164}`}>{businessConfig.phone}</a></div></SectionContainer>
         </section>
       </main>
       <SiteFooter />

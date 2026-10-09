@@ -1,39 +1,37 @@
 import { businessConfig } from "@/config/business";
 
-const RESEND_API = "https://api.resend.com/emails";
-
 type AdminNotification = {
   subject: string;
   text: string;
   idempotencyKey: string;
 };
 
+/**
+ * Persist contact requests as private Vercel Blob objects.
+ * Never put personal data in blob paths or application logs.
+ */
 export async function sendAdminNotification({ subject, text, idempotencyKey }: AdminNotification) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_EMAIL;
-
-  if (!apiKey || !from) throw new Error("Resend is not configured");
-
-  const response = await fetch(RESEND_API, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-      "Idempotency-Key": idempotencyKey,
-    },
-    body: JSON.stringify({
-      from,
-      to: [businessConfig.adminEmail],
-      subject,
-      text,
-    }),
-  });
-
-  if (!response.ok) {
-    const detail = await response.text();
-    console.error("Resend API error", response.status, detail);
-    throw new Error("Admin notification failed");
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    throw new Error("Private lead storage is not configured");
   }
 
-  return response.json() as Promise<{ id: string }>;
+  const { put } = await import("@vercel/blob");
+  const createdAt = new Date().toISOString();
+  const environment = process.env.VERCEL_ENV === "production" ? "production" : "preview";
+  const filename = `contact-leads/${environment}/${createdAt.slice(0, 10)}/${crypto.randomUUID()}.json`;
+  const result = await put(filename, JSON.stringify({
+    schemaVersion: 1,
+    receivedAt: createdAt,
+    subject,
+    text,
+    recipient: businessConfig.adminEmail,
+    idempotencyKey,
+    status: "new",
+  }), {
+    access: "private",
+    contentType: "application/json",
+    addRandomSuffix: false,
+  });
+
+  return { id: result.pathname };
 }

@@ -43,7 +43,7 @@ export async function POST(request: Request) {
   const productKey = productId ? getProductKeyById(productId) : undefined;
   if (productKey && productId) redirectUrl.searchParams.set("product", productId);
 
-  // Quietly accept obvious bot submissions without sending email.
+  // Quietly accept obvious bot submissions without persisting a lead.
   if (honeypot) {
     return respond();
   }
@@ -55,6 +55,7 @@ export async function POST(request: Request) {
   }
 
   const productName = productKey ? products[productKey].name : "Yhteydenotto";
+
   const receivedAt = new Date().toISOString();
 
   try {
@@ -77,8 +78,9 @@ export async function POST(request: Request) {
     });
 
     return respond();
-  } catch (error) {
-    console.error("Contact intake failed", error);
+  } catch {
+    // Do not log errors that may contain submitted personal data or storage credentials.
+    console.error("Contact intake failed");
     return respond("send");
   }
 }

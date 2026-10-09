@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 const STORAGE_KEY = "virella-sales-pipeline-v1";
 const DEFAULT_MRR = 490;
@@ -105,6 +106,7 @@ export default function SalesPipeline() {
             <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">Leads → Conversations → Qualified → Offers → Won → Active MRR</p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
+            <Link href="/admin/leads" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-border px-4 text-sm font-bold">Saapuneet aloituspyynnöt</Link>
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Hae yritys, henkilö…" className="min-h-11 rounded-xl border border-border bg-surface px-4 text-sm outline-none focus:border-brand" />
             <button onClick={() => setShowAdd(true)} className="min-h-11 rounded-xl bg-action px-5 text-sm font-bold text-white">+ Lisää lead</button>
           </div>
