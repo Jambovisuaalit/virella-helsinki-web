@@ -56,14 +56,6 @@ export async function POST(request: Request) {
 
   const productName = productKey ? products[productKey].name : "Yhteydenotto";
 
-  // Preview-only QA: no customer lead is stored.
-  // Requires an explicit TESTI marker; production never enters this path.
-  if (process.env.VERCEL_ENV === "preview" && message.startsWith("TESTI / QA")) {
-    if (request.headers.get("accept")?.includes("application/json")) {
-      return NextResponse.json({ ok: true, simulated: true, redirect: "/aloita?qa=simulated" });
-    }
-    return NextResponse.redirect(new URL("/aloita?qa=simulated", origin), 303);
-  }
   const receivedAt = new Date().toISOString();
 
   try {
