@@ -17,7 +17,8 @@ export async function sendAdminNotification({ subject, text, idempotencyKey }: A
 
   const { put } = await import("@vercel/blob");
   const createdAt = new Date().toISOString();
-  const filename = `contact-leads/${createdAt.slice(0, 10)}/${crypto.randomUUID()}.json`;
+  const environment = process.env.VERCEL_ENV === "production" ? "production" : "preview";
+  const filename = `contact-leads/${environment}/${createdAt.slice(0, 10)}/${crypto.randomUUID()}.json`;
   const result = await put(filename, JSON.stringify({
     schemaVersion: 1,
     receivedAt: createdAt,
