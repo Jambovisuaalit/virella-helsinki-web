@@ -59,7 +59,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                 {submitted
                   ? "Virella sai lähtötietosi. Palaamme asiaan sähköpostilla seuraavaa askelta varten."
                   : isSocial
-                    ? "Kerro yrityksestäsi ja siitä, mitä haluat tuoda esiin. Vahvistamme palvelun sisällön, lähtötiedot ja aloituksen sähköpostilla."
+                    ? "Kerro yrityksestäsi ja siitä, mitä haluat tuoda esiin. Instagram-paketti kattaa myös Facebookin; LinkedIn on erillinen palvelu. Vahvistamme lähtötiedot ja aloituksen sähköpostilla."
                     : "Lähetä tärkeimmät lähtötiedot. Saat vastauksen sähköpostilla ilman erillistä myyntipalaveria tai pitkää tarjousprosessia."}
               </p>
 
