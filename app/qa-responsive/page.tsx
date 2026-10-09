@@ -7,6 +7,6 @@ export default async function ResponsiveQA({ searchParams }: { searchParams: Pro
   const params = await searchParams;
   const widths = (params.widths ?? "320,360,375,390,430,768,1024,1280,1440").split(",").map(Number).filter((width) => Number.isInteger(width) && width >= 320 && width <= 1600).slice(0, 9);
   return <main style={{ display: "flex", gap: 24, padding: 16, width: "max-content", alignItems: "start" }}>
-    {widths.map((width) => <section key={width}><h1 style={{ padding: 8 }}>{width} px</h1><iframe title={`Aloituslomake ${width} px`} src="/aloita?product=linkedin" width={width} height={1100} style={{ border: "1px solid #ccc" }} /></section>)}
+    {widths.map((width) => <section key={width}><h1 style={{ padding: 8 }}>{width} px</h1><iframe title={`Landing page ${width} px`} src="/" width={width} height={1100} style={{ border: "1px solid #ccc" }} /></section>)}
   </main>;
 }
