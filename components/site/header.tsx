@@ -23,12 +23,7 @@ export function SiteHeader({ landing = false }: { landing?: boolean }) {
     <header className="sticky top-0 z-50 bg-transparent pt-3">
       <SectionContainer>
         <div className="flex min-h-14 items-center justify-between gap-4 rounded-full border border-border/80 bg-background/88 px-4 shadow-[0_16px_50px_-32px_rgba(23,33,38,0.5)] backdrop-blur-xl sm:px-5">
-          <Link
-            href="/"
-            className="inline-flex items-center" aria-label="Virella Helsinki – etusivu"
-          >
-            <BrandLogo compact linked={false} />
-          </Link>
+          <BrandLogo compact />
 
           <div className="flex items-center gap-3">
             <nav aria-label="Päänavigaatio" className="hidden items-center gap-1 text-sm font-semibold text-muted sm:flex">
