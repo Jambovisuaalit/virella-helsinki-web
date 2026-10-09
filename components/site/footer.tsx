@@ -17,7 +17,8 @@ export function SiteFooter() {
               {brandConfig.positioning} {brandConfig.supportMessage}
             </p>
             <p className="mt-5 text-xs leading-6 text-white/52">
-              {businessConfig.legalName} · Y-tunnus {businessConfig.businessId} · {businessConfig.city}
+              {businessConfig.contactName} · {businessConfig.contactTitle}<br />
+              {businessConfig.legalName} · Y-tunnus {businessConfig.businessId} · {businessConfig.streetAddress}, {businessConfig.city}
             </p>
           </div>
 
