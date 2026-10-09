@@ -16,6 +16,7 @@ export default async function LeadsPage() {
   try {
     const environment = process.env.VERCEL_ENV === "production" ? "production" : "preview";
     const result = await list({ prefix: `contact-leads/${environment}/`, limit: 100 });
+    // Pagination is intentionally not enabled yet: show a bounded inbox, not an unbounded fetch.
     const rows = await Promise.all(result.blobs.map(async (blob) => {
       const response = await get(blob.pathname, { access: "private" });
       if (!response || response.statusCode !== 200) return null;
@@ -31,7 +32,7 @@ export default async function LeadsPage() {
   return <main className="mx-auto max-w-5xl px-5 py-12">
     <nav className="mb-6 flex gap-5 text-sm"><Link href="/admin/sales">Sales Pipeline</Link><Link href="/admin/leads" aria-current="page">Aloituspyynnöt</Link></nav>
     <h1 className="text-3xl font-bold">Aloituspyynnöt</h1>
-    <p className="mt-2 text-sm">Vain kirjautuneelle ylläpidolle. Näytetään korkeintaan 100 viimeisintä haettua tallennetta.</p>
+    <p className="mt-2 text-sm">Vain kirjautuneelle ylläpidolle. Näytetään korkeintaan 100 tallennetta. Tämä näkymä ei vielä sisällä sivutusta.</p>
     {error ? <p role="alert" className="mt-6 rounded-lg border p-4">{error}</p> : null}
     {!error && leads.length === 0 ? <p className="mt-6">Ei tallennettuja aloituspyyntöjä.</p> : null}
     <div className="mt-8 space-y-4">{leads.map(({ path, lead }) => <article key={path} className="rounded-xl border p-5">
