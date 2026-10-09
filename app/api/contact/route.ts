@@ -78,8 +78,9 @@ export async function POST(request: Request) {
     });
 
     return respond();
-  } catch (error) {
-    console.error("Contact intake failed", error);
+  } catch {
+    // Do not log errors that may contain submitted personal data or storage credentials.
+    console.error("Contact intake failed");
     return respond("send");
   }
 }
