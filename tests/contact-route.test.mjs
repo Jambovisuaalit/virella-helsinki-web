@@ -110,6 +110,13 @@ test("native form keeps its 303 redirect and selected service", async () => {
   assert.equal(response.headers.get("location"), "https://virella.example/aloita?product=linkedin&error=invalid");
 });
 
+test("QA-marked requests persist rather than returning a simulated success", async () => {
+  const { POST, notifications } = handler();
+  const response = await POST(request({ message: "TESTI / QA" }));
+  assert.equal(response.status, 200);
+  assert.equal(notifications.length, 1);
+});
+
 test("generic contact requests remain supported", async () => {
   const { POST, notifications } = handler();
   assert.equal((await POST(request({ productId: "" }))).status, 200);
