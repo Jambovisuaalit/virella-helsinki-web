@@ -34,6 +34,15 @@ export function SiteFooter() {
             >
               {businessConfig.email}
             </a>
+            <a
+              href={businessConfig.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram (avautuu uuteen välilehteen)"
+              className="inline-flex min-h-11 items-center font-bold text-white transition hover:text-white/80"
+            >
+              Instagram
+            </a>
             <Link href="/tietosuoja" className="text-xs font-semibold text-white/65 underline decoration-white/20 underline-offset-4 transition hover:text-white hover:decoration-white/50">
               Tietosuoja ja evästeet
             </Link>

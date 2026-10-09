@@ -8,4 +8,5 @@ export const businessConfig = {
   adminEmail: "jami@virellahelsinki.com",
   phone: "+358 40 325 7892",
   phoneE164: "+358403257892",
+  instagramUrl: "https://www.instagram.com/virellahelsinki/",
 } as const;
