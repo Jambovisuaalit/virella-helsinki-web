@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FunnelEvent } from "@/components/analytics/funnel-event";
+import { ContactForm } from "@/components/forms/contact-form";
 import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
@@ -81,7 +82,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                   </Link>
                 </div>
               ) : (
-                <form action="/api/contact" method="post" className="space-y-5">
+                <ContactForm initialError={error}>
                   {productId ? <input type="hidden" name="productId" value={productId} /> : null}
                   <div className="sr-only" aria-hidden="true">
                     <label htmlFor="companyWebsite">Jätä tämä kenttä tyhjäksi</label>
@@ -101,12 +102,6 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                       Verkkomaksua ei käynnistetty. Lähetä lähtötiedot tästä, niin jatkamme sähköpostilla.
                     </p>
                   ) : null}
-                  {error ? (
-                    <p className="rounded-xl border border-action/20 bg-action/5 p-4 text-sm font-semibold text-action">
-                      Lähetys ei onnistunut. Tarkista pakolliset kentät ja yritä uudelleen.
-                    </p>
-                  ) : null}
-
                   <div>
                     <label htmlFor="name" className="text-sm font-bold">Nimi *</label>
                     <input id="name" name="name" required maxLength={120} autoComplete="name" className={fieldClassName} />
@@ -132,10 +127,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                     Lähettämällä lomakkeen hyväksyt, että tietoja käytetään yhteydenottoon. Katso <Link href="/tietosuoja" className="font-semibold text-brand underline underline-offset-2">tietosuojaseloste</Link>.
                   </p>
 
-                  <button type="submit" className="min-h-12 w-full rounded-full bg-action px-5 py-3 text-sm font-bold text-white transition hover:brightness-95 sm:w-auto">
-                    Lähetä aloituspyyntö
-                  </button>
-                </form>
+                </ContactForm>
               )}
             </div>
           </div>
