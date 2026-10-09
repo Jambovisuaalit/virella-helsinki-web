@@ -19,7 +19,7 @@ export const products = {
   },
   instagram: {
     id: "instagram",
-    name: "Instagram 3 kk -kampanja",
+    name: "Instagram + Facebook 3 kk -paketti",
     price: 490,
     billing: "month",
     commitmentMonths: 3,
