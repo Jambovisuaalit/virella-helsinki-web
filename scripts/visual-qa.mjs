@@ -157,20 +157,47 @@ try {
       const heroRect = h1.getBoundingClientRect();
       const h1LineHeight = parseFloat(getComputedStyle(h1).lineHeight);
       const priceCards = [...document.querySelectorAll('#palvelut [aria-label$="-palvelun hinta"]')];
-      const prices = priceCards.map((el) => el.textContent?.replace(/\\s+/g, " ").trim());
+      const prices = priceCards.map((el) => el.textContent?.replace(/\s+/g, " ").trim());
       const auditDetails = document.querySelector('[aria-label="Näkyvyyskartoituksen toimitus"]');
       const links = [...document.querySelectorAll('a[href="/aloita?kartoitus=1"]')];
       return {
         documentWidth: document.documentElement.scrollWidth,
-        h1Text: h1.textContent?.replace(/\\s+/g, " ").trim(),
+        h1Text: h1.textContent?.replace(/\s+/g, " ").trim(),
         heroWidth: Math.round(heroRect.width),
         heroX: Math.round(heroRect.x),
         heroRight: Math.round(heroRect.right),
         heroLines: Math.round(heroRect.height / h1LineHeight * 10) / 10,
         priceCards: prices,
-        auditDetails: auditDetails?.textContent?.replace(/\\s+/g, " ").trim(),
+        auditDetails: auditDetails?.textContent?.replace(/\s+/g, " ").trim(),
         auditDetailLines: auditDetails?.querySelectorAll("p").length,
         auditLinks: links.length,
+        heroTracking: getComputedStyle(h1).letterSpacing,
+        heroImageLoaded: (() => { const img = document.querySelector('img[src="/images/kartoitus-esimerkki.svg"]'); return Boolean(img && img.complete && img.naturalWidth > 0); })(),
+        heroImageRight: (() => { const img = document.querySelector('img[src="/images/kartoitus-esimerkki.svg"]'); return img ? Math.round(img.getBoundingClientRect().right) : null; })(),
+        previewCaption: document.querySelector("figure figcaption")?.textContent?.trim(),
+        contrastRows: (() => {
+          function luminance(color) {
+            const parts = color.match(/[\\d.]+/g)?.slice(0, 3).map(Number);
+            if (!parts || parts.length !== 3) return null;
+            const converted = parts.map(x => { const n = x / 255; return n <= 0.04045 ? n / 12.92 : Math.pow((n + .055) / 1.055, 2.4); });
+            return .2126 * converted[0] + .7152 * converted[1] + .0722 * converted[2];
+          }
+          function background(element) {
+            let current = element;
+            while(current) {
+              const color = getComputedStyle(current).backgroundColor;
+              if (color && color !== "rgba(0, 0, 0, 0)" && color !== "transparent") return color;
+              current = current.parentElement;
+            }
+            return "rgb(9, 11, 12)";
+          }
+          return [...document.querySelectorAll("#palvelut article p, #palvelut article li, #palvelut article a, figure figcaption")].map(el => {
+            const fg = luminance(getComputedStyle(el).color);
+            const bg = luminance(background(el));
+            const ratio = fg === null || bg === null ? 0 : (Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05);
+            return {text: el.textContent?.trim().slice(0,40), ratio: Math.round(ratio * 100) / 100, fontSize: getComputedStyle(el).fontSize};
+          });
+        })(),
       };
     });
     console.log("HOME VIEWPORT " + spec.width + ": " + JSON.stringify(home));
@@ -186,6 +213,14 @@ try {
     assert.equal(home.auditDetailLines, 3, "Audit mechanism must use exactly three lines");
     assert.ok(home.auditDetails.includes("2 arkipäivässä"), "Missing SLA");
     assert.ok(home.auditLinks >= 2, "Audit CTA missing");
+    assert.ok(home.heroImageLoaded, "Audit preview image did not load");
+    assert.ok(home.heroImageRight <= spec.width + 1, "Audit preview overflows viewport");
+    assert.ok(home.previewCaption.includes("ei oikea asiakasraportti"), "Example preview needs explicit label");
+    assert.ok(parseFloat(home.heroTracking) >= -1, "Hero letter spacing too tight at " + spec.width);
+    for (const row of home.contrastRows) {
+      assert.ok(row.ratio >= 4.5, "AA text contrast failed at " + spec.width + ": " + row.text + " ratio=" + row.ratio);
+    }
+    console.log("HOME CONTRAST " + spec.width + ": " + JSON.stringify(home.contrastRows));
 
     await page.screenshot({ path: output + "/home-" + spec.width + "-full.png", fullPage: true, animations: "disabled" });
     await page.screenshot({ path: output + "/home-" + spec.width + "-hero.png", animations: "disabled" });
