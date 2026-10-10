@@ -139,8 +139,73 @@ try {
     results.push({ width: spec.width, heroLines: checks.heroLines, documentScrollWidth: checks.documentScrollWidth, cards: checks.cards, errors });
     await page.close();
   }
+
+  // New Virella homepage: concrete hero, visible service prices and SLA copy.
+  for (const spec of cases) {
+    const page = await browser.newPage({
+      viewport: { width: spec.width, height: spec.height },
+      deviceScaleFactor: 1,
+      reducedMotion: "reduce",
+    });
+    const errors = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    const response = await page.goto(origin + "/", { waitUntil: "networkidle" });
+    assert.equal(response.status(), 200);
+    await page.evaluate(() => document.fonts.ready);
+    const home = await page.evaluate(() => {
+      const h1 = document.querySelector("#home-title");
+      const heroRect = h1.getBoundingClientRect();
+      const h1LineHeight = parseFloat(getComputedStyle(h1).lineHeight);
+      const priceCards = [...document.querySelectorAll('#palvelut [aria-label$="-palvelun hinta"]')];
+      const prices = priceCards.map((el) => el.textContent?.replace(/\\s+/g, " ").trim());
+      const auditDetails = document.querySelector('[aria-label="Näkyvyyskartoituksen toimitus"]');
+      const links = [...document.querySelectorAll('a[href="/aloita?kartoitus=1"]')];
+      return {
+        documentWidth: document.documentElement.scrollWidth,
+        h1Text: h1.textContent?.replace(/\\s+/g, " ").trim(),
+        heroWidth: Math.round(heroRect.width),
+        heroX: Math.round(heroRect.x),
+        heroRight: Math.round(heroRect.right),
+        heroLines: Math.round(heroRect.height / h1LineHeight * 10) / 10,
+        priceCards: prices,
+        auditDetails: auditDetails?.textContent?.replace(/\\s+/g, " ").trim(),
+        auditDetailLines: auditDetails?.querySelectorAll("p").length,
+        auditLinks: links.length,
+      };
+    });
+    console.log("HOME VIEWPORT " + spec.width + ": " + JSON.stringify(home));
+    assert.ok(home.documentWidth <= spec.width + 1, "Homepage horizontal overflow at " + spec.width);
+    assert.ok(home.heroX >= 0 && home.heroRight <= spec.width + 1, "Homepage H1 overflows at " + spec.width);
+    assert.match(home.h1Text, /Verkkosivut, Google-näkyvyys ja some/);
+    assert.ok(!home.h1Text.includes("Enemmän yhteydenottoja"), "Outdated result claim in H1");
+    assert.ok(home.heroLines <= (spec.width === 320 ? 8 : spec.width === 390 ? 7 : 4), "Homepage H1 wraps excessively at " + spec.width);
+    assert.equal(home.priceCards.length, 3, "Missing service pricing at " + spec.width);
+    assert.ok(home.priceCards.join(" ").includes("490"), "Missing some price");
+    assert.ok(home.priceCards.join(" ").includes("590"), "Missing Google setup price");
+    assert.ok(home.priceCards.join(" ").includes("1 500") || home.priceCards.join(" ").includes("1\u00a0500"), "Missing lead setup price");
+    assert.equal(home.auditDetailLines, 3, "Audit mechanism must use exactly three lines");
+    assert.ok(home.auditDetails.includes("2 arkipäivässä"), "Missing SLA");
+    assert.ok(home.auditLinks >= 2, "Audit CTA missing");
+
+    await page.screenshot({ path: output + "/home-" + spec.width + "-full.png", fullPage: true, animations: "disabled" });
+    await page.screenshot({ path: output + "/home-" + spec.width + "-hero.png", animations: "disabled" });
+    await page.locator("#palvelut").screenshot({ path: output + "/home-" + spec.width + "-pricing.png", animations: "disabled" });
+
+    if (spec.width === 390) {
+      await page.goto(origin + "/aloita?kartoitus=1", { waitUntil: "networkidle" });
+      const websiteIsRequired = await page.locator('input[name="website"]').getAttribute("required");
+      const notesAreRequired = await page.locator('textarea[name="message"]').getAttribute("required");
+      assert.notEqual(websiteIsRequired, null, "Audit website URL must be required");
+      assert.equal(notesAreRequired, null, "Audit notes must be optional");
+      await page.screenshot({ path: output + "/audit-form-390.png", fullPage: true, animations: "disabled" });
+    }
+    assert.deepEqual(errors, [], "Homepage browser exceptions: " + errors.join("; "));
+    results.push({ homepageWidth: spec.width, heroLines: home.heroLines, scrollWidth: home.documentWidth, prices: home.priceCards });
+    await page.close();
+  }
+
   writeFileSync(`${output}/summary.json`, JSON.stringify(results, null, 2));
-  console.log("VISUAL QA PASSED: 320, 390, 1440");
+  console.log("VISUAL QA PASSED: both pages at 320, 390, 1440");
 } finally {
   await browser.close();
 }
