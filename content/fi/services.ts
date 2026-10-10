@@ -24,7 +24,7 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
       "Haluat korjata nykyisen sivun tärkeimmät ongelmat nopeasti ilman kuukausien verkkosivuprojektia",
     ],
     process: [
-      { title: "Osta ja anna lähtötiedot", text: "Maksat 690 € verkossa ja täytät lyhyen aloituskyselyn. Tarvitsemme nykyisen sivuston osoitteen, tavoitteen sekä toteutukseen tarvittavat materiaalit tai käyttöoikeudet. Salasanoja ei lähetetä lomakkeella." },
+      { title: "Lähetä aloituspyyntö", text: "Lähetät lähtötiedot ja vahvistamme palvelun sisällön, maksutavan ja aloituksen sähköpostilla. Tarvitsemme nykyisen sivuston osoitteen, tavoitteen sekä toteutukseen tarvittavat materiaalit tai käyttöoikeudet. Salasanoja ei lähetetä lomakkeella." },
       { title: "Korjaamme tärkeimmät kitkakohdat", text: "Käymme läpi pääviestin, toimintakehotukset, mobiilikäytön, yhteydenottopolun, luottamusta rakentavat elementit sekä perustason SEO- ja metatiedot. Toteutamme palveluun kuuluvat sovitut korjaukset suoraan nykyiseen sivuun." },
       { title: "Saat valmiit muutokset ja yhteenvedon", text: "Toimitamme tehdyt korjaukset, ennen/jälkeen-yhteenvedon ja yhden kootun korjauskierroksen. Jos löydämme tämän palvelun ulkopuolelle jäävän suuremman ongelman, kerromme siitä erikseen — mitään lisätyötä ei tehdä automaattisesti." },
     ],
@@ -36,11 +36,11 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
     ],
   },
   instagram: {
-    eyebrow: "Instagram-markkinointi yrityksille",
-    title: "Instagram-markkinointi valmiina palveluna.",
-    lead: "Virella suunnittelee ja toteuttaa yrityksesi Instagram-sisällön, jotta näkyvyys ei jää muun työn jalkoihin.",
+    eyebrow: "Instagram- ja Facebook-markkinointi yrityksille",
+    title: "Instagram ja Facebook valmiina palveluna.",
+    lead: "Virella suunnittelee ja toteuttaa yrityksesi Instagram- ja Facebook-sisällöt, jotta näkyvyys ei jää muun työn jalkoihin.",
     summary: "Saat selkeän kuukausittaisen sisältömallin, suunnittelun, julkaisujen toteutuksen ja raportoinnin yhdestä paikasta.",
-    audienceTitle: "Kenelle Instagram-palvelu sopii?",
+    audienceTitle: "Kenelle Instagram + Facebook -paketti sopii?",
     audience: [
       "Yritykselle, jolla ei ole omaa markkinointitiimiä",
       "Yrittäjälle, jonka oma aika kuluu asiakastyöhön",
@@ -73,6 +73,7 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
       { title: "Julkaisut ja optimointi", text: "Sisältö tuotetaan sovitun mallin mukaan ja profiilin kokonaisuutta kehitetään rinnalla." },
     ],
     faq: [
+      { question: "Miten 4–8 julkaisun kuukausimäärä määräytyy?", answer: "Tarkka julkaisumäärä ja rytmi sovitaan sisältöstrategian yhteydessä tavoitteiden, aiheiden ja käytettävissä olevan asiantuntijamateriaalin perusteella. Vahvistamme määrän kirjallisesti ennen aloitusta." },
       { question: "Kirjoitetaanko julkaisut puolestani?", answer: "Kyllä. Sisältö rakennetaan alkukyselyn ja sovitun sisältöstrategian pohjalta." },
       { question: "Voiko palvelu keskittyä yrityssivuun?", answer: "Kyllä. Toteutus voidaan painottaa henkilöprofiiliin, yrityssivuun tai niiden yhdistelmään lähtötilanteen mukaan." },
     ],
