@@ -1,7 +1,7 @@
 export const brandConfig = {
   name: "Virella Helsinki",
-  positioning: "Markkinointi valmiina palveluna.",
-  supportMessage: "Ulkoista markkinointi. Pidä fokus liiketoiminnassa.",
+  positioning: "Paikallisen yrityksen digitaalisen näkyvyyden kumppani.",
+  supportMessage: "Verkkosivut, Google-löydettävyys, sosiaalinen media ja yhteydenottopolut.",
   direction: "Modern Nordic B2B",
   colors: {
     teal: "#135B6C",
