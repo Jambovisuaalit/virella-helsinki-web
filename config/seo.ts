@@ -6,5 +6,5 @@ export const seoConfig = {
   siteUrl: "https://virellahelsinki.com",
   defaultTitle: "Markkinointi valmiina palveluna | Virella Helsinki",
   titleTemplate: `%s | ${brandConfig.name}`,
-  defaultDescription: `Instagram- ja LinkedIn-markkinointi valmiina palveluna. Virella Helsinki hoitaa suunnittelun, sisällöt ja julkaisun. ${products.instagram.price} €/kk, ${products.instagram.commitmentMonths} kk minimi.`,
+  defaultDescription: `Instagram-, Facebook- ja LinkedIn-markkinointi valmiina palveluna. Virella Helsinki hoitaa suunnittelun, sisällöt ja julkaisun. ${products.instagram.price} €/kk, ${products.instagram.commitmentMonths} kk minimi.`,
 } as const;

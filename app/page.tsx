@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { SectionContainer } from "@/components/layout/section-container";
 import { SocialPricingCard } from "@/components/marketing/social-pricing-card";
 import { SiteFooter } from "@/components/site/footer";
@@ -47,6 +48,26 @@ export default function Home() {
             <div className="landing-section-intro"><div><p className="landing-eyebrow">Näin se toimii</p><h2 id="process-title">Yksi asia vähemmän<br />hoidettavana.</h2></div><p>Hands-free ei tarkoita, että katoat prosessista. Sinä tunnet yrityksesi. Me muutamme sen osaamisen valmiiksi sisällöksi.</p></div>
             <ol className="landing-steps">{steps.map((step) => <li key={step.number}><span className="landing-step-number">{step.number}</span><h3>{step.title}</h3><p>{step.text}</p></li>)}</ol>
             <p className="landing-process-note">Sinun osuutesi: lähtötiedot, materiaalit ja hyväksyntä. Virellan osuus: suunnittelu, toteutus, julkaisu ja seuranta.</p>
+          </SectionContainer>
+        </section>
+        <section className="landing-process" aria-labelledby="samples-title">
+          <SectionContainer>
+            <div className="landing-section-intro">
+              <div><p className="landing-eyebrow">Työnäytteet · YOB Group</p><h2 id="samples-title">Työmaakuvista<br />valmiiksi sisällöksi.</h2></div>
+              <p>Kolme työnäytettä YOB Groupille tuotetusta sisältöpaketista. Näytteet havainnollistavat kuvien ja tekstien toteutusta; ne eivät ole lupaus näkyvyydestä tai myyntituloksista.</p>
+            </div>
+            <div className="mt-8 grid gap-6 md:grid-cols-3">
+              {[
+                { id: "01", title: "Injektointi · Forssa", text: "Kohteen työ ja sijainti esiin selkeällä otsikolla ja aidolla työmaakuvalla." },
+                { id: "02", title: "Parvekelattioiden pinnoitus", text: "Valmis työnjälki esiin. Yrityksen tunnisteet ja yhteystiedot osaksi julkaisua." },
+                { id: "08", title: "Väestönsuojien kunnostus", text: "Konkreettinen palvelu asiakkaan kuvamateriaalista yhtenäiseen julkaisupohjaan." },
+              ].map((sample) => (
+                <figure key={sample.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-surface">
+                  <Image src={`/images/work-samples/yob-${sample.id}.webp`} alt={`YOB Groupin sisältönäyte: ${sample.title}`} width={900} height={1125} sizes="(max-width: 767px) 100vw, 33vw" className="h-auto w-full" />
+                  <figcaption className="p-5"><h3 className="text-lg font-bold">{sample.title}</h3><p className="mt-2 text-sm leading-6 text-muted">{sample.text}</p></figcaption>
+                </figure>
+              ))}
+            </div>
           </SectionContainer>
         </section>
         <section id="hinnoittelu" className="landing-pricing" aria-labelledby="pricing-title">

@@ -25,7 +25,7 @@ export const products = {
     commitmentMonths: 3,
     totalPrice: 1470,
     features: [
-      "12 alkuperäistä julkaisua / 30 päivää (Instagram ja Facebook)",
+      "12 sisältöä / 30 päivää, joista jokainen julkaistaan Instagramissa ja Facebookissa",
       "Sisältösuunnittelu ja julkaisukalenteri",
       "Julkaisutekstit ja asiakkaan toimittaman kuvamateriaalin hyödyntäminen",
       "Julkaisujen ajastus ja julkaisu sovituille kanaville",
@@ -41,7 +41,7 @@ export const products = {
     commitmentMonths: 3,
     totalPrice: 1470,
     features: [
-      "4–8 julkaisua / kk",
+      "4–8 julkaisua / kk — tarkka määrä ja julkaisurytmi sovitaan ennen aloitusta",
       "Sisältöstrategia",
       "Profiilin optimointi",
       "Kuukausiraportointi",
