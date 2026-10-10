@@ -101,7 +101,7 @@ export default function SocialMediaPage() {
                     <p className="mt-1 text-sm text-zinc-400">Koottu korjauskierros</p>
                   </div>
                 </div>
-                <p className="mt-6 text-xs leading-5 text-zinc-500">
+                <p className="mt-6 text-xs leading-5 text-zinc-400">
                   Alla on havainnollistava sisältökalenterin esimerkki, ei
                   asiakkaan referenssi tai toteutunut tulos.
                 </p>
@@ -124,7 +124,7 @@ export default function SocialMediaPage() {
                 <ol className="mt-5 grid gap-3 sm:grid-cols-2">
                   {sampleCalendar.map((entry) => (
                     <li key={entry.week} className="min-w-0 rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-                      <span className="font-mono text-xs text-zinc-500">VIIKKO {entry.week}</span>
+                      <span className="font-mono text-xs text-zinc-400">VIIKKO {entry.week}</span>
                       <p className="mt-2 font-semibold text-zinc-100">{entry.topic}</p>
                       <p className="mt-2 text-sm leading-6 text-zinc-400">{entry.description}</p>
                     </li>
