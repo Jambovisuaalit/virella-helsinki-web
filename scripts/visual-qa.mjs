@@ -316,7 +316,7 @@ try {
         assert.equal(await menu.count(), 0, "Outside click did not dismiss mobile menu");
 
         await page.getByRole("button", { name: "Avaa valikko" }).click();
-        await menu.locator('a[href="' + route.activeLink + '"]').click();
+        await menu.getByRole("link", { name: route.label, exact: true }).click();
         const expected = route.activeLink.startsWith("/") ? route.activeLink : route.path + route.activeLink;
         await page.waitForURL(url => url.pathname + url.hash === expected, { timeout: 10000 });
         assert.equal(await page.getByRole("navigation", { name: "Mobiilivalikko" }).count(), 0, "Navigation did not close after selecting a link");
