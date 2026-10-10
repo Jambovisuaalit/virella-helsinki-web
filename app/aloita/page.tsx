@@ -19,6 +19,7 @@ export const dynamic = "force-dynamic";
 type StartPageProps = {
   searchParams: Promise<{
     product?: string | string[];
+    kartoitus?: string | string[];
     submitted?: string | string[];
     error?: string | string[];
     checkout_error?: string | string[];
@@ -35,6 +36,7 @@ const fieldClassName =
 export default async function StartPage({ searchParams }: StartPageProps) {
   const params = await searchParams;
   const productId = first(params.product) ?? "";
+  const isVisibilityAudit = first(params.kartoitus) === "1" && !productId;
   const submitted = first(params.submitted) === "1";
   const error = first(params.error);
   const checkoutError = first(params.checkout_error) === "1";
@@ -45,29 +47,31 @@ export default async function StartPage({ searchParams }: StartPageProps) {
 
   return (
     <>
-      {submitted ? <FunnelEvent name="contact_submit" productId={productId || undefined} source="project_intake" /> : null}
+      {submitted ? <FunnelEvent name="contact_submit" productId={productId || undefined} source={isVisibilityAudit ? "visibility_audit" : "project_intake"} /> : null}
       <SiteHeader />
       <main className="bg-background">
         <SectionContainer className="py-14 sm:py-18 md:py-24">
           <div className="mx-auto grid max-w-[980px] gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-14">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">Aloita projekti</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand sm:text-sm">{isVisibilityAudit ? "Maksuton näkyvyyskartoitus" : "Aloita projekti"}</p>
               <h1 className="mt-4 text-4xl font-extrabold leading-[1.04] tracking-[-0.045em] sm:text-5xl">
-                {submitted ? "Kiitos. Pyyntö on vastaanotettu." : product ? `Aloita ${product.name}.` : "Kerro mitä haluat saada kuntoon."}
+                {submitted ? "Kiitos. Pyyntö on vastaanotettu." : isVisibilityAudit ? "Selvitetään näkyvyytesi tärkeimmät korjaukset." : product ? `Aloita ${product.name}.` : "Kerro mitä haluat saada kuntoon."}
               </h1>
               <p className="mt-5 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8">
                 {submitted
                   ? "Virella sai lähtötietosi. Palaamme asiaan sähköpostilla seuraavaa askelta varten."
-                  : isSocial
+                  : isVisibilityAudit
+                    ? "Kerro yrityksestäsi ja lisää verkkosivusi osoite, jos sellainen on. Tarkastelemme julkista verkkonäkyvyyttä ja ehdotamme kolmea tärkeintä korjauskohdetta. Kartoitus on maksuton eikä velvoita ostamaan palvelua."
+                    : isSocial
                     ? "Kerro yrityksestäsi ja siitä, mitä haluat tuoda esiin. Instagram-paketti kattaa myös Facebookin; LinkedIn on erillinen palvelu. Vahvistamme lähtötiedot ja aloituksen sähköpostilla."
                     : "Lähetä tärkeimmät lähtötiedot. Saat vastauksen sähköpostilla ilman erillistä myyntipalaveria tai pitkää tarjousprosessia."}
               </p>
 
               {!submitted ? (
                 <div className="mt-8 space-y-3 text-sm leading-6 text-muted">
-                  <p className="rounded-xl border border-border bg-surface p-4">1. {isSocial ? "Kerro yrityksesi palvelut, kohderyhmä ja tavoite." : "Kerro yritys, verkkosivu ja tärkein tavoite."}</p>
-                  <p className="rounded-xl border border-border bg-surface p-4">2. {isSocial ? "Sovimme materiaalit, käyttöoikeudet ja sisältöjen hyväksynnän." : "Arvioimme sopiiko rajattu toteutus tilanteeseesi."}</p>
-                  <p className="rounded-xl border border-border bg-surface p-4">3. {isSocial ? "Vahvistamme maksutavan ja aloituksen sähköpostilla." : "Saat selkeän seuraavan askeleen sähköpostilla."}</p>
+                  <p className="rounded-xl border border-border bg-surface p-4">1. {isVisibilityAudit ? "Kerro yrityksesi nimi ja näkyvyyden tärkein haaste." : isSocial ? "Kerro yrityksesi palvelut, kohderyhmä ja tavoite." : "Kerro yritys, verkkosivu ja tärkein tavoite."}</p>
+                  <p className="rounded-xl border border-border bg-surface p-4">2. {isVisibilityAudit ? "Tarkastelemme sivustoa, Google-löydettävyyttä ja somekanavia julkisten tietojen perusteella." : isSocial ? "Sovimme materiaalit, käyttöoikeudet ja sisältöjen hyväksynnän." : "Arvioimme sopiiko rajattu toteutus tilanteeseesi."}</p>
+                  <p className="rounded-xl border border-border bg-surface p-4">3. {isVisibilityAudit ? "Saat tiedon tärkeimmistä korjauksista. Mahdollinen jatkotyö sovitaan erikseen." : isSocial ? "Vahvistamme maksutavan ja aloituksen sähköpostilla." : "Saat selkeän seuraavan askeleen sähköpostilla."}</p>
                 </div>
               ) : null}
             </div>
@@ -84,6 +88,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
               ) : (
                 <ContactForm initialError={error}>
                   {productId ? <input type="hidden" name="productId" value={productId} /> : null}
+                  {isVisibilityAudit ? <input type="hidden" name="requestType" value="visibility_audit" /> : null}
                   <div className="sr-only" aria-hidden="true">
                     <label htmlFor="companyWebsite">Jätä tämä kenttä tyhjäksi</label>
                     <input id="companyWebsite" name="companyWebsite" tabIndex={-1} autoComplete="off" />
@@ -119,7 +124,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                     <input id="website" name="website" type="url" maxLength={300} placeholder="https://" className={fieldClassName} />
                   </div>
                   <div>
-                    <label htmlFor="message" className="text-sm font-bold">{isSocial ? "Mitä yrityksesi tekee ja kenelle? *" : "Mitä haluat saada kuntoon? *"}</label>
+                    <label htmlFor="message" className="text-sm font-bold">{isVisibilityAudit ? "Missä kaipaat eniten näkyvyyttä tai yhteydenottoja? *" : isSocial ? "Mitä yrityksesi tekee ja kenelle? *" : "Mitä haluat saada kuntoon? *"}</label>
                     <textarea id="message" name="message" required maxLength={2000} rows={6} className={fieldClassName} />
                   </div>
 
