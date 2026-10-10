@@ -123,3 +123,32 @@ test("generic contact requests remain supported", async () => {
   assert.equal(notifications.length, 1);
   assert.match(notifications[0].subject, /Yhteydenotto/);
 });
+
+test("free visibility audit is persisted and returns to the audit confirmation", async () => {
+  const { POST, notifications } = handler();
+  const response = await POST(request({ productId: "", requestType: "visibility_audit" }));
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { ok: true, redirect: "/aloita?kartoitus=1&submitted=1" });
+  assert.equal(notifications.length, 1);
+  assert.match(notifications[0].subject, /Maksuton näkyvyyskartoitus/);
+  assert.match(notifications[0].text, /Pyyntötyyppi: visibility_audit/);
+});
+
+test("audit storage failures do not report successful delivery", async () => {
+  const { POST } = handler({ failStorage: true });
+  const response = await POST(request({ productId: "", requestType: "visibility_audit" }));
+  assert.equal(response.status, 503);
+  assert.deepEqual(await response.json(), { ok: false, error: "send", redirect: "/aloita?kartoitus=1&error=send" });
+});
+
+for (const input of [
+  { productId: "instagram", requestType: "visibility_audit" },
+  { productId: "", requestType: "unsupported" },
+]) {
+  test("invalid request-type combination is rejected without persistence", async () => {
+    const { POST, notifications } = handler();
+    const response = await POST(request(input));
+    assert.equal(response.status, 400);
+    assert.equal(notifications.length, 0);
+  });
+}
