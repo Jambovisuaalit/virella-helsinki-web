@@ -3,7 +3,7 @@ export const businessConfig = {
   legalName: "Tmi Jami Harju",
   businessId: "3581581-6",
   contactName: "Jami Harju",
-  contactTitle: "CEO | Virella Helsinki",
+  contactTitle: "Yrittäjä | Virella Helsinki",
   streetAddress: "Mannerheimintie 109",
   city: "Helsinki",
   country: "Finland",

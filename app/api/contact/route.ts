@@ -34,6 +34,7 @@ export async function POST(request: Request) {
     return respond("invalid");
   }
   const productId = safe(formData.get("productId"), 120);
+  const requestType = safe(formData.get("requestType"), 40);
   const name = safe(formData.get("name"), 120);
   const email = safe(formData.get("email"), 200);
   const company = safe(formData.get("company"), 160);
@@ -42,6 +43,8 @@ export async function POST(request: Request) {
   const honeypot = safe(formData.get("companyWebsite"), 200);
   const productKey = productId ? getProductKeyById(productId) : undefined;
   if (productKey && productId) redirectUrl.searchParams.set("product", productId);
+  const isVisibilityAudit = requestType === "visibility_audit";
+  if (isVisibilityAudit) redirectUrl.searchParams.set("kartoitus", "1");
 
   // Quietly accept obvious bot submissions without persisting a lead.
   if (honeypot) {
@@ -50,11 +53,15 @@ export async function POST(request: Request) {
 
   if (!name || !email || !validEmail(email) || !message ||
       company === undefined || website === undefined || productId === undefined ||
-      honeypot === undefined || (productId && !productKey)) {
+      honeypot === undefined || requestType === undefined ||
+      (requestType !== "" && !isVisibilityAudit) ||
+      (productId && !productKey) || (productId && isVisibilityAudit)) {
     return respond("invalid");
   }
 
-  const productName = productKey ? products[productKey].name : "Yhteydenotto";
+  const productName = isVisibilityAudit
+    ? "Maksuton näkyvyyskartoitus"
+    : productKey ? products[productKey].name : "Yhteydenotto";
 
   const receivedAt = new Date().toISOString();
 
@@ -66,6 +73,7 @@ export async function POST(request: Request) {
         "Virella Helsinki — uusi aloituspyyntö",
         "",
         `Palvelu: ${productName}`,
+        `Pyyntötyyppi: ${isVisibilityAudit ? "visibility_audit" : "general"}`,
         `Nimi: ${name}`,
         `Sähköposti: ${email}`,
         `Yritys: ${company || "—"}`,

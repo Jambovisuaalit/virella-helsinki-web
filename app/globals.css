@@ -248,3 +248,97 @@ a {
 .landing-page .landing-channel-choice label:not(.is-selected):hover { background: var(--mist); }
 .landing-page .landing-price-content li > span { color: var(--brand); }
 .landing-page .landing-faq summary:hover { color: var(--brand); }
+
+/* Virella v1.2: dark-system refinements and balanced social pricing layout. */
+.landing-pricing-left {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 48px;
+}
+.landing-pricing-layout > .landing-price-card {
+  grid-column: 2;
+  grid-row: 1;
+}
+.landing-pricing-left .landing-faq {
+  grid-column: auto;
+  grid-row: auto;
+}
+.landing-pricing-layout .landing-price-content ul {
+  min-height: 0;
+}
+.landing-header-cta {
+  background: var(--action);
+  color: #fff;
+}
+.landing-header-cta:hover {
+  background: #ac381d;
+}
+
+@media (max-width: 767px) {
+  .landing-pricing-left {
+    gap: 32px;
+  }
+  .landing-pricing-layout > .landing-price-card {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+
+/* Social service landing: cyan is reserved for the main action, prices and
+   one emphasized word in the hero. Proof and plan details stay neutral. */
+.social-landing .brand-logo,
+.social-landing .landing-eyebrow,
+.social-landing .landing-step-number,
+.social-landing .landing-text-link,
+.social-landing .landing-contact-actions > a:last-child {
+  color: #e4e4e7;
+}
+
+.social-landing .landing-hero h1 span,
+.social-landing .landing-hero-price strong {
+  color: #22d3ee;
+}
+
+.social-landing .landing-primary,
+.social-landing .landing-header-cta {
+  background: #22d3ee;
+  color: #09090b;
+  box-shadow: none;
+}
+
+.social-landing .landing-primary:hover,
+.social-landing .landing-header-cta:hover {
+  background: #67e8f9;
+  color: #09090b;
+}
+
+.social-landing .landing-faq summary:hover {
+  color: #f4f4f5;
+}
+
+.social-landing .landing-skip-link {
+  border-color: #71717a;
+}
+
+.social-landing .landing-contact-actions > a:last-child:hover,
+.social-landing .landing-text-link:hover {
+  color: #fff;
+}
+
+.social-landing .landing-hero-price {
+  color: #a1a1aa;
+}
+
+.social-landing .landing-hero-price strong {
+  font-weight: 700;
+}
+
+.social-landing .landing-pricing {
+  background: #101012;
+}
+
+.social-landing .landing-faq {
+  grid-column: auto;
+  grid-row: auto;
+}
