@@ -107,7 +107,6 @@ export default function Home() {
                 <p>Lähetä verkkosivusi osoite.</p>
                 <p>Käymme läpi sivun, Google-löydettävyyden ja yhteydenottopolun.</p>
                 <p className="font-semibold text-foreground">Saat 3 tärkeintä korjausehdotusta sähköpostiisi 2 arkipäivässä.</p>
-                <p className="pt-1 text-xs">Maksuton. Ei ostopakkoa.</p>
               </div>
             </div>
             <div className="mt-20 grid grid-cols-2 gap-y-5 border-y border-border py-6 text-center text-sm font-medium text-muted md:grid-cols-4 md:gap-y-0">
