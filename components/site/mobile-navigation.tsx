@@ -12,9 +12,10 @@ type NavigationItem = {
 type Props = {
   items: readonly NavigationItem[];
   cta: NavigationItem;
+  social?: boolean;
 };
 
-export function MobileNavigation({ items, cta }: Props) {
+export function MobileNavigation({ items, cta, social = false }: Props) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -92,7 +93,7 @@ export function MobileNavigation({ items, cta }: Props) {
             <Link
               href={cta.href}
               onClick={() => setOpen(false)}
-              className="flex min-h-12 items-center justify-center rounded-lg bg-action px-4 py-3 text-center text-sm font-bold text-white transition hover:brightness-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+              className={`flex min-h-12 items-center justify-center rounded-lg px-4 py-3 text-center text-sm font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${social ? "bg-cyan-400 text-zinc-950 hover:bg-cyan-300" : "bg-action text-white hover:brightness-95"}`}
             >
               {cta.label}
             </Link>
