@@ -13,7 +13,7 @@ export function SiteHeader({ landing = false }: { landing?: boolean }) {
           <div className="landing-header-inner">
             <BrandLogo landing />
             <nav aria-label="Päänavigaatio" className="landing-navigation"><a href="#prosessi">Näin toimii</a><a href="#hinnoittelu">Hinnoittelu</a></nav>
-            <a href="#hinnoittelu" className="landing-header-cta">Valitse palvelu</a>
+            <a href="#hinnoittelu" className="landing-header-cta">Katso hinnat</a>
           </div>
         </SectionContainer>
       </header>
@@ -26,15 +26,16 @@ export function SiteHeader({ landing = false }: { landing?: boolean }) {
           <BrandLogo compact />
 
           <div className="flex items-center gap-3">
-            <nav aria-label="Päänavigaatio" className="hidden items-center gap-1 text-sm font-semibold text-muted sm:flex">
+            <nav aria-label="Päänavigaatio" className="hidden items-center gap-1 text-sm font-semibold text-muted lg:flex">
               {primaryNavigation.map((item) => (
                 <Link key={item.href} href={item.href} className="rounded-full px-3 py-2 transition hover:bg-surface hover:text-foreground">
                   {item.label}
                 </Link>
               ))}
             </nav>
+            <Link href="/aloita?kartoitus=1" aria-label="Pyydä maksuton näkyvyyskartoitus" className="inline-flex min-h-11 items-center justify-center rounded-lg bg-action px-3 py-2 text-xs font-bold text-white transition hover:brightness-95 sm:px-4 sm:text-sm"><span className="sm:hidden">Kartoitus</span><span className="hidden sm:inline">Pyydä maksuton kartoitus</span></Link>
             {isPreview ? (
-              <span className="rounded-full border border-brand/15 bg-brand/5 px-2.5 py-1 text-xs font-semibold text-brand">
+              <span className="hidden rounded-full border border-brand/15 bg-brand/5 px-2.5 py-1 text-xs font-semibold text-brand xl:inline-flex">
                 Preview
               </span>
             ) : null}
