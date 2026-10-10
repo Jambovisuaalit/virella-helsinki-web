@@ -13,6 +13,16 @@ function validEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+function validAuditWebsite(value: string) {
+  try {
+    const url = new URL(value);
+    return (url.protocol === "https:" || url.protocol === "http:") &&
+      url.hostname.includes(".") && !url.username && !url.password;
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(request: Request) {
   const origin = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin;
   const redirectUrl = new URL("/aloita", origin);
@@ -51,7 +61,8 @@ export async function POST(request: Request) {
     return respond();
   }
 
-  if (!name || !email || !validEmail(email) || !message ||
+  if (!name || !email || !validEmail(email) || (!message && !isVisibilityAudit) ||
+      (isVisibilityAudit && (!website || !validAuditWebsite(website))) ||
       company === undefined || website === undefined || productId === undefined ||
       honeypot === undefined || requestType === undefined ||
       (requestType !== "" && !isVisibilityAudit) ||
@@ -79,6 +90,11 @@ export async function POST(request: Request) {
         `Yritys: ${company || "—"}`,
         `Verkkosivu: ${website || "—"}`,
         `Vastaanotettu: ${receivedAt}`,
+        ...(isVisibilityAudit ? [
+          "Toimituslupaus: kolme priorisoitua korjausehdotusta perusteluineen sähköpostiin 2 arkipäivässä.",
+          "Tarkista julkinen verkkosivu, paikallinen Google-löydettävyys ja yhteydenottopolku.",
+          "TOIMENPIDE: käsittele kartoitus ja vastaa asiakkaan sähköpostiin määräajassa. Toimitus ei ole automaattinen.",
+        ] : []),
         "",
         "Viesti:",
         message,
