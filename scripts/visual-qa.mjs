@@ -287,7 +287,9 @@ try {
       const dialog = page.getByRole("dialog", { name: "Sivuston navigaatio" });
       assert.ok(await dialog.isVisible(), "Fullscreen overlay didn't open");
       assert.equal(await dialog.getAttribute("aria-modal"), "true");
-      assert.equal(await dialog.getByRole("button", { name: "Sulje valikko" }).count(), 1);
+      const closeButtonLocator = dialog.locator('button[aria-label="Sulje valikko"]');
+      assert.equal(await closeButtonLocator.count(), 1, "Dialog close button missing");
+      assert.ok(await closeButtonLocator.isVisible(), "Dialog close button not visible");
       const menuState = await dialog.evaluate(el => {
         const r = el.getBoundingClientRect();
         const nav = el.querySelector("nav");
@@ -326,7 +328,7 @@ try {
       assert.equal(await page.evaluate(() => document.body.style.overflow), "", "Background remained locked");
 
       await toggle.click();
-      const closeButton = dialog.getByRole("button", { name: "Sulje valikko" });
+      const closeButton = dialog.locator('button[aria-label="Sulje valikko"]');
       await closeButton.click();
       assert.equal(await toggle.getAttribute("aria-expanded"), "false", "Close button didn't close overlay");
 
