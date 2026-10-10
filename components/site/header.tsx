@@ -33,7 +33,7 @@ export function SiteHeader({ landing = false }: { landing?: boolean }) {
                 </Link>
               ))}
             </nav>
-            <Link href="/aloita?kartoitus=1" className="inline-flex min-h-11 items-center justify-center rounded-lg bg-action px-3 py-2 text-xs font-bold text-white transition hover:brightness-95 sm:px-4 sm:text-sm"><span className="sm:hidden">Maksuton kartoitus</span><span className="hidden sm:inline">Pyydä maksuton kartoitus</span></Link>
+            <Link href="/aloita?kartoitus=1" aria-label="Pyydä maksuton näkyvyyskartoitus" className="inline-flex min-h-11 items-center justify-center rounded-lg bg-action px-3 py-2 text-xs font-bold text-white transition hover:brightness-95 sm:px-4 sm:text-sm"><span className="sm:hidden">Kartoitus</span><span className="hidden sm:inline">Pyydä maksuton kartoitus</span></Link>
             {isPreview ? (
               <span className="hidden rounded-full border border-brand/15 bg-brand/5 px-2.5 py-1 text-xs font-semibold text-brand xl:inline-flex">
                 Preview
