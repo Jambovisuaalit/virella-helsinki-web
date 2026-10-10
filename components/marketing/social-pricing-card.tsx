@@ -12,7 +12,7 @@ export function SocialPricingCard() {
   const product = products[channel];
   return (
     <div className="landing-price-card">
-      <form action="/aloita" method="get" onSubmit={() => trackAnalyticsEvent("purchase_click", { productId: product.id, source: "homepage_pricing" })}>
+      <form action="/aloita" method="get" onSubmit={() => trackAnalyticsEvent("purchase_click", { productId: product.id, source: "social_landing_pricing" })}>
         <fieldset className="landing-channel-choice"><legend>Valitse kanava</legend><div>{(["instagram", "linkedin"] as const).map((value) => <label key={value} className={channel === value ? "is-selected" : ""}><input type="radio" name="product" value={products[value].id} checked={channel === value} onChange={() => setChannel(value)} /><span>{value === "instagram" ? "Instagram + Facebook" : "LinkedIn"}</span></label>)}</div></fieldset>
         <div className="landing-price-content" aria-live="polite" aria-atomic="true">
           <h3>{channel === "instagram" ? "Instagram + Facebook -palvelu" : "LinkedIn-palvelu"}</h3>
@@ -20,7 +20,7 @@ export function SocialPricingCard() {
           <p className="landing-price-commitment">{product.commitmentMonths} kk minimi · yhteensä {euro.format(product.totalPrice)}</p>
           <ul>{product.features.map((feature) => <li key={feature}><span aria-hidden="true">✓</span>{feature}</li>)}</ul>
         </div>
-        <button className="landing-primary landing-price-button" type="submit">Aloita yhteistyö</button>
+        <button className="landing-primary landing-price-button" type="submit">Lähetä aloituspyyntö</button>
         <p className="landing-price-next">Lähetä aloituspyyntö. Vahvistamme lähtötiedot ja seuraavat vaiheet sähköpostilla.</p>
         <p className="landing-tax">{taxConfig.publicMessage}</p>
       </form>
