@@ -177,7 +177,7 @@ try {
         previewCaption: document.querySelector("figure figcaption")?.textContent?.trim(),
         contrastRows: (() => {
           function luminance(color) {
-            const parts = color.match(/[\\d.]+/g)?.slice(0, 3).map(Number);
+            const parts = color.match(/[\d.]+/g)?.slice(0, 3).map(Number);
             if (!parts || parts.length !== 3) return null;
             const converted = parts.map(x => { const n = x / 255; return n <= 0.04045 ? n / 12.92 : Math.pow((n + .055) / 1.055, 2.4); });
             return .2126 * converted[0] + .7152 * converted[1] + .0722 * converted[2];
