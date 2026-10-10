@@ -16,6 +16,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: `${seoConfig.siteUrl}/sosiaalinen-media`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: `${seoConfig.siteUrl}/instagram`,
       lastModified: now,
       changeFrequency: "monthly",
