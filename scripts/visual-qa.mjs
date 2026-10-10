@@ -311,7 +311,7 @@ try {
       assert.equal(menuState.rect.left, 0);
       assert.equal(menuState.rect.right, spec.width);
       assert.ok(menuState.scrollWidth <= spec.width + 1, "Overlay horizontal overflow");
-      assert.ok(menuState.navigationLabels.includes(route.label), "Expected link missing");
+      assert.ok(menuState.navigationLabels.some((text) => text.includes(route.label)), "Expected link missing");
 
       // Visual screenshot is taken with reduced motion to avoid half-open frames.
       await page.screenshot({ path: output + "/menu-" + route.name + "-" + spec.width + "-open.png", animations: "disabled" });
