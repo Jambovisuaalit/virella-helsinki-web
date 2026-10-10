@@ -134,7 +134,8 @@ a {
 .landing-header-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; min-height: 76px; padding: 12px 24px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: 0 18px 55px -38px rgba(0,0,0,.88); }
 .landing-wordmark { color: var(--brand); font-size: 26px; font-weight: 800; letter-spacing: -1.2px; line-height: 1; }
 .landing-wordmark span { display: block; font-size: 12px; letter-spacing: 2px; font-weight: 500; margin-top: 6px; }
-.landing-navigation { display: flex; gap: 32px; font-size: 14px; font-weight: 500; }
+.landing-navigation { display: none; gap: 24px; align-items: center; font-size: 14px; font-weight: 500; }
+@media (min-width: 1024px) { .landing-navigation { display: flex; } }
 .landing-navigation a:hover { text-decoration: underline; text-underline-offset: 5px; }
 .landing-header-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border-radius: 8px; background: var(--brand); color: var(--brand-foreground); font-size: 14px; font-weight: 600; }
 .landing-eyebrow { margin: 0; color: var(--brand); font-size: 14px; font-weight: 600; letter-spacing: .02em; }
