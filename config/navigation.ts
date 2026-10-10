@@ -1,5 +1,6 @@
 export const primaryNavigation = [
   { label: "Palvelut", href: "/#palvelut" },
+  { label: "Somepaketit", href: "/sosiaalinen-media" },
   { label: "Näin toimii", href: "/#prosessi" },
   { label: "Yhteys", href: "/#yhteys" },
 ] as const;
