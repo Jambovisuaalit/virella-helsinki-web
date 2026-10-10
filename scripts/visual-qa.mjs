@@ -239,6 +239,101 @@ try {
     await page.close();
   }
 
+
+  // Header/navigation regression: menu position, keyboard control, route and hash links.
+  const navCases = [
+    { width: 320, height: 700 },
+    { width: 390, height: 844 },
+    { width: 768, height: 900 },
+    { width: 1024, height: 850 },
+    { width: 1440, height: 900 },
+  ];
+  const navRoutes = [
+    { path: "/", name: "home", activeLink: "/#palvelut", label: "Palvelut" },
+    { path: "/sosiaalinen-media", name: "social", activeLink: "#hinnoittelu", label: "Hinnoittelu" },
+    { path: "/aloita?kartoitus=1", name: "audit", activeLink: "/#palvelut", label: "Palvelut" },
+  ];
+  for (const spec of navCases) {
+    for (const route of navRoutes) {
+      const page = await browser.newPage({
+        viewport: spec,
+        reducedMotion: "reduce",
+        deviceScaleFactor: 1,
+      });
+      const errors = [];
+      page.on("pageerror", error => errors.push(error.message));
+      const response = await page.goto(origin + route.path, { waitUntil: "networkidle" });
+      assert.equal(response.status(), 200, "Navigation page not found: " + route.path);
+      await page.evaluate(() => document.fonts.ready);
+
+      const info = await page.evaluate(() => {
+        const logo = document.querySelector("header .brand-logo");
+        const headerCta = document.querySelector("header .landing-header-cta, header a[href='/aloita?kartoitus=1']");
+        const nav = document.querySelector("header nav[aria-label='Päänavigaatio']");
+        const coords = el => {
+          if (!el) return null;
+          const r = el.getBoundingClientRect();
+          return { x: r.x, right: r.right, top: r.top, bottom: r.bottom, width: r.width };
+        };
+        return {
+          scrollWidth: document.documentElement.scrollWidth,
+          logo: coords(logo),
+          desktopNav: coords(nav),
+          desktopDisplay: nav ? getComputedStyle(nav).display : "missing",
+          headerCta: coords(headerCta),
+          ctaDisplay: headerCta ? getComputedStyle(headerCta).display : "missing",
+        };
+      });
+      console.log("MENU LAYOUT " + spec.width + " " + route.name + ": " + JSON.stringify(info));
+      assert.ok(info.scrollWidth <= spec.width + 1, "Horizontal overflow in " + route.name + " " + spec.width);
+      assert.ok(info.logo && info.logo.x >= 0 && info.logo.right <= spec.width, "Logo clipped");
+      const toggle = page.getByRole("button", { name: "Avaa valikko" });
+      if (spec.width < 1024) {
+        assert.equal(await toggle.count(), 1, "Mobile menu button missing");
+        assert.ok(await toggle.isVisible(), "Mobile menu button hidden");
+        assert.equal(info.desktopDisplay, "none", "Desktop menu duplicated on mobile/tablet");
+
+        const toggleRect = await toggle.boundingBox();
+        assert.ok(toggleRect.x > info.logo.right + 2, "Logo/menu trigger overlap at " + spec.width);
+        assert.ok(toggleRect.x + toggleRect.width <= spec.width, "Menu button clipped at " + spec.width);
+
+        await toggle.click();
+        const menu = page.getByRole("navigation", { name: "Mobiilivalikko" });
+        assert.ok(await menu.isVisible(), "Mobile menu did not open");
+        assert.equal(await page.getByRole("button", { name: "Sulje valikko" }).getAttribute("aria-expanded"), "true");
+        const menuRect = await menu.boundingBox();
+        assert.ok(menuRect.x >= 0 && menuRect.x + menuRect.width <= spec.width + 1, "Menu panel clips outside viewport");
+        assert.ok(menuRect.height > 150, "Menu missing its links");
+        assert.ok(await menu.getByRole("link", { name: route.label, exact: true }).isVisible(), "Expected menu link missing");
+        await page.screenshot({ path: output + "/menu-" + route.name + "-" + spec.width + "-open.png", animations: "disabled" });
+
+        await page.keyboard.press("Escape");
+        assert.equal(await menu.count(), 0, "Escape did not close mobile menu");
+        assert.ok(await page.getByRole("button", { name: "Avaa valikko" }).evaluate(el => document.activeElement === el), "Escape did not return focus to trigger");
+
+        await page.getByRole("button", { name: "Avaa valikko" }).click();
+        await page.mouse.click(spec.width - 4, spec.height - 5);
+        assert.equal(await menu.count(), 0, "Outside click did not dismiss mobile menu");
+
+        await page.getByRole("button", { name: "Avaa valikko" }).click();
+        await menu.locator('a[href="' + route.activeLink + '"]').click();
+        const expected = route.activeLink.startsWith("/") ? route.activeLink : route.path + route.activeLink;
+        await page.waitForURL(url => url.pathname + url.hash === expected, { timeout: 10000 });
+        assert.equal(await page.getByRole("navigation", { name: "Mobiilivalikko" }).count(), 0, "Navigation did not close after selecting a link");
+        console.log("MENU LINK " + spec.width + " " + route.name + ": " + page.url());
+      } else {
+        assert.equal(info.desktopDisplay, "flex", "Desktop nav not visible at " + spec.width);
+        assert.equal(await toggle.count(), 0, "Mobile menu button shown on desktop");
+        assert.ok(info.desktopNav.x >= info.logo.right + 2, "Desktop navigation overlaps logo");
+        assert.ok(!info.headerCta || info.desktopNav.right < info.headerCta.x, "Desktop nav overlaps CTA");
+        await page.screenshot({ path: output + "/menu-" + route.name + "-" + spec.width + "-desktop.png", animations: "disabled" });
+      }
+      assert.deepEqual(errors, [], "Browser errors in " + route.name + " at " + spec.width);
+      results.push({ navigationWidth: spec.width, page: route.name, scrollWidth: info.scrollWidth, desktopNav: info.desktopDisplay });
+      await page.close();
+    }
+  }
+
   writeFileSync(`${output}/summary.json`, JSON.stringify(results, null, 2));
   console.log("VISUAL QA PASSED: both pages at 320, 390, 1440");
 } finally {
