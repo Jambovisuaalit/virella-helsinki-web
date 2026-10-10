@@ -289,7 +289,8 @@ try {
       assert.equal(await dialog.getAttribute("aria-modal"), "true");
       const closeButtonLocator = dialog.locator('button[aria-label="Sulje valikko"]');
       assert.equal(await closeButtonLocator.count(), 1, "Dialog close button missing");
-      assert.ok(await closeButtonLocator.isVisible(), "Dialog close button not visible");
+      await closeButtonLocator.waitFor({ state: "visible", timeout: 5000 });
+      assert.ok(await closeButtonLocator.isVisible(), "Dialog close button not visible after reveal");
       const menuState = await dialog.evaluate(el => {
         const r = el.getBoundingClientRect();
         const nav = el.querySelector("nav");
