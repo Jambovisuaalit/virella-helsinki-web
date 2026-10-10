@@ -263,8 +263,9 @@ try {
       assert.equal(response.status(), 200, "Navigation page not found: " + route.path);
       await page.evaluate(() => document.fonts.ready);
 
-      const toggle = page.getByRole("button", { name: "Avaa valikko" });
+      const toggle = page.locator("header .virella-overlay-trigger");
       assert.equal(await toggle.count(), 1, "Overlay menu trigger missing at " + spec.width);
+      assert.equal(await toggle.getAttribute("aria-label"), "Avaa valikko");
       assert.ok(await toggle.isVisible(), "Overlay trigger not visible");
       const header = await page.evaluate(() => {
         const logo = document.querySelector("header .brand-logo");
@@ -286,7 +287,7 @@ try {
       const dialog = page.getByRole("dialog", { name: "Sivuston navigaatio" });
       assert.ok(await dialog.isVisible(), "Fullscreen overlay didn't open");
       assert.equal(await dialog.getAttribute("aria-modal"), "true");
-      assert.equal(await page.getByRole("button", { name: "Sulje valikko" }).count(), 2);
+      assert.equal(await dialog.getByRole("button", { name: "Sulje valikko" }).count(), 1);
       const menuState = await dialog.evaluate(el => {
         const r = el.getBoundingClientRect();
         const nav = el.querySelector("nav");
