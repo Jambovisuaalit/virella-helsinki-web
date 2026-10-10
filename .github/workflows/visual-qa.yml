@@ -1,0 +1,55 @@
+name: Visual QA
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  responsive-screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install app
+        run: npm install --no-audit --no-fund
+
+      - name: Install QA browser tooling (runner only)
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.56.1
+          npx playwright install chromium
+
+      - name: Build app
+        run: npm run build
+
+      - name: Start app and run responsive browser checks
+        run: |
+          npm run start > /tmp/virella-visual-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill $server_pid || true' EXIT
+          for i in $(seq 1 45); do
+            if curl -fsS http://127.0.0.1:3000/sosiaalinen-media >/dev/null; then
+              break
+            fi
+            sleep 2
+          done
+          node scripts/visual-qa.mjs
+
+      - name: Upload screenshots and measurements
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: virella-responsive-qa
+          path: artifacts/visual-qa/
+          if-no-files-found: warn
+          retention-days: 14
