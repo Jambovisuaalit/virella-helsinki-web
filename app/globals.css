@@ -233,15 +233,12 @@ a {
 @media (max-width: 359px) { .landing-channel-choice > div { grid-template-columns: 1fr; } }
 
 /* Consistent Virella identity and restrained interaction polish. */
-.brand-logo { display: inline-flex; align-items: center; gap: 10px; min-width: 0; color: var(--brand); line-height: 1; }
-.brand-logo-mark { display: inline-grid; place-items: center; width: 34px; height: 34px; flex: none; border: 1px solid currentColor; border-radius: 10px; font-size: 20px; font-weight: 800; letter-spacing: -.09em; }
-.brand-logo-name { display: grid; gap: 3px; font-weight: 800; font-size: 15px; letter-spacing: -.045em; }
-.brand-logo-name small { font-size: 10px; font-weight: 650; letter-spacing: .15em; text-transform: uppercase; }
-.brand-logo--landing .brand-logo-mark { width: 42px; height: 42px; font-size: 24px; }
-.brand-logo--landing .brand-logo-name { font-size: 20px; }
-.brand-logo--inverse { color: white; }
-.brand-logo:hover .brand-logo-mark { background: color-mix(in srgb, currentColor 7%, transparent); }
-@media(max-width: 359px) { .brand-logo--landing .brand-logo-name { font-size: 17px; } .landing-header-inner { padding-inline: 14px; gap: 8px; } .landing-header-cta { padding-inline: 10px; font-size: 12px; } }
+.brand-logo { display: inline-flex; align-items: center; flex: none; line-height: 1; }
+.brand-logo-image { display: block; width: 126px; height: auto; filter: brightness(0) invert(1); }
+.brand-logo--landing .brand-logo-image { width: 150px; }
+.brand-logo--inverse .brand-logo-image { filter: brightness(0) invert(1); }
+.brand-logo:focus-visible { outline: 2px solid var(--brand); outline-offset: 6px; border-radius: 2px; }
+@media(max-width: 359px) { .brand-logo--landing .brand-logo-image { width: 126px; } .landing-header-inner { padding-inline: 14px; gap: 8px; } .landing-header-cta { padding-inline: 10px; font-size: 12px; } }
 
 /* Dark surface refinements: keep the existing layout and clear visual hierarchy. */
 .landing-page .landing-header-cta:focus-visible, .landing-page .landing-primary:focus-visible { outline-color: var(--focus); }
@@ -278,10 +275,7 @@ a {
 .landing-header-cta:hover {
   background: #ac381d;
 }
-.brand-logo-mark {
-  letter-spacing: 0;
-  text-align: center;
-}
+
 @media (max-width: 767px) {
   .landing-pricing-left {
     gap: 32px;
