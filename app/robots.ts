@@ -17,7 +17,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/admin", "/alkukysely", "/checkout"],
+      disallow: ["/admin", "/aloita", "/alkukysely", "/checkout"],
     },
     sitemap: `${seoConfig.siteUrl}/sitemap.xml`,
     host: seoConfig.siteUrl,
