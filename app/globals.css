@@ -252,3 +252,42 @@ a {
 .landing-page .landing-price-content li > span { color: var(--brand); }
 .landing-page .landing-faq summary:hover { color: var(--brand); }
 @media (prefers-reduced-motion: reduce) { .brand-logo-mark { transition: none; } }
+
+/* Virella v1.2: dark-system refinements and balanced social pricing layout. */
+.landing-pricing-left {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 48px;
+}
+.landing-pricing-layout > .landing-price-card {
+  grid-column: 2;
+  grid-row: 1;
+}
+.landing-pricing-left .landing-faq {
+  grid-column: auto;
+  grid-row: auto;
+}
+.landing-pricing-layout .landing-price-content ul {
+  min-height: 0;
+}
+.landing-header-cta {
+  background: var(--action);
+  color: #fff;
+}
+.landing-header-cta:hover {
+  background: #ac381d;
+}
+.brand-logo-mark {
+  letter-spacing: 0;
+  text-align: center;
+}
+@media (max-width: 767px) {
+  .landing-pricing-left {
+    gap: 32px;
+  }
+  .landing-pricing-layout > .landing-price-card {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
