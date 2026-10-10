@@ -26,7 +26,7 @@ export function SiteHeader({ landing = false }: { landing?: boolean }) {
               ))}
             </nav>
             <div className="ml-auto flex shrink-0 items-center gap-2 lg:ml-0">
-              <MobileNavigation items={socialNavigation} cta={{ label: "Katso palvelut ja hinnat", href: "#hinnoittelu" }} />
+              <MobileNavigation items={socialNavigation} cta={{ label: "Katso palvelut ja hinnat", href: "#hinnoittelu" }} social />
               <a href="#hinnoittelu" className="landing-header-cta">
                 <span className="sm:hidden">Hinnat</span>
                 <span className="hidden sm:inline">Katso hinnat</span>
