@@ -7,5 +7,7 @@ export type Product = {
   billing: BillingModel;
   commitmentMonths?: number;
   totalPrice?: number;
+  deposit?: number;
+  finalPayment?: number;
   features: readonly string[];
 };

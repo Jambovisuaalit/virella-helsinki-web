@@ -199,3 +199,23 @@ test("failed or bot intake never sets a success receipt cookie", async () => {
   const spam = await bot(request({ companyWebsite: "robot" }));
   assert.equal(spam.headers.get("set-cookie"), null);
 });
+
+test("Receipt cookie binds the stored lead to its original service and request type", async () => {
+ for (const item of [
+  {productId:"instagram",requestType:"",expectedProduct:"instagram",expectedAudit:false},
+  {productId:"landing-page-seo",requestType:"",expectedProduct:"landing-page-seo",expectedAudit:false},
+  {productId:"",requestType:"visibility_audit",website:"https://example.fi",expectedProduct:"",expectedAudit:true},
+ ]) {
+  const { POST } = handler();
+  const response = await POST(request(item));
+  assert.equal(response.status,200);
+  const result=await response.json();
+  const encodedCookie=(response.headers.get("set-cookie")||"").match(/virella_contact_receipt=([^;]+)/)?.[1];
+  assert.ok(encodedCookie,"Expected a persisted receipt cookie");
+  const cookie=JSON.parse(decodeURIComponent(encodedCookie));
+  const location=new URL(result.redirect,"https://preview.example");
+  assert.equal(cookie.id,location.searchParams.get("receipt"));
+  assert.equal(cookie.productId,item.expectedProduct);
+  assert.equal(cookie.audit,item.expectedAudit);
+ }
+});

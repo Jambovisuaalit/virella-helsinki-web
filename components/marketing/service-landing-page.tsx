@@ -8,6 +8,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { products, type ProductId } from "@/config/products";
 import { taxConfig } from "@/config/tax";
+import { requiresWrittenOffer } from "@/config/offer-master";
 import { servicePageContent } from "@/content/fi/services";
 
 const euro = new Intl.NumberFormat("fi-FI", {
@@ -25,6 +26,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
   const content = servicePageContent[productKey];
   const isConversionFix = productKey === "websiteFix";
   const isLinkedin = productKey === "linkedin";
+  const quoteOnly = requiresWrittenOffer(product.id);
 
   return (
     <>
@@ -178,11 +180,11 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
               <div className="pointer-events-none absolute -right-12 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
               <div className="relative flex flex-col gap-9 md:flex-row md:items-end md:justify-between">
                 <div className="max-w-[720px]">
-                  <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">{isConversionFix ? "Conversion Fix · 690 € · toimitus 72 h" : isLinkedin ? "Pyydä kirjallinen tarjous" : "Aloita verkossa"}</p>
-                  <h2 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl">{isConversionFix ? "Tee yhteydenotosta asiakkaalle helpompi." : isLinkedin ? "Sovitaan juuri teille sopiva LinkedIn-palvelu." : "Maksa verkossa ja täytä aloituskysely."}</h2>
-                  <p className="mt-5 max-w-[680px] text-base leading-7 text-white/70">{isConversionFix ? "Kiinteä 690 € kertamaksu. 72 tunnin toimitusaika alkaa, kun maksu, aloituskysely ja toteutukseen tarvittavat materiaalit tai käyttöoikeudet ovat käytettävissä." : isLinkedin ? "Lähetä aloituspyyntö. Määrittelemme julkaisumäärän, hinnan ja työvaiheet kirjallisessa tarjouksessa ennen sitoumusta." : "Maksun jälkeen tuotekohtainen aloituskysely avautuu automaattisesti ja toimitus voidaan käynnistää."}</p>
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">{isConversionFix ? "Conversion Fix · 690 € · toimitus 72 h" : isLinkedin ? "Pyydä kirjallinen tarjous" : quoteOnly ? "Pyydä kirjallinen tarjous" : "Aloita verkossa"}</p>
+                  <h2 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl">{isConversionFix ? "Tee yhteydenotosta asiakkaalle helpompi." : isLinkedin ? "Sovitaan juuri teille sopiva LinkedIn-palvelu." : quoteOnly ? "Lähetä aloituspyyntö. Hyväksy tarjous ennen laskutusta." : "Maksa verkossa ja täytä aloituskysely."}</h2>
+                  <p className="mt-5 max-w-[680px] text-base leading-7 text-white/70">{isConversionFix ? "Kiinteä 690 € kertamaksu. 72 tunnin toimitusaika alkaa, kun maksu, aloituskysely ja toteutukseen tarvittavat materiaalit tai käyttöoikeudet ovat käytettävissä." : isLinkedin ? "Lähetä aloituspyyntö. Määrittelemme julkaisumäärän, hinnan ja työvaiheet kirjallisessa tarjouksessa ennen sitoumusta." : quoteOnly ? "Saat yksilöidyn tarjouksen kirjalliseen hyväksyntään. Lasku lähetetään vasta hyväksynnän jälkeen, ja toteutus alkaa sovittujen maksujen ja materiaalien saavuttua." : "Maksun jälkeen tuotekohtainen aloituskysely avautuu automaattisesti ja toimitus voidaan käynnistää."}</p>
                 </div>
-                <BuyButton productId={product.id} label={isConversionFix ? "Osta Conversion Fix · 690 €" : "Osta nyt"} className="shrink-0" source="final_cta" />
+                <BuyButton productId={product.id} label={isConversionFix ? "Osta Conversion Fix · 690 €" : quoteOnly ? "Aloita yhteistyö" : "Osta nyt"} className="shrink-0" source="final_cta" />
               </div>
             </div>
           </SectionContainer>

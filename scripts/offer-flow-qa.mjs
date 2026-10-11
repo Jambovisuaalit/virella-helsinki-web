@@ -71,6 +71,25 @@ try {
  await forged.close();
  results.push({forgedReceipt:"blocked"});
 
+ // A genuine receipt is scoped to the exact submitted product and request type.
+ const scopedContext=await browser.newContext({viewport:{width:390,height:844}});
+ await scopedContext.addCookies([{
+  name:"virella_contact_receipt",
+  value:JSON.stringify({id:"qa-session",productId:"instagram",audit:false}),
+  url:origin,
+  httpOnly:true,
+  sameSite:"Lax",
+ }]);
+ const scopedPage=await scopedContext.newPage();
+ await scopedPage.goto(origin+"/aloita?product=landing-page-seo&submitted=1&receipt=qa-session",{waitUntil:"networkidle"});
+ assert.equal(await scopedPage.getByRole("heading",{name:"Kiitos. Pyyntö on vastaanotettu."}).count(),0,"receipt must not prove a different service");
+ await scopedPage.goto(origin+"/aloita?kartoitus=1&submitted=1&receipt=qa-session",{waitUntil:"networkidle"});
+ assert.equal(await scopedPage.getByRole("heading",{name:"Kiitos. Pyyntö on vastaanotettu."}).count(),0,"receipt must not prove a visibility audit");
+ await scopedPage.goto(origin+"/aloita?product=instagram&submitted=1&receipt=qa-session",{waitUntil:"networkidle"});
+ assert.equal(await scopedPage.getByRole("heading",{name:"Kiitos. Pyyntö on vastaanotettu."}).count(),1,"matching receipt must show success");
+ await scopedContext.close();
+ results.push({contextBinding:"passed"});
+
  const page=await browser.newPage({viewport:{width:390,height:844}});
  await page.goto(origin+"/sosiaalinen-media",{waitUntil:"networkidle"});
  const social=page.locator('a[href="/aloita?product=instagram"]');

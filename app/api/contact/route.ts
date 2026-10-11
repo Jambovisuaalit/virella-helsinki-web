@@ -40,7 +40,14 @@ export async function POST(request: Request) {
         )
       : NextResponse.redirect(redirectUrl, 303);
     if (receiptId) {
-      response.cookies.set("virella_contact_receipt", receiptId, {
+      // Bind the receipt to the original service/audit context so that a
+      // completed generic inquiry cannot masquerade as a paid-product lead.
+      const scopedReceipt = JSON.stringify({
+        id: receiptId,
+        productId: redirectUrl.searchParams.get("product") ?? "",
+        audit: redirectUrl.searchParams.get("kartoitus") === "1",
+      });
+      response.cookies.set("virella_contact_receipt", scopedReceipt, {
         httpOnly: true,
         sameSite: "lax",
         secure: new URL(request.url).protocol === "https:",

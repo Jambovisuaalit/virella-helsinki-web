@@ -41,7 +41,20 @@ export default async function StartPage({ searchParams }: StartPageProps) {
   const isVisibilityAudit = first(params.kartoitus) === "1" && !productId;
   const presentedReceipt = first(params.receipt);
   const storedReceipt = (await cookies()).get("virella_contact_receipt")?.value;
-  const submitted = first(params.submitted) === "1" && Boolean(presentedReceipt) && presentedReceipt === storedReceipt;
+  let receiptMatchesContext = false;
+  if (storedReceipt && presentedReceipt) {
+    try {
+      const receipt: unknown = JSON.parse(storedReceipt);
+      if (receipt && typeof receipt === "object") {
+        const scoped = receipt as Record<string, unknown>;
+        receiptMatchesContext = scoped.id === presentedReceipt &&
+          scoped.productId === productId && scoped.audit === isVisibilityAudit;
+      }
+    } catch {
+      // Invalid or stale cookie never proves that a request was received.
+    }
+  }
+  const submitted = first(params.submitted) === "1" && receiptMatchesContext;
   const error = first(params.error);
   const checkoutError = first(params.checkout_error) === "1";
   const productKey = productId ? getProductKeyById(productId) : undefined;
@@ -106,7 +119,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                       <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Palvelu</p>
                       <p className="mt-1 font-bold">{product.name}</p>
                       {product.billing === "month" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(product.price)} / kk · {product.commitmentMonths} kk minimi · yhteensä {euro.format(product.totalPrice)}</p> : null}
-                      {productId === "landing-page-seo" ? <p className="mt-2 text-sm leading-6 text-muted">990 € kertamaksu · 495 € ennakkoon ja 495 € hyväksytyn esikatselun jälkeen ennen julkaisua.</p> : null}
+                      {productId === "landing-page-seo" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(products.landingPageSeo.price)} kertamaksu · {euro.format(products.landingPageSeo.deposit)} ennakkoon ja {euro.format(products.landingPageSeo.finalPayment)} hyväksytyn esikatselun jälkeen ennen julkaisua.</p> : null}
                       {requiresOffer ? <p className="mt-2 text-sm leading-6 text-muted">Aloituspyyntö ei ole tilaus. Lasku lähetetään vasta, kun yksilöity tarjous on hyväksytty kirjallisesti.</p> : null}
                     </div>
                   ) : null}
