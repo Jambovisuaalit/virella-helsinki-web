@@ -203,6 +203,13 @@ try {
             titles: headings.map(title => title?.textContent?.trim()),
             minHeadingFont: Math.min(...headings.map(title => parseFloat(getComputedStyle(title).fontSize))),
             caption: document.querySelector("#esimerkkikartoitus figcaption")?.textContent?.trim(),
+            badgeAligned: (() => {
+              const brand = card.querySelector("p.text-xs");
+              const badge = [...card.querySelectorAll("span")].find(x => x.textContent.trim() === "Esimerkki");
+              if (!brand || !badge) return false;
+              const a = brand.getBoundingClientRect(), b = badge.getBoundingClientRect();
+              return Math.abs((a.top + a.bottom) / 2 - (b.top + b.bottom) / 2) <= 3;
+            })(),
           };
         })(),
         backdrop: (() => {
@@ -302,6 +309,7 @@ try {
     assert.ok(home.auditLinks >= 2, "Audit CTA missing");
     assert.ok(home.previewCard, "Audit preview card is missing");
     assert.equal(home.previewCard.count, 3, "Preview must show exactly three example corrections");
+    assert.ok(home.previewCard.badgeAligned, "Mock report example label should align with brand label");
     assert.ok(home.previewCard.itemsVisible, "Example rows have collapsed");
     assert.ok(home.previewCard.minHeadingFont >= 16, "Example titles are too small on mobile");
     assert.ok(home.previewCard.right <= spec.width + 1, "Audit preview clips horizontally");
