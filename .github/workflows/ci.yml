@@ -36,3 +36,6 @@ jobs:
 
       - name: Contact intake tests
         run: npm run test:contact
+
+      - name: Shared lead pipeline tests
+        run: npm run test:leads
