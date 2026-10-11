@@ -185,9 +185,9 @@ test("native successful contact redirects to the same Preview host with a receip
   assert.equal(location.pathname, "/aloita");
   assert.equal(location.searchParams.get("product"), "landing-page-seo");
   assert.equal(location.searchParams.get("submitted"), "1");
-  assert.match(location.searchParams.get("receipt") ?? "", /^[\\da-f-]+$/);
+  assert.match(location.searchParams.get("receipt") ?? "", /^[\da-f-]+$/);
   assert.match(response.headers.get("set-cookie") ?? "", /HttpOnly/);
-  assert.match(response.headers.get("set-cookie") ?? "", /Path=\\/aloita/);
+  assert.match(response.headers.get("set-cookie") ?? "", /Path=\/aloita/);
   assert.equal(notifications.length, 1);
 });
 
