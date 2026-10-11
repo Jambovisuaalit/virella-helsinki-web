@@ -83,8 +83,20 @@ export default function Home() {
       <a href="#main-content" className="landing-skip-link">Siirry sisältöön</a>
       <SiteHeader />
       <main id="main-content">
-        <section className="px-0 pb-14 pt-14 sm:pb-20 sm:pt-20 lg:pt-28" aria-labelledby="home-title">
-          <SectionContainer>
+        <section className="virella-photographic-hero relative isolate overflow-hidden px-0 pb-14 pt-14 sm:pb-20 sm:pt-20 lg:pt-28" aria-labelledby="home-title">
+          <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+            <Image
+              src="/images/virella-workspace-hero.webp"
+              alt=""
+              fill
+              priority
+              unoptimized
+              sizes="100vw"
+              className="virella-hero-photo object-cover"
+            />
+            <div className="virella-hero-veil absolute inset-0" />
+          </div>
+          <SectionContainer className="relative z-10">
             <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:gap-10 xl:gap-16">
               <div className="min-w-0">
                 <p className="mb-6 text-xs font-bold uppercase tracking-[0.12em] text-brand sm:text-sm">
@@ -118,7 +130,7 @@ export default function Home() {
                     alt="Havainnekuva näkyvyyskartoituksen malliraportista: kolme esimerkkikorjausta verkkosivun viestiin, Google-yritysprofiiliin ja tarjouspyyntöpolkuun."
                     width={760}
                     height={648}
-                    priority
+                    loading="lazy"
                     unoptimized
                     className="h-auto w-full rounded-2xl"
                   />

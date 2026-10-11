@@ -2,12 +2,13 @@ import Link from "next/link";
 import { SectionContainer } from "@/components/layout/section-container";
 import { brandConfig } from "@/config/brand";
 import { BrandLogo } from "@/components/site/brand-logo";
+import { SocialIcon, type SocialNetwork } from "@/components/site/social-icon";
 import { businessConfig } from "@/config/business";
 
 const externalProfiles = [
-  { label: "Instagram", href: "https://www.instagram.com/virellahelsinki/" },
-  // User-supplied Google share link: preserve unchanged until its final target can be verified.
-  { label: "Google", href: "https://share.google/qVP543L22mML3yF6M" },
+  { label: "Instagram", network: "instagram", href: "https://www.instagram.com/virellahelsinki/" },
+  // User-supplied Google share link; do not imply the final redirect has been independently verified.
+  { label: "Google", network: "google", href: "https://share.google/qVP543L22mML3yF6M" },
 ] as const;
 
 export function SiteFooter() {
@@ -55,8 +56,9 @@ export function SiteFooter() {
                 href={profile.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center text-sm font-medium text-foreground underline decoration-border underline-offset-4 transition-colors duration-150 hover:decoration-foreground focus-visible:decoration-foreground"
+                className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-foreground underline decoration-border underline-offset-4 transition-colors duration-150 hover:decoration-foreground focus-visible:decoration-foreground"
               >
+                <SocialIcon network={profile.network as SocialNetwork} className="shrink-0 text-foreground" />
                 {profile.label}
                 <span className="sr-only"> (avautuu uuteen välilehteen)</span>
               </a>
