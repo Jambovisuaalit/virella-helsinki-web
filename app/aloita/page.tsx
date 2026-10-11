@@ -6,6 +6,7 @@ import { ContactForm } from "@/components/forms/contact-form";
 import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
+import { offerMasters, requiresWrittenOffer } from "@/config/offer-master";
 import { products } from "@/config/products";
 import { getProductKeyById } from "@/lib/stripe/stripe-api";
 
@@ -47,7 +48,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
   const productKey = productId ? getProductKeyById(productId) : undefined;
   const product = productKey ? products[productKey] : undefined;
   const isSocial = product?.billing === "month";
-  const requiresOffer = productId === "instagram" || productId === "landing-page-seo";
+  const requiresOffer = requiresWrittenOffer(productId);
   const euro = new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 
   return (
@@ -105,9 +106,10 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                     <div className="rounded-xl border border-brand/15 bg-brand/5 p-4">
                       <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Palvelu</p>
                       <p className="mt-1 font-bold">{product.name}</p>
-                      {product.billing === "month" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(product.price)} / kk · {product.commitmentMonths} kk minimi · yhteensä {euro.format(product.totalPrice)}</p> : null}
-                      {productId === "landing-page-seo" ? <p className="mt-2 text-sm leading-6 text-muted">990 € kertamaksu · 495 € ennakkoon ja 495 € hyväksytyn esikatselun jälkeen ennen julkaisua.</p> : null}
-                      {requiresOffer ? <p className="mt-2 text-sm leading-6 text-muted">Aloituspyyntö ei ole tilaus. Lasku lähetetään vasta, kun yksilöity tarjous on hyväksytty kirjallisesti.</p> : null}
+                      {product.billing === "month" && product.price !== null && product.totalPrice != null ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(product.price)} / kk · {product.commitmentMonths} kk minimi · yhteensä {euro.format(product.totalPrice)}</p> : null}
+                      {productId === "landing-page-seo" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(offerMasters.landing.price)} kertamaksu · {euro.format(offerMasters.landing.deposit)} ennakkoon ja {euro.format(offerMasters.landing.finalPayment)} hyväksytyn esikatselun jälkeen ennen julkaisua.</p> : null}
+                      {product.price === null ? <p className="mt-2 text-sm leading-6 text-muted">Tarjouksen mukaan: julkaisumäärä, sisältö, hinta, sopimuskausi ja jatko sovitaan ennen tilausta.</p> : null}
+                      {requiresOffer ? <p className="mt-2 text-sm leading-6 text-muted">Aloituspyyntö ei ole tilaus. Lasku lähetetään vasta, kun yksilöity tarjous ja sopimusehdot on hyväksytty kirjallisesti.</p> : null}
                     </div>
                   ) : null}
 
@@ -138,7 +140,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                   </div>
 
                   <p className="text-xs leading-5 text-muted">
-                    Lähettämällä lomakkeen hyväksyt, että tietoja käytetään yhteydenottoon. Katso <Link href="/tietosuoja" className="font-semibold text-brand underline underline-offset-2">tietosuojaseloste</Link>.
+                    Lähettämällä lomakkeen hyväksyt, että tietoja käytetään yhteydenottoon. Tutustu <Link href="/sopimusehdot" className="font-semibold text-brand underline underline-offset-2">sopimuskäytäntöihin</Link>. Katso <Link href="/tietosuoja" className="font-semibold text-brand underline underline-offset-2">tietosuojaseloste</Link>.
                   </p>
 
                 </ContactForm>

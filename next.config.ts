@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   async redirects() {
     return [
+      { source: "/terms", destination: "/sopimusehdot", permanent: true },
       {
         source: "/:path*",
         has: [{ type: "host", value: "www.virellahelsinki.com" }],

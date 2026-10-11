@@ -11,7 +11,7 @@ const euro = new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR"
 
 export const metadata: Metadata = {
   title: "Sosiaalisen median sisällöntuotanto yrityksille",
-  description: "Instagram + Facebook ja LinkedIn erillisinä 490 €/kk palveluina. Tutustu sisältöihin ja pyydä aloitusta.",
+  description: "Instagram + Facebook 490 €/kk. LinkedIn yksilöidyn tarjouksen mukaan. Tutustu sisältöihin ja pyydä aloitusta.",
   alternates: { canonical: "/sosiaalinen-media" },
   openGraph: {
     title: "Sosiaalisen median sisällöntuotanto | Virella Helsinki",
@@ -69,7 +69,7 @@ export default function SocialMediaPage() {
             </p>
             <ButtonLink href="#hinnoittelu" className="landing-primary">Katso palvelut ja hinnat</ButtonLink>
             <p className="landing-hero-price">
-              Alkaen <strong>{euro.format(product.price)} / kk</strong>
+              Instagram + Facebook <strong>{euro.format(product.price)} / kk</strong>
               <span aria-hidden="true">·</span>{product.commitmentMonths} kk vähimmäisjakso
             </p>
             <a href="#todisteet" className="landing-text-link">Katso konkreettinen esimerkki</a>
@@ -95,7 +95,7 @@ export default function SocialMediaPage() {
                 <div className="mt-7 grid grid-cols-2 gap-4 border-t border-zinc-800 pt-6">
                   <div>
                     <p className="font-mono text-3xl text-zinc-100">12</p>
-                    <p className="mt-1 text-sm text-zinc-400">Sisältöä / 30 päivää, kumpaankin kanavaan</p>
+                    <p className="mt-1 text-sm text-zinc-400">Sisältöä / kk, kumpaankin kanavaan</p>
                   </div>
                   <div>
                     <p className="font-mono text-3xl text-zinc-100">1</p>
@@ -187,7 +187,7 @@ export default function SocialMediaPage() {
               </details>
               <details>
                 <summary>Kuinka pitkä sopimus on?</summary>
-                <p>Molemmissa paketeissa vähimmäisjakso on {product.commitmentMonths} kuukautta. Kummankin hinta on {euro.format(product.price)} kuukaudessa, yhteensä {euro.format(product.totalPrice)}. Maksutapa ja jatkon ehdot vahvistetaan ennen aloitusta.</p>
+                <p>Virella Näkyvyys: {product.commitmentMonths} kuukauden aloitusjakso, {euro.format(product.price)} kuukaudessa, yhteensä {euro.format(product.totalPrice)}. Jatkuu sen jälkeen toistaiseksi samalla hinnalla, kirjallinen irtisanomisaika 30 päivää. Sopimus päättyy aikaisintaan aloitusjakson jälkeen. LinkedInin hinta, julkaisumäärä, kesto ja jatko sovitaan erikseen tarjouksessa.</p>
               </details>
               <details>
                 <summary>Mitä minulta tarvitaan?</summary>

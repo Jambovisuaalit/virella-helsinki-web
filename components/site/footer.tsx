@@ -73,12 +73,16 @@ export function SiteFooter() {
               </a>
             ))}
           </nav>
+          <nav aria-label="Palvelut ja ehdot" className="flex flex-wrap gap-x-5 gap-y-2">
+          <Link href="/palvelut" className="inline-flex min-h-11 items-center text-sm font-medium text-muted underline underline-offset-4 hover:text-foreground">Palvelut ja hinnat</Link>
+          <Link href="/sopimusehdot" className="inline-flex min-h-11 items-center text-sm font-medium text-muted underline underline-offset-4 hover:text-foreground">Sopimusehdot</Link>
           <Link
             href="/tietosuoja"
             className="inline-flex min-h-11 items-center self-start text-sm font-medium text-muted underline decoration-border underline-offset-4 transition-colors duration-150 hover:text-foreground hover:decoration-foreground sm:self-auto"
           >
             Tietosuoja ja evästeet
           </Link>
+          </nav>
         </div>
       </SectionContainer>
       </footer>

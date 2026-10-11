@@ -1,5 +1,6 @@
 import { products, type ProductId } from "@/config/products";
 import { questionnaires } from "@/config/questionnaires";
+import { requiresWrittenOffer } from "@/config/offer-master";
 
 export type StripeCheckoutSession = {
   id: string;
@@ -61,6 +62,9 @@ export async function createCheckoutSession(productKey: ProductId, origin: strin
   const product = products[productKey];
   const questionnaire = questionnaires[productKey];
   const amount = product.billing === "month" ? product.totalPrice : product.price;
+  if (requiresWrittenOffer(product.id) || amount == null || amount <= 0) {
+    throw new Error("This service requires an approved written offer; direct checkout is unavailable");
+  }
   const body = new URLSearchParams();
 
   body.set("mode", "payment");

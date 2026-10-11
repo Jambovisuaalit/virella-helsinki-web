@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
   return [
+    ...["palvelut", "sopimusehdot"].map((path) => ({ url: `${seoConfig.siteUrl}/${path}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.4 })),
     {
       url: `${seoConfig.siteUrl}/`,
       lastModified: now,

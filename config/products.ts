@@ -20,7 +20,7 @@ export const products = {
   },
   instagram: {
     id: "instagram",
-    name: "Instagram + Facebook 3 kk -paketti",
+    name: offerMasters.visibility.name,
     price: offerMasters.visibility.price,
     billing: "month",
     commitmentMonths: offerMasters.visibility.commitmentMonths,
@@ -29,16 +29,16 @@ export const products = {
   },
   linkedin: {
     id: "linkedin",
-    name: "LinkedIn Starttipaketti",
-    price: 490,
+    name: "LinkedIn-sisällöntuotanto",
+    price: null,
     billing: "month",
-    commitmentMonths: 3,
-    totalPrice: 1470,
+    commitmentMonths: undefined,
+    totalPrice: undefined,
     features: [
-      "4–8 julkaisua / kk",
-      "Sisältöstrategia",
-      "Profiilin optimointi",
-      "Kuukausiraportointi",
+      "Julkaisumäärä ja sisältö määritellään tarjouksessa",
+      "Henkilöprofiili, yrityssivu tai sovittu yhdistelmä",
+      "Hinta, sopimuskausi ja jatko sovitaan kirjallisesti",
+      "Nimetyn hyväksyjän kirjallinen lupa ennen julkaisua",
     ],
   },
   landingPageSeo: {
