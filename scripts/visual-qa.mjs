@@ -315,6 +315,41 @@ try {
       assert.equal(response.status(), 200, "Navigation page not found: " + route.path);
       await page.evaluate(() => document.fonts.ready);
 
+      // The WhatsApp shortcut is a regular external link, not a third-party chat script.
+      const whatsapp = page.locator("a.virella-whatsapp-button");
+      assert.equal(await whatsapp.count(), 1, "Exactly one WhatsApp button is expected");
+      assert.equal(await whatsapp.getAttribute("href"), "https://wa.me/message/DJTG6ZBCZXXEF1");
+      assert.equal(await whatsapp.getAttribute("target"), "_blank");
+      assert.match(await whatsapp.getAttribute("rel") || "", /noopener/);
+      assert.match(await whatsapp.getAttribute("rel") || "", /noreferrer/);
+      assert.match(await whatsapp.getAttribute("aria-label") || "", /WhatsApp/);
+      assert.ok(await whatsapp.isVisible(), "WhatsApp contact button should be initially visible");
+      const waRect = await whatsapp.boundingBox();
+      assert.ok(waRect && waRect.width >= 48 && waRect.height >= 48, "WhatsApp touch target too small");
+      assert.ok(waRect.x >= 0 && waRect.x + waRect.width <= spec.width + 1, "WhatsApp button escapes the viewport");
+      assert.ok(waRect.y + waRect.height <= spec.height, "WhatsApp button escapes below viewport");
+      if (spec.width === 320 || spec.width === 390) {
+        assert.ok(waRect.width <= 56, "WhatsApp must remain a compact icon on mobile");
+      }
+      if (spec.width === 390 && route.name === "home") {
+        await page.evaluate(() => {
+          const dialog = document.createElement("div");
+          dialog.id = "qa-consent-dialog";
+          dialog.setAttribute("role", "dialog");
+          dialog.setAttribute("aria-label", "Analytiikka-asetukset");
+          document.body.appendChild(dialog);
+        });
+        assert.equal(await whatsapp.evaluate(el => getComputedStyle(el).visibility), "hidden", "WhatsApp must not cover analytics consent");
+        await page.locator("#qa-consent-dialog").evaluate(el => el.remove());
+        assert.ok(await whatsapp.isVisible(), "WhatsApp should return when consent dialog closes");
+      }
+      if (spec.width === 390 && route.name === "audit") {
+        await page.locator('input[name="website"]').focus();
+        assert.equal(await whatsapp.evaluate(el => getComputedStyle(el).visibility), "hidden", "WhatsApp must not cover an active form");
+        await page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); });
+        assert.ok(await whatsapp.isVisible(), "WhatsApp should return after leaving the form");
+      }
+
       const toggle = page.locator("header .virella-overlay-trigger");
       assert.equal(await toggle.count(), 1, "Overlay menu trigger missing at " + spec.width);
       assert.equal(await toggle.getAttribute("aria-label"), "Avaa valikko");
@@ -346,6 +381,7 @@ try {
       await toggle.click();
       const dialog = page.getByRole("dialog", { name: "Sivuston navigaatio" });
       assert.ok(await dialog.isVisible(), "Fullscreen overlay didn't open");
+      assert.equal(await whatsapp.evaluate(el => getComputedStyle(el).visibility), "hidden", "WhatsApp must hide behind open navigation");
       assert.equal(await dialog.getAttribute("aria-modal"), "true");
       const closeButtonLocator = dialog.locator('button[aria-label="Sulje valikko"]');
       assert.equal(await closeButtonLocator.count(), 1, "Dialog close button missing");
@@ -397,6 +433,7 @@ try {
       assert.equal(await toggle.getAttribute("aria-expanded"), "false", "Escape didn't close menu");
       assert.ok(await toggle.evaluate(el => document.activeElement === el), "Focus wasn't restored to trigger");
       assert.equal(await page.evaluate(() => document.body.style.overflow), "", "Background remained locked");
+      assert.ok(await whatsapp.isVisible(), "WhatsApp should return when fullscreen navigation closes");
 
       await toggle.click();
       const closeButton = dialog.locator('button[aria-label="Sulje valikko"]');
