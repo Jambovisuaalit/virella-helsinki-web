@@ -3,6 +3,7 @@ import { SectionContainer } from "@/components/layout/section-container";
 import { brandConfig } from "@/config/brand";
 import { BrandLogo } from "@/components/site/brand-logo";
 import { SocialIcon, type SocialNetwork } from "@/components/site/social-icon";
+import { WhatsAppContact } from "@/components/site/whatsapp-contact";
 import { businessConfig } from "@/config/business";
 
 const externalProfiles = [
@@ -13,7 +14,9 @@ const externalProfiles = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-surface text-sm text-foreground">
+    <>
+      <WhatsAppContact />
+      <footer className="border-t border-border bg-surface text-sm text-foreground">
       <SectionContainer className="py-14 sm:py-16 lg:py-20">
         <div className="grid gap-12 border-b border-border pb-12 sm:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)] sm:gap-14">
           <div className="max-w-[530px]">
@@ -72,6 +75,7 @@ export function SiteFooter() {
           </Link>
         </div>
       </SectionContainer>
-    </footer>
+      </footer>
+    </>
   );
 }
