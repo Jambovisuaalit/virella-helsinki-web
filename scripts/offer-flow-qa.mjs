@@ -60,7 +60,7 @@ try {
   const redirect=new URL(response.headers()["location"],origin);
   assert.equal(redirect.pathname,"/aloita");
   assert.equal(redirect.searchParams.get("product"),offer.id);
-  await context.dispose();
+  await context.close();
   results.push({productId:offer.id,serverDirectCheckout:"blocked_303"});
  }
  const page=await browser.newPage({viewport:{width:390,height:844}});
