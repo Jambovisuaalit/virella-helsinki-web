@@ -90,3 +90,54 @@ test("AI ruleset creates a reproducible ready version from verified inputs", () 
   assert.equal(first.rulesetHash,second.rulesetHash);
   assert.deepEqual(first.approvedChannels,["instagram","facebook"]);
 });
+
+test("A project cannot onboard or produce an AI brief with zero verified facts", () => {
+ let p = begin("instagram");
+ const payload = {questionnaireVersion:"v1",rulesetVersion:"v1",rulesetHash:"hash",approver:"Customer CEO",facts:[],materials:[{id:"img1",licensed:true,evidenceId:"permission:img1"}]};
+ assert.throws(()=>applyDeliveryEvent(p,"onboard",payload),/facts_missing/);
+ const brief = buildClientRuleset({clientId:"T",projectId:"P",productId:"instagram",audience:"LVI",primaryService:"Putkityöt",cta:"Ota yhteyttä",approver:"CEO",tone:"Asiallinen",facts:[],materials:payload.materials});
+ assert.equal(brief.status,"blocked");
+ assert.ok(brief.missing.includes("facts:VAHVISTETUT_FAKTAT_PUUTTUVAT"));
+});
+test("Onboarding records facts and rights as an immutable snapshot", () => {
+ const input = {questionnaireVersion:"v1",rulesetVersion:"v1",rulesetHash:"hash",approver:"Customer CEO",facts:[{claim:"original",source:"customer",verified:true}],materials:[{id:"img1",licensed:true,evidenceId:"permission:img1"}]};
+ const p = applyDeliveryEvent(begin("instagram"),"onboard",input);
+ input.facts[0].claim="TAMPERED";input.materials[0].licensed=false;input.materials[0].evidenceId=null;
+ assert.equal(p.intake.facts[0].claim,"original");
+ assert.equal(p.intake.materials[0].licensed,true);
+ assert.equal(p.intake.materials[0].evidenceId,"permission:img1");
+ const briefInput={clientId:"T",projectId:"P",productId:"instagram",audience:"B2B",primaryService:"Asennus",cta:"Soita",approver:"CEO",tone:"Suora",facts:[{claim:"original",source:"client",verified:true}],materials:[{id:"p",licensed:true,evidenceId:"p:1"}]};
+ const brief=buildClientRuleset(briefInput);
+ briefInput.facts[0].claim="TAMPERED";
+ assert.equal(brief.facts[0].claim,"original");
+});
+test("Settled final installment remains settled after landing preview revision", () => {
+ let p=reviewed(begin("landing-page-seo"));
+ p=applyDeliveryEvent(p,"approve_draft",{version:"draft-v1",approvedBy:"Customer CEO",evidenceId:"email:approval1"});
+ p=applyDeliveryEvent(p,"record_final_payment",{invoiceId:"INV-2",paymentEvidenceId:"bank:paid"});
+ const paid=p.finalPayment;
+ p=applyDeliveryEvent(p,"change_approved_version",{newVersion:"draft-v2",reason:"corrected approved copy"});
+ assert.deepEqual(p.finalPayment,paid);
+ p=applyDeliveryEvent(p,"submit_draft",{version:"draft-v2",artifacts:["preview-v2"]});
+ assert.deepEqual(p.finalPayment,paid);
+ p=applyDeliveryEvent(p,"pass_qa",{version:"draft-v2",evidenceId:"qa:2"});
+ p=applyDeliveryEvent(p,"approve_draft",{version:"draft-v2",approvedBy:"Customer CEO",evidenceId:"email:approval2"});
+ assert.equal(p.stage,"publication_ready");
+ assert.equal(p.finalPayment.evidenceId,"bank:paid");
+ p=applyDeliveryEvent(p,"publish",{version:"draft-v2",evidenceId:"prod:2",urls:["https://example.test/final"]});
+ assert.equal(p.stage,"published");
+});
+test("Publication evidence must be 24 different valid HTTPS URLs", () => {
+ let p=reviewed(begin("instagram"));
+ p=applyDeliveryEvent(p,"approve_draft",{version:"draft-v1",approvedBy:"Customer CEO",evidenceId:"email:ok"});
+ const good=Array.from({length:24},(_,i)=>"https://example.test/p/"+i);
+ assert.throws(()=>applyDeliveryEvent(p,"publish",{version:"draft-v1",evidenceId:"proof",urls:Array(24).fill(good[0])}),/publication_proof_missing/);
+ const withHttp=[...good];withHttp[0]="http://example.test/bad";
+ assert.throws(()=>applyDeliveryEvent(p,"publish",{version:"draft-v1",evidenceId:"proof",urls:withHttp}),/publication_proof_missing/);
+ const withMalformed=[...good];withMalformed[0]="https:// ";
+ assert.throws(()=>applyDeliveryEvent(p,"publish",{version:"draft-v1",evidenceId:"proof",urls:withMalformed}),/publication_proof_missing/);
+ const original=[...good];
+ const result=applyDeliveryEvent(p,"publish",{version:"draft-v1",evidenceId:"proof",urls:good});
+ good[0]="https://tampered.invalid";
+ assert.equal(result.publication.urls[0],original[0]);
+});
