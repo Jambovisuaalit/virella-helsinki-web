@@ -142,14 +142,14 @@ export default function Home() {
               </div>
               <figure className="min-w-0">
                 <div className="virella-audit-preview rounded-2xl border border-border bg-surface p-5 sm:p-7" aria-label="Havainnollistava esimerkkikartoitus">
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-5 sm:pb-6">
-                    <div>
+                  <div className="border-b border-border pb-5 sm:pb-6">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
                       <p className="text-xs font-semibold uppercase tracking-[0.1em] text-muted">Virella Helsinki</p>
-                      <h3 className="mt-2 text-xl font-semibold tracking-[-0.01em] text-foreground sm:text-2xl">
-                        Kartoituksen yhteenveto
-                      </h3>
+                      <span className="rounded-md border border-border px-3 py-1.5 text-xs font-semibold text-muted">Esimerkki</span>
                     </div>
-                    <span className="rounded-md border border-border px-3 py-1.5 text-xs font-semibold text-muted">Esimerkki</span>
+                    <h3 className="mt-4 text-xl font-semibold tracking-[-0.01em] text-foreground sm:text-2xl">
+                      Kartoituksen yhteenveto
+                    </h3>
                   </div>
                   <ol className="divide-y divide-border" aria-label="Kolme havainnollistavaa korjausehdotusta">
                     {[
