@@ -90,6 +90,20 @@ try {
     });
 
     console.log(`VIEWPORT ${spec.width}: ${JSON.stringify(checks)}`);
+    const socialTokens = await page.evaluate(() => {
+      const sections = ["#todisteet", "#prosessi", "#hinnoittelu", "#yhteys"];
+      const titles = ["#proof-title", "#process-title", "#pricing-title", "#contact-title"];
+      return {
+        verticalSpacing: sections.map(sel => parseFloat(getComputedStyle(document.querySelector(sel)).paddingTop)),
+        titleFontSizes: titles.map(sel => parseFloat(getComputedStyle(document.querySelector(sel)).fontSize)),
+        titleLetterSpacing: titles.map(sel => getComputedStyle(document.querySelector(sel)).letterSpacing),
+      };
+    });
+    console.log("SOCIAL TOKENS " + spec.width + ": " + JSON.stringify(socialTokens));
+    assert.ok(socialTokens.verticalSpacing.every(x => x >= 85), "Some service sections too cramped");
+    assert.ok(socialTokens.verticalSpacing.every(x => Math.abs(x - socialTokens.verticalSpacing[0]) <= 1), "Some sections inconsistent vertical rhythm");
+    assert.ok(socialTokens.titleFontSizes.every(x => Math.abs(x - socialTokens.titleFontSizes[0]) <= 1), "Some headings use inconsistent type sizes");
+
     assert.ok(checks.documentScrollWidth <= spec.width + 1, `${spec.width}: horizontal overflow ${checks.documentScrollWidth}`);
     assert.ok(checks.hero.right <= spec.width + 1, `${spec.width}: hero width exceeds viewport`);
     assert.ok(checks.heroLines <= spec.maxHeroLines, `${spec.width}: hero wraps excessively (${checks.heroLines} lines)`);
@@ -175,7 +189,29 @@ try {
         auditDetailLines: auditDetails?.querySelectorAll("p").length,
         auditLinks: links.length,
         heroTracking: getComputedStyle(h1).letterSpacing,
-        heroImageLoaded: (() => { const img = document.querySelector('img[src="/images/kartoitus-esimerkki.svg"]'); return Boolean(img && img.complete && img.naturalWidth > 0); })(),
+        previewCard: (() => {
+          const card = document.querySelector(".virella-audit-preview");
+          if (!card) return null;
+          const rows = [...card.querySelectorAll("ol > li")];
+          const headings = rows.map(row => row.querySelector("h4"));
+          const rect = card.getBoundingClientRect();
+          return {
+            count: rows.length,
+            width: Math.round(rect.width),
+            right: Math.round(rect.right),
+            itemsVisible: rows.every(row => row.getBoundingClientRect().height >= 60),
+            titles: headings.map(title => title?.textContent?.trim()),
+            minHeadingFont: Math.min(...headings.map(title => parseFloat(getComputedStyle(title).fontSize))),
+            caption: document.querySelector("#esimerkkikartoitus figcaption")?.textContent?.trim(),
+            badgeAligned: (() => {
+              const brand = card.querySelector("p.text-xs");
+              const badge = [...card.querySelectorAll("span")].find(x => x.textContent.trim() === "Esimerkki");
+              if (!brand || !badge) return false;
+              const a = brand.getBoundingClientRect(), b = badge.getBoundingClientRect();
+              return Math.abs((a.top + a.bottom) / 2 - (b.top + b.bottom) / 2) <= 3;
+            })(),
+          };
+        })(),
         backdrop: (() => {
           const section = document.querySelector(".virella-photographic-hero");
           const img = section?.querySelector('img[src="/images/virella-workspace-hero.webp"]');
@@ -193,7 +229,27 @@ try {
               Math.abs(s.top - v.top) < 2 && Math.abs(s.bottom - v.bottom) < 2,
           };
         })(),
-        heroImageRight: (() => { const img = document.querySelector('img[src="/images/kartoitus-esimerkki.svg"]'); return img ? Math.round(img.getBoundingClientRect().right) : null; })(),
+        heroWord: (() => {
+          const el = document.querySelector("#home-title span.whitespace-nowrap");
+          if (!el) return null;
+          const bounds = el.getBoundingClientRect();
+          return { right: Math.round(bounds.right), width: Math.round(bounds.width), whiteSpace: getComputedStyle(el).whiteSpace };
+        })(),
+        heroCTA: (() => {
+          const a = document.querySelector('.virella-photographic-hero a[href="/aloita?kartoitus=1"]');
+          if (!a) return null;
+          const range = document.createRange();
+          range.selectNodeContents(a);
+          return { label: a.textContent.trim(), lineBoxes: range.getClientRects().length, width: Math.round(a.getBoundingClientRect().width) };
+        })(),
+        headingSamples: (() => {
+          const selectors = ["#preview-title", "#services-title", "#process-title", "#contact-title"];
+          return selectors.map(selector => {
+            const el = document.querySelector(selector);
+            const s = getComputedStyle(el);
+            return { selector, fontSize: s.fontSize, letterSpacing: s.letterSpacing, lineHeight: s.lineHeight };
+          });
+        })(),
         previewCaption: document.querySelector("figure figcaption")?.textContent?.trim(),
         spaciousLayout: (() => {
           const hero = document.querySelector(".virella-photographic-hero");
@@ -251,14 +307,29 @@ try {
     assert.equal(home.auditDetailLines, 3, "Audit mechanism must use exactly three lines");
     assert.ok(home.auditDetails.includes("2 arkipäivässä"), "Missing SLA");
     assert.ok(home.auditLinks >= 2, "Audit CTA missing");
-    assert.ok(home.heroImageLoaded, "Audit preview image did not load");
+    assert.ok(home.previewCard, "Audit preview card is missing");
+    assert.equal(home.previewCard.count, 3, "Preview must show exactly three example corrections");
+    assert.ok(home.previewCard.badgeAligned, "Mock report example label should align with brand label");
+    assert.ok(home.previewCard.itemsVisible, "Example rows have collapsed");
+    assert.ok(home.previewCard.minHeadingFont >= 16, "Example titles are too small on mobile");
+    assert.ok(home.previewCard.right <= spec.width + 1, "Audit preview clips horizontally");
+    assert.ok(home.previewCard.caption?.includes("ei oikea asiakasraportti"), "Example must remain clearly labeled");
     assert.ok(home.backdrop?.loaded, "Hero photo did not load at " + spec.width);
     assert.ok(home.backdrop?.decorative, "Hero photo should be decorative; content stays readable as HTML");
     assert.ok(home.backdrop?.veilCovers, "Hero overlay does not cover whole photo section");
     assert.ok(home.backdrop.gradient.includes("gradient"), "Responsive dark overlay not applied");
     assert.ok(home.backdrop.filter.includes("brightness"), "Hero picture lacks contrast-controlled darkening");
     console.log("HOME BACKDROP " + spec.width + ": " + JSON.stringify(home.backdrop));
-    assert.ok(home.heroImageRight <= spec.width + 1, "Audit preview overflows viewport");
+    assert.ok(home.heroWord, "Unbreakable Google keyword span missing");
+    assert.equal(home.heroWord.whiteSpace, "nowrap", "Google-näkyvyys should not split");
+    assert.ok(home.heroWord.right <= spec.width + 1, "Hero keyword clips viewport");
+    assert.ok(home.heroCTA?.label === "Pyydä maksuton kartoitus", "Hero CTA label was not shortened");
+    assert.equal(home.heroCTA?.lineBoxes, 1, "Hero CTA wraps at " + spec.width);
+    if (spec.width < 1024) {
+      const match = home.backdrop.filter.match(/brightness\(([^)]+)\)/);
+      assert.ok(match && parseFloat(match[1]) >= .84, "Mobile photo should be more visible");
+    }
+    assert.ok(home.headingSamples.every(item => item.fontSize === home.headingSamples[0].fontSize), "Home section titles use inconsistent type sizes");
     assert.ok(home.previewCaption.includes("ei oikea asiakasraportti"), "Example preview needs explicit label");
     assert.ok(home.spaciousLayout, "Homepage sections missing");
     assert.ok(Math.abs(home.spaciousLayout.heroBottom - home.spaciousLayout.previewTop) <= 1, "Sample preview is not directly after hero");
@@ -276,6 +347,7 @@ try {
 
     await page.screenshot({ path: output + "/home-" + spec.width + "-full.png", fullPage: true, animations: "disabled" });
     await page.screenshot({ path: output + "/home-" + spec.width + "-hero.png", animations: "disabled" });
+    await page.locator("#esimerkkikartoitus").screenshot({ path: output + "/home-" + spec.width + "-report.png", animations: "disabled" });
     await page.locator("#palvelut").screenshot({ path: output + "/home-" + spec.width + "-pricing.png", animations: "disabled" });
 
     if (spec.width === 390) {

@@ -76,20 +76,19 @@ export default function SocialMediaPage() {
           </SectionContainer>
         </section>
 
-        <section id="todisteet" className="border-y border-zinc-800 bg-zinc-950 py-16 sm:py-20" aria-labelledby="proof-title">
+        <section id="todisteet" className="virella-section-block border-y border-zinc-800 bg-zinc-950" aria-labelledby="proof-title">
           <SectionContainer>
             <div className="grid items-start gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-14">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                <p className="virella-section-eyebrow">
                   Konkreettinen toimitus
                 </p>
-                <h2 id="proof-title" className="mt-4 text-3xl font-semibold tracking-[-0.045em] text-zinc-100 sm:text-4xl">
+                <h2 id="proof-title" className="virella-section-title text-zinc-100">
                   Mitä yrityksesi oikeasti saa?
                 </h2>
-                <p className="mt-5 max-w-lg text-base leading-7 text-zinc-300">
-                  Instagram + Facebook -pakettiin sisältyy 12 alkuperäistä julkaisua
-                  kuukaudessa, yksi koottu korjauskierros ja kuukausiraportti.
-                  LinkedIn-palvelulla on oma sisältönsä ja julkaisumääränsä.
+                <p className="virella-section-copy max-w-lg">
+                  Näet esimerkin sisältöteemoista ja tiedät, mitä valitsemaasi palveluun kuuluu.
+                  Instagram + Facebook ja LinkedIn ovat erillisiä kokonaisuuksia.
                 </p>
                 <div className="mt-7 grid grid-cols-2 gap-4 border-t border-zinc-800 pt-6">
                   <div>
@@ -131,24 +130,22 @@ export default function SocialMediaPage() {
                   ))}
                 </ol>
                 <p className="mt-5 text-xs leading-5 text-zinc-400">
-                  Näiden teemojen pohjalta voidaan suunnitella 12 julkaisua.
-                  Todelliset aiheet määräytyvät asiakkaan palvelujen ja materiaalien mukaan.
+                  Todelliset aiheet sovitaan yrityksesi palvelujen ja materiaalien perusteella.
                 </p>
               </div>
             </div>
           </SectionContainer>
         </section>
 
-        <section id="prosessi" className="landing-process" aria-labelledby="process-title">
+        <section id="prosessi" className="landing-process virella-section-block" aria-labelledby="process-title">
           <SectionContainer>
             <div className="landing-section-intro">
               <div>
-                <p className="landing-eyebrow">Näin se toimii</p>
-                <h2 id="process-title">Selkeä prosessi.<br />Sinä hyväksyt sisällöt.</h2>
+                <p className="landing-eyebrow virella-section-eyebrow">Näin se toimii</p>
+                <h2 id="process-title" className="virella-section-title">Selkeä prosessi.<br />Sinä hyväksyt sisällöt.</h2>
               </div>
               <p>
-                Sinä tunnet yrityksesi. Me muutamme sen osaamisen julkaisuiksi,
-                jotka tarkistat ennen julkaisua.
+                Jokainen kuukausi etenee sovitun suunnitelman ja aikataulun mukaan.
               </p>
             </div>
             <ol className="landing-steps">
@@ -160,21 +157,17 @@ export default function SocialMediaPage() {
                 </li>
               ))}
             </ol>
-            <p className="landing-process-note">
-              Sinun osuutesi: lähtötiedot, materiaalit ja hyväksyntä.
-              Virellan osuus: suunnittelu, toteutus, julkaisu ja seuranta.
-            </p>
+
           </SectionContainer>
         </section>
 
-        <section id="hinnoittelu" className="landing-pricing" aria-labelledby="pricing-title">
+        <section id="hinnoittelu" className="landing-pricing virella-section-block" aria-labelledby="pricing-title">
           <SectionContainer>
             <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-12">
-              <p className="landing-eyebrow">Selkeä hinta. Selkeä sisältö.</p>
-              <h2 id="pricing-title" className="mt-4">Valitse yrityksellesi sopiva kanava.</h2>
-              <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-zinc-300">
-                Instagram + Facebook ja LinkedIn ovat erillisiä palveluita.
-                Vertaa molempien sisältöä ja valitse, mistä haluat lähettää aloituspyynnön.
+              <p className="landing-eyebrow virella-section-eyebrow">Selkeä hinta. Selkeä sisältö.</p>
+              <h2 id="pricing-title" className="virella-section-title">Valitse yrityksellesi sopiva kanava.</h2>
+              <p className="virella-section-copy mx-auto max-w-2xl">
+                Vertaa Instagram + Facebook- ja LinkedIn-palveluja rinnakkain.
               </p>
             </div>
             <SocialPricingCard />
@@ -200,11 +193,11 @@ export default function SocialMediaPage() {
           </SectionContainer>
         </section>
 
-        <section id="yhteys" className="landing-contact" aria-labelledby="contact-title">
+        <section id="yhteys" className="landing-contact virella-section-block" aria-labelledby="contact-title">
           <SectionContainer className="landing-contact-layout">
             <div>
-              <p className="landing-eyebrow">Virella Helsinki</p>
-              <h2 id="contact-title">Yrityksesi some selkeästi hoidettuna.</h2>
+              <p className="landing-eyebrow virella-section-eyebrow">Virella Helsinki</p>
+              <h2 id="contact-title" className="virella-section-title">Yrityksesi some selkeästi hoidettuna.</h2>
               <p>Vertaile kahta palvelua tai kysy, kumpi kanava sopii yrityksellesi.</p>
             </div>
             <div className="landing-contact-actions">
