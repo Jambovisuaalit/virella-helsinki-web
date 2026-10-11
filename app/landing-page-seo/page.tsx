@@ -3,7 +3,7 @@ import { ServiceLandingPage } from "@/components/marketing/service-landing-page"
 
 export const metadata: Metadata = {
   title: "Landing Page + SEO yrityksille",
-  description: "Responsiivinen landing page, on-page SEO, suorituskyvyn optimointi ja analytiikan integrointi yhtenä toimituksena.",
+  description: "Yksi suomenkielinen myyntisivu, myynticopy, yhteydenottolomake ja SEO-perusteet. 990 € kertamaksu.",
   alternates: {
     canonical: "/landing-page-seo",
   },
