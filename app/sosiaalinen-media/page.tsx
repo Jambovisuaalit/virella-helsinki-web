@@ -95,7 +95,7 @@ export default function SocialMediaPage() {
                 <div className="mt-7 grid grid-cols-2 gap-4 border-t border-zinc-800 pt-6">
                   <div>
                     <p className="font-mono text-3xl text-zinc-100">12</p>
-                    <p className="mt-1 text-sm text-zinc-400">Sisältöä / 30 päivää, kumpaankin kanavaan</p>
+                    <p className="mt-1 text-sm text-zinc-400">Sisältöä kuukaudessa, kumpaankin kanavaan</p>
                   </div>
                   <div>
                     <p className="font-mono text-3xl text-zinc-100">1</p>
@@ -187,7 +187,7 @@ export default function SocialMediaPage() {
               </details>
               <details>
                 <summary>Kuinka pitkä sopimus on?</summary>
-                <p>Molemmissa paketeissa vähimmäisjakso on {product.commitmentMonths} kuukautta. Kummankin hinta on {euro.format(product.price)} kuukaudessa, yhteensä {euro.format(product.totalPrice)}. Maksutapa ja jatkon ehdot vahvistetaan ennen aloitusta.</p>
+                <p>Instagram + Facebook -paketin aloitusjakso on {product.commitmentMonths} kuukautta, {euro.format(product.price)} kuukaudessa eli yhteensä {euro.format(product.totalPrice)}. Sen jälkeen palvelu jatkuu toistaiseksi 30 päivän kirjallisella irtisanomisajalla. LinkedInin hinta, julkaisumäärä ja sopimuskausi määritellään aina kirjallisessa asiakaskohtaisessa tarjouksessa.</p>
               </details>
               <details>
                 <summary>Mitä minulta tarvitaan?</summary>
