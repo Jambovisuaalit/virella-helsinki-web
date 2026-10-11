@@ -60,7 +60,7 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
     eyebrow: "LinkedIn-markkinointi yrityksille",
     title: "LinkedIn-sisältö ilman jatkuvaa kirjoittamisrumbaa.",
     lead: "Virella auttaa yritystäsi tai asiantuntijabrändiäsi näkymään LinkedInissä johdonmukaisesti, selkeästi ja oman alan asiantuntemukseen nojaten.",
-    summary: "Palvelu yhdistää sisältöstrategian, julkaisujen toteutuksen, profiilin optimoinnin ja kuukausittaisen raportoinnin.",
+    summary: "Julkaisumäärä, hinta, mahdollinen profiilin optimointi, raportointi ja sopimuskausi määritellään asiakaskohtaisessa kirjallisessa tarjouksessa. Aloituspyyntö ei sido ostamaan.",
     audienceTitle: "Kenelle LinkedIn-palvelu sopii?",
     audience: [
       "B2B-palveluyritykselle, joka haluaa vahvistaa asiantuntijanäkyvyyttä",
@@ -69,8 +69,8 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
     ],
     process: [
       { title: "Aloituskysely", text: "Kartoitamme asiantuntemuksen, kohderyhmän, palvelut ja tavoitellun LinkedIn-roolin." },
-      { title: "Sisältöstrategia", text: "Määritämme aiheet, näkökulmat ja julkaisurytmin ennen tuotannon käynnistymistä." },
-      { title: "Julkaisut ja optimointi", text: "Sisältö tuotetaan sovitun mallin mukaan ja profiilin kokonaisuutta kehitetään rinnalla." },
+      { title: "Sisältöstrategia", text: "Määritämme aiheet, näkökulmat ja julkaisurytmin kirjallisen tarjouksen ja hyväksyttyjen lähtötietojen perusteella." },
+      { title: "Julkaisut ja optimointi", text: "Toteutamme vain erikseen sovitut julkaisut ja mahdollisen profiilin kehityksen asiakkaan hyväksynnällä." },
     ],
     faq: [
       { question: "Kirjoitetaanko julkaisut puolestani?", answer: "Kyllä. Sisältö rakennetaan alkukyselyn ja sovitun sisältöstrategian pohjalta." },

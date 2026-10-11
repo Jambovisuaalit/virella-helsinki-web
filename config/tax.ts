@@ -2,13 +2,15 @@
  * The official YTJ excerpt lists only "Verohallinnon perustiedot" since 2025-11-24,
  * with no entry for Arvonlisäverovelvollisten rekisteri.
  * This is owner-supplied documentary evidence, NOT an independent live API check.
- * VAT exemption eligibility still needs turnover checks for both 2025 and 2026
- * against the EUR 20,000 per-calendar-year threshold, plus other VAT grounds.
+ * The owner explicitly reconfirmed on 2026-10-11 that the sole proprietorship is not VAT liable.
+ * Turnover reconciliation and monitoring against the EUR 20,000 per-calendar-year
+ * threshold remain separate ongoing accounting controls.
  */
 export const taxConfig = {
   vatRegistered: false,
   registrationStatusVerified: true, // Verified against owner-supplied YTJ extract, not a live lookup.
   registrationEvidence: "YTJ-ote käyttäjän toimittamana 11.10.2026: voimassa vain Verohallinnon perustiedot 24.11.2025 alkaen",
-  exemptionEligibilityVerified: false, // 2025 and 2026 turnover and special VAT obligations unverified.
-  publicMessage: "Arvonlisäveroa ei tällä hetkellä veloiteta vähäisen liiketoiminnan perusteella. Verokäsittely vahvistetaan kirjallisessa tarjouksessa.",
+  exemptionEligibilityVerified: false, // Turnover reconciliation is separate from the owner's confirmed non-VAT status.
+  confirmationSource: "Yrittäjän nimenomainen vahvistus 11.10.2026: ei ALV-velvollinen",
+  publicMessage: "Arvonlisäveroa ei veloiteta vähäisen liiketoiminnan perusteella.",
 } as const;

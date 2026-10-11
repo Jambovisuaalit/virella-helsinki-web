@@ -15,6 +15,7 @@ function shortLabel(productKey: ProductId) {
 
 export function MobilePurchaseBar({ currentProduct }: { currentProduct: ProductId }) {
   const product = products[currentProduct];
+  const isLinkedin = currentProduct === "linkedin";
 
   return (
     <aside aria-label="Palvelun ostopalkki" className="fixed inset-x-0 bottom-0 z-50 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:hidden">
@@ -24,11 +25,11 @@ export function MobilePurchaseBar({ currentProduct }: { currentProduct: ProductI
             <div className="flex items-baseline gap-2">
               <p className="truncate text-xs font-extrabold text-foreground">{shortLabel(currentProduct)}</p>
               <p className="shrink-0 text-xs font-extrabold text-brand">
-                {euro.format(product.price)}{product.billing === "month" ? "/kk" : ""}
+                {isLinkedin ? "Tarjouksen mukaan" : <>{euro.format(product.price)}{product.billing === "month" ? "/kk" : ""}</>}
               </p>
             </div>
             <p className="mt-0.5 text-[11px] leading-4 text-muted">
-              {product.billing === "month" ? `${product.commitmentMonths} kk · yht. ${euro.format(product.totalPrice)}` : "kertamaksu"}
+              {isLinkedin ? "Hinta ja julkaisumäärä sopimuksen mukaan" : product.billing === "month" ? `${product.commitmentMonths} kk · yht. ${euro.format(product.totalPrice)}` : "kertamaksu"}
             </p>
           </div>
           <BuyButton
