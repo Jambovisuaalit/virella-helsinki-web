@@ -1,0 +1,44 @@
+name: One-time Production Intake Smoke
+on:
+  pull_request:
+    types: [opened]
+permissions:
+  contents: read
+jobs:
+  smoke:
+    if: github.head_ref == 'qa/production-intake-smoke-20261011'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Send one clearly labeled internal QA request
+        shell: bash
+        env:
+          TARGET: https://virellahelsinki.com/api/contact
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          const uuid = crypto.randomUUID();
+          const body = new FormData();
+          body.set("requestType", "visibility_audit");
+          body.set("productId", "");
+          body.set("name", "Virella sisainen QA");
+          body.set("email", "visualjambo@gmail.com");
+          body.set("company", "Virella QA - EI ASIAKAS");
+          body.set("website", "https://virellahelsinki.com/");
+          body.set("message", "QA-TUNNISTE " + uuid + " - TESTIPYYNTO, EI ASIAKKAAN TOIMEKSIANTOA. Ei tarvitse toimittaa kartoitusta. Voidaan poistaa sisaisesta liidivarastosta.");
+          console.log("QA request marker: " + uuid + " (no customer information)");
+          const response = await fetch(process.env.TARGET, {
+            method: "POST",
+            headers: { Accept: "application/json" },
+            body,
+            signal: AbortSignal.timeout(15000),
+          });
+          const result = await response.json();
+          console.log(JSON.stringify({ httpStatus: response.status, ok: result.ok, redirect: result.redirect, error: result.error ?? null }));
+          if (!response.ok || result.ok !== true || result.redirect !== "/aloita?kartoitus=1&submitted=1") {
+            console.error("FAIL: production intake did not acknowledge the persisted request.");
+            process.exitCode = 1;
+          } else {
+            console.log("PASS: production endpoint reports the private Blob write completed.");
+          }
+          NODE
