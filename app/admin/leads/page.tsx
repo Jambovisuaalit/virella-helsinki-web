@@ -1,57 +1,63 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { list, get } from "@vercel/blob";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { listLeadRecords } from "@/lib/leads/store";
+import { LeadUpdateForm } from "./lead-update-form";
 
 export const metadata: Metadata = { title: "Aloituspyynnöt | Virella Helsinki", robots: { index: false, follow: false } };
 export const dynamic = "force-dynamic";
 
-type Lead = { receivedAt?: string; subject?: string; text?: string; status?: string };
-
-export default async function LeadsPage() {
+export default async function LeadsPage({ searchParams }: {
+  searchParams: Promise<{ lead_result?: string; error?: string }>;
+}) {
   if (!(await isAdminAuthenticated())) redirect("/admin");
-  let leads: Array<{ path: string; lead: Lead }> = [];
+  const params = await searchParams;
+  let leads: Awaited<ReturnType<typeof listLeadRecords>> = [];
   let error = "";
   try {
-    const environment = process.env.VERCEL_ENV === "production" ? "production" : "preview";
-    const result = await list({ prefix: `contact-leads/${environment}/`, limit: 100 });
-    // Pagination is intentionally not enabled yet: show a bounded inbox, not an unbounded fetch.
-    const rows = await Promise.all(result.blobs.map(async (blob) => {
-      const response = await get(blob.pathname, { access: "private" });
-      if (!response || response.statusCode !== 200) return null;
-      const lead = await new Response(response.stream).json() as Lead;
-      return { path: blob.pathname, lead };
-    }));
-    leads = rows.filter((row): row is { path: string; lead: Lead } => row !== null)
-      .sort((a, b) => (b.lead.receivedAt ?? "").localeCompare(a.lead.receivedAt ?? ""));
+    leads = await listLeadRecords();
   } catch {
-    error = "Aloituspyyntöjen hakeminen epäonnistui. Tarkista Blob-varaston yhteys.";
+    error = "Aloituspyyntöjen hakeminen epäonnistui. Tarkista yksityinen Blob-varasto.";
   }
 
   return <main className="mx-auto max-w-5xl px-5 py-12">
     <nav className="mb-6 flex gap-5 text-sm"><Link href="/admin/sales">Sales Pipeline</Link><Link href="/admin/leads" aria-current="page">Aloituspyynnöt</Link></nav>
-    <h1 className="text-3xl font-bold">Aloituspyynnöt</h1>
-    <p className="mt-2 text-sm">Vain kirjautuneelle ylläpidolle. Näytetään korkeintaan 100 tallennetta. Tämä näkymä ei vielä sisällä sivutusta.</p>
-    {!process.env.RESEND_API_KEY || !process.env.VIRELLA_NOTIFICATION_FROM ? (
-      <p role="status" className="mt-5 rounded-xl border border-amber-700/60 bg-amber-950/30 px-4 py-3 text-sm leading-6 text-foreground">
-        Automaattiset sähköposti-ilmoitukset eivät ole käytössä. Kartoituspyynnöt tallentuvat tähän näkymään:
-        tarkista uudet pyynnöt vähintään kerran jokaisena arkipäivänä, jotta 2 arkipäivän vastauslupaus toteutuu.
-        Virellan oma lähetysverkkotunnus ja sähköpostipalvelun asetukset puuttuvat.
-      </p>
-    ) : null}
-    {error ? <p role="alert" className="mt-6 rounded-lg border p-4">{error}</p> : null}
-    {!error && leads.length === 0 ? <p className="mt-6">Ei tallennettuja aloituspyyntöjä.</p> : null}
-    <div className="mt-8 space-y-4">{leads.map(({ path, lead }) => <article key={path} className="rounded-xl border p-5">
-      <p className="text-sm text-muted">{lead.receivedAt ?? "Aikaleima puuttuu"} · {lead.status ?? "new"}</p>
-      <h2 className="mt-2 text-lg font-bold">{lead.subject ?? "Aloituspyyntö"}</h2>
-      {lead.subject?.includes("Maksuton näkyvyyskartoitus") ? (
-        <p className="mt-2 rounded-lg border border-border bg-surface p-3 text-sm text-foreground">
-          Käsittele 2 arkipäivässä vastaanotosta: tarkista verkkosivu, Google-löydettävyys ja yhteydenottopolku.
-          Vastaa asiakkaan sähköpostiin kolmella priorisoidulla korjausehdotuksella ja perusteluilla. Tämä vaihe on manuaalinen.
-        </p>
-      ) : null}
-      <pre className="mt-3 whitespace-pre-wrap break-words font-sans text-sm">{lead.text ?? "Tietoja ei saatavilla"}</pre>
-    </article>)}</div>
+    <h1 className="text-3xl font-bold">Aloituspyynnöt ja toimitustila</h1>
+    <p className="mt-2 text-sm text-muted">
+      Yhteinen palvelinpuolinen rekisteri. Näyttää yhteisen rekisterin tallenteet; yli 1 000 liidin käsittely vaatii sivutuksen. Muutokset näkyvät kaikilla kirjautuneilla laitteilla.
+    </p>
+    {params.error && <p role="alert" className="mt-5 rounded-lg border p-4 text-sm">{params.error}</p>}
+    {params.lead_result && params.lead_result !== "error" && <p role="status" className="mt-5 rounded-lg border p-4 text-sm">
+      {params.lead_result === "created" ? "Liidi luotu." : "Liidin tila tallennettu."}
+    </p>}
+    {error && <p role="alert" className="mt-5 rounded-lg border p-4">{error}</p>}
+    {!error && leads.length === 0 && <p className="mt-6">Ei tallennettuja aloituspyyntöjä.</p>}
+    <div className="mt-8 space-y-5">
+      {leads.map(lead => <article key={lead.id} className="rounded-xl border border-border bg-surface p-5">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-xs text-muted">{lead.receivedAt} · {lead.source} · {lead.requestType}</p>
+            <h2 className="mt-2 text-lg font-bold">{lead.company || lead.name || lead.subject}</h2>
+            <p className="text-sm">{lead.name} · {lead.email}</p>
+            {lead.website && <p className="mt-1 break-words text-sm">{lead.website}</p>}
+          </div>
+          <div className="text-right text-xs">
+            <p className="font-bold">{lead.state.isTest ? "QA-TESTI · ei myyntimittareissa" : lead.state.stage}</p>
+            <p>{lead.state.deliveryStatus}</p>
+            <p>Seuraava: {lead.state.nextActionDate}</p>
+          </div>
+        </div>
+        {lead.requestType === "visibility_audit" && <p className="mt-3 rounded-lg border border-border bg-background p-3 text-sm">
+          Kartoituksen tavoite: verkkosivu, Google-löydettävyys, yhteydenottopolku ja kolme tärkeintä korjausta.
+          Vastaus viimeistään kahdessa arkipäivässä. Lähetys merkitään vasta todennetun Gmail-viestin perusteella.
+        </p>}
+        <details className="mt-3">
+          <summary className="cursor-pointer text-sm font-semibold">Näytä alkuperäinen pyyntö</summary>
+          <pre className="mt-3 whitespace-pre-wrap break-words font-sans text-sm">{lead.text || "Manuaalinen prospekti"}</pre>
+        </details>
+        <LeadUpdateForm lead={lead} view="leads" />
+      </article>)}
+    </div>
   </main>;
 }

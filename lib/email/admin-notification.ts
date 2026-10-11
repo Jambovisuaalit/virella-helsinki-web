@@ -6,6 +6,13 @@ type AdminNotification = {
   text: string;
   idempotencyKey: string;
   replyTo?: string;
+  lead?: {
+    name: string;
+    email: string;
+    company: string;
+    website: string;
+    requestType: string;
+  };
 };
 
 /**
@@ -18,6 +25,7 @@ export async function sendAdminNotification({
   text,
   idempotencyKey,
   replyTo,
+  lead,
 }: AdminNotification): Promise<{ id: string; notificationStatus: EmailNotificationStatus }> {
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     throw new Error("Private lead storage is not configured");
@@ -35,6 +43,8 @@ export async function sendAdminNotification({
     recipient: businessConfig.adminEmail,
     idempotencyKey,
     status: "new",
+    // These indexed fields share the existing canonical private lead record.
+    ...(lead ? { ...lead, source: "Website" } : {}),
   }), {
     access: "private",
     contentType: "application/json",
