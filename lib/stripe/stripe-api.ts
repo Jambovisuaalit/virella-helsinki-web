@@ -1,5 +1,6 @@
 import { products, type ProductId } from "@/config/products";
 import { questionnaires } from "@/config/questionnaires";
+import { requiresWrittenOffer } from "@/config/offer-master";
 
 export type StripeCheckoutSession = {
   id: string;
@@ -59,8 +60,15 @@ export function getProductRoute(productKey: ProductId) {
 
 export async function createCheckoutSession(productKey: ProductId, origin: string) {
   const product = products[productKey];
+  // Server-side defense: no public Stripe session for quote-only or approval-gated services.
+  if (requiresWrittenOffer(product.id) || product.billing === "quote" || product.price === null) {
+    throw new Error("A written customer-specific offer is required before checkout");
+  }
   const questionnaire = questionnaires[productKey];
   const amount = product.billing === "month" ? product.totalPrice : product.price;
+  if (typeof amount !== "number" || !Number.isFinite(amount) || amount <= 0) {
+    throw new Error("Checkout amount is not configured");
+  }
   const body = new URLSearchParams();
 
   body.set("mode", "payment");
