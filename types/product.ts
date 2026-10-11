@@ -1,9 +1,9 @@
-export type BillingModel = "month" | "one_time";
+export type BillingModel = "month" | "one_time" | "quote";
 
 export type Product = {
   id: string;
   name: string;
-  price: number;
+  price: number | null;
   billing: BillingModel;
   commitmentMonths?: number;
   totalPrice?: number;
