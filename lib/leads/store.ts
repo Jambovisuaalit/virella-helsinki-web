@@ -6,7 +6,7 @@ import {
   type LeadEvent, type LeadRecord, type LeadState, type StoredLead,
 } from "@/lib/leads/types";
 
-const MAX_LEADS = 200;
+const MAX_LEADS = 1000;
 const MAX_EVENTS = 500;
 
 export function leadEnvironment() {
@@ -70,9 +70,11 @@ export async function listLeadRecords(): Promise<LeadRecord[]> {
     });
     blobs.push(...page.blobs);
     cursor = page.hasMore ? page.cursor : undefined;
-    if (blobs.length >= MAX_LEADS) break;
+    // A silent cutoff would drop newer leads from the inbox and corrupt KPI totals.
+    // Fail closed until server-side pagination is implemented for larger datasets.
+    if (blobs.length >= MAX_LEADS && cursor) throw new Error("Lead pagination capacity exceeded");
   } while (cursor);
-  const ids = blobs.map(item => item.pathname).filter(leadPathValid).slice(0, MAX_LEADS);
+  const ids = blobs.map(item => item.pathname).filter(leadPathValid);
   const leads = await Promise.all(ids.map(getLeadRecord));
   return leads.filter((lead): lead is LeadRecord => lead !== null)
     .sort((a, b) => b.receivedAt.localeCompare(a.receivedAt));
