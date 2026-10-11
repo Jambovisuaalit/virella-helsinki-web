@@ -10,5 +10,7 @@ export const businessConfig = {
   email: "visualjambo@gmail.com",
   adminEmail: "visualjambo@gmail.com",
   phone: "+358 40 325 7892",
+  whatsappUrl: "https://wa.me/message/DJTG6ZBCZXXEF1",
+  whatsappCatalogUrl: "https://wa.me/c/189219750326481",
   phoneE164: "+358403257892",
 } as const;

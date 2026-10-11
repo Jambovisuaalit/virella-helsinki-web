@@ -43,6 +43,12 @@ export function SiteFooter() {
               >
                 {businessConfig.email}
               </a>
+              <a href={businessConfig.whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-base font-semibold text-foreground underline decoration-border underline-offset-4 hover:decoration-current">
+                Ota yhteyttä WhatsAppissa<span className="sr-only"> (avautuu uuteen välilehteen)</span>
+              </a>
+              <a href={businessConfig.whatsappCatalogUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-sm text-muted underline decoration-border underline-offset-4 hover:text-foreground">
+                Katso WhatsApp-katalogi<span className="sr-only"> (avautuu uuteen välilehteen)</span>
+              </a>
             </div>
           </div>
         </div>
