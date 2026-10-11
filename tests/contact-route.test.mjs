@@ -55,7 +55,10 @@ test("successful intake preserves the selected service and awaits successful per
   const { POST, notifications } = handler();
   const response = await POST(request());
   assert.equal(response.status, 200);
-  assert.deepEqual(await response.json(), { ok: true, redirect: "/aloita?product=linkedin&submitted=1" });
+  const result = await response.json();
+  assert.equal(result.ok, true);
+  assert.match(result.redirect, /^\/aloita\?product=linkedin&submitted=1&receipt=[\da-f-]+$/);
+  assert.match(response.headers.get("set-cookie") ?? "", /virella_contact_receipt=/);
   assert.equal(notifications.length, 1);
   assert.match(notifications[0].text, /test@example.com/);
   assert.match(notifications[0].text, /LinkedIn/);
@@ -107,7 +110,7 @@ test("native form keeps its 303 redirect and selected service", async () => {
   const { POST } = handler();
   const response = await POST(request({ name: "" }, false));
   assert.equal(response.status, 303);
-  assert.equal(response.headers.get("location"), "https://virella.example/aloita?product=linkedin&error=invalid");
+  assert.equal(response.headers.get("location"), "https://preview.example/aloita?product=linkedin&error=invalid");
 });
 
 test("QA-marked requests persist rather than returning a simulated success", async () => {
@@ -128,7 +131,10 @@ test("free visibility audit is persisted and returns to the audit confirmation",
   const { POST, notifications } = handler();
   const response = await POST(request({ productId: "", requestType: "visibility_audit", website: "https://example.fi", message: "" }));
   assert.equal(response.status, 200);
-  assert.deepEqual(await response.json(), { ok: true, redirect: "/aloita?kartoitus=1&submitted=1" });
+  const result = await response.json();
+  assert.equal(result.ok, true);
+  assert.match(result.redirect, /^\/aloita\?kartoitus=1&submitted=1&receipt=[\da-f-]+$/);
+  assert.match(response.headers.get("set-cookie") ?? "", /virella_contact_receipt=/);
   assert.equal(notifications.length, 1);
   assert.match(notifications[0].subject, /Maksuton näkyvyyskartoitus/);
   assert.match(notifications[0].text, /Pyyntötyyppi: visibility_audit/);
@@ -169,3 +175,27 @@ for (const [label, fields] of Object.entries({
     assert.equal(notifications.length, 0);
   });
 }
+
+test("native successful contact redirects to the same Preview host with a receipt cookie", async () => {
+  const { POST, notifications } = handler();
+  const response = await POST(request({ productId: "landing-page-seo" }, false));
+  assert.equal(response.status, 303);
+  const location = new URL(response.headers.get("location"));
+  assert.equal(location.origin, "https://preview.example");
+  assert.equal(location.pathname, "/aloita");
+  assert.equal(location.searchParams.get("product"), "landing-page-seo");
+  assert.equal(location.searchParams.get("submitted"), "1");
+  assert.match(location.searchParams.get("receipt") ?? "", /^[\\da-f-]+$/);
+  assert.match(response.headers.get("set-cookie") ?? "", /HttpOnly/);
+  assert.match(response.headers.get("set-cookie") ?? "", /Path=\\/aloita/);
+  assert.equal(notifications.length, 1);
+});
+
+test("failed or bot intake never sets a success receipt cookie", async () => {
+  const { POST: failed } = handler({ failStorage: true });
+  const bad = await failed(request());
+  assert.equal(bad.headers.get("set-cookie"), null);
+  const { POST: bot } = handler();
+  const spam = await bot(request({ companyWebsite: "robot" }));
+  assert.equal(spam.headers.get("set-cookie"), null);
+});
