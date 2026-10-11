@@ -11,7 +11,7 @@ const euro = new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR"
 
 export const metadata: Metadata = {
   title: "Sosiaalisen median sisällöntuotanto yrityksille",
-  description: "Instagram + Facebook ja LinkedIn erillisinä 490 €/kk palveluina. Tutustu sisältöihin ja pyydä aloitusta.",
+  description: "Instagram + Facebook: 12 alkuperäistä sisältöä molempiin kanaviin 490 €/kk, 3 kuukauden aloitusjakso. LinkedIn hinnoitellaan erillisellä tarjouksella.",
   alternates: { canonical: "/sosiaalinen-media" },
   openGraph: {
     title: "Sosiaalisen median sisällöntuotanto | Virella Helsinki",
