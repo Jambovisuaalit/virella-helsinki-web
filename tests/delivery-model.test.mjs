@@ -40,7 +40,7 @@ test("Landing: 990 split, final payment BEFORE publication and source code hando
 });
 test("Missing materials/rights block production",()=>{
  let p=begin("instagram");
- assert.throws(()=>applyDeliveryEvent(p,"onboard",{questionnaireVersion:"v1",rulesetVersion:"v1",rulesetHash:"h",approver:"Customer CEO",facts:[],materials:[]}),/material_rights_missing/);
+ assert.throws(()=>applyDeliveryEvent(p,"onboard",{questionnaireVersion:"v1",rulesetVersion:"v1",rulesetHash:"h",approver:"Customer CEO",facts:[{claim:"Helsinki",source:"customer",verified:true}],materials:[]}),/material_rights_missing/);
  assert.equal(p.stage,"deposit_paid");
 });
 test("Late payment blocks project start",()=>{
