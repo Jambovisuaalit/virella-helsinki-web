@@ -59,7 +59,7 @@ export function SocialPricingCard() {
             href={`/aloita?product=${selectedProduct.id}`}
             onClick={() => trackServiceRequest(selectedProduct.id)}
             className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-lg bg-cyan-400 px-3 py-2 text-center text-xs font-bold text-zinc-950 transition hover:bg-cyan-300 focus-visible:outline-offset-4 sm:px-4 sm:text-sm"
-            aria-label={`Lähetä aloituspyyntö: ${channelDetails[selectedChannel].title}`}
+            aria-label={`Aloita yhteistyö: ${channelDetails[selectedChannel].title}`}
           >
             Aloita yhteistyö
           </Link>
