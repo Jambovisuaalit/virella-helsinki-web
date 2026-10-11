@@ -125,7 +125,7 @@ export default function Home() {
           </SectionContainer>
         </section>
 
-        <section id="esimerkkikartoitus" className="border-b border-border/75 py-24 sm:py-28 lg:py-36" aria-labelledby="preview-title">
+        <section id="esimerkkikartoitus" className="virella-section-block border-b border-border/75" aria-labelledby="preview-title">
           <SectionContainer>
             <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:gap-20">
               <div className="max-w-[460px]">
@@ -175,14 +175,14 @@ export default function Home() {
           </SectionContainer>
         </section>
 
-        <section id="palvelut" className="scroll-mt-28 border-y border-border/75 bg-cloud py-[clamp(5.5rem,8vw,8rem)]" aria-labelledby="services-title">
+        <section id="palvelut" className="virella-section-block scroll-mt-28 border-y border-border/75 bg-cloud" aria-labelledby="services-title">
           <SectionContainer>
             <div className="max-w-[670px]">
               <p className="virella-section-eyebrow">Virellan palvelut</p>
               <h2 id="services-title" className="virella-section-title">
                 Kolme palvelua. Yksi selkeä toteutus.
               </h2>
-              <p className="mt-7 text-base leading-8 text-muted">
+              <p className="virella-section-copy">
                 Palvelut ovat erillisiä. Voit aloittaa yhdestä ja laajentaa tarpeen mukaan.
               </p>
             </div>
@@ -223,7 +223,7 @@ export default function Home() {
           </SectionContainer>
         </section>
 
-        <section id="prosessi" className="scroll-mt-28 py-[clamp(5.5rem,8vw,8rem)]" aria-labelledby="process-title">
+        <section id="prosessi" className="virella-section-block scroll-mt-28" aria-labelledby="process-title">
           <SectionContainer>
             <div className="grid gap-9 md:grid-cols-[1.1fr_0.9fr] md:gap-20">
               <div>
@@ -232,7 +232,7 @@ export default function Home() {
                   Ensin kartoitus. Sitten päätät jatkosta.
                 </h2>
               </div>
-              <p className="self-end text-base leading-8 text-muted">
+              <p className="virella-section-copy self-end md:mt-0">
                 Kartoitus perustuu julkisiin tietoihin. Se on maksuton eikä velvoita tilaamaan palvelua.
               </p>
             </div>
@@ -248,7 +248,7 @@ export default function Home() {
           </SectionContainer>
         </section>
 
-        <section id="yhteys" className="scroll-mt-28 border-t border-border/75 bg-cloud py-[clamp(6rem,9vw,9rem)]" aria-labelledby="contact-title">
+        <section id="yhteys" className="virella-section-block scroll-mt-28 border-t border-border/75 bg-cloud" aria-labelledby="contact-title">
           <SectionContainer>
             <div className="flex flex-col gap-10 md:flex-row md:items-center md:justify-between md:gap-20">
               <div className="max-w-[730px]">
@@ -256,7 +256,7 @@ export default function Home() {
                 <h2 id="contact-title" className="virella-section-title">
                   Aloitetaan nykytilanteestasi.
                 </h2>
-                <p className="mt-5 text-base leading-8 text-muted">
+                <p className="virella-section-copy">
                   Saat selkeän lähtökohdan jatkotoimille ilman ostopakkoa.
                 </p>
               </div>
