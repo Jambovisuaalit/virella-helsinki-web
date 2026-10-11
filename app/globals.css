@@ -583,3 +583,29 @@ a {
     transform: none;
   }
 }
+
+/* Photographic landing hero — the image is decorative, the accessible copy
+   remains real HTML. The veil protects text contrast on narrow screens. */
+.virella-photographic-hero {
+  background: #090b0c;
+}
+.virella-hero-photo {
+  object-position: center 56%;
+  filter: saturate(.72) brightness(.78);
+}
+.virella-hero-veil {
+  background:
+    linear-gradient(0deg, rgba(9, 11, 12, .9) 0%, rgba(9, 11, 12, .18) 42%, rgba(9, 11, 12, .44) 100%),
+    linear-gradient(90deg, rgba(9, 11, 12, .95) 0%, rgba(9, 11, 12, .87) 42%, rgba(9, 11, 12, .48) 72%, rgba(9, 11, 12, .34) 100%);
+}
+@media (max-width: 1023px) {
+  .virella-hero-photo {
+    object-position: 69% center;
+    filter: saturate(.65) brightness(.68);
+  }
+  .virella-hero-veil {
+    background:
+      linear-gradient(180deg, rgba(9, 11, 12, .95) 0%, rgba(9, 11, 12, .83) 38%, rgba(9, 11, 12, .85) 74%, rgba(9, 11, 12, .96) 100%),
+      linear-gradient(90deg, rgba(9, 11, 12, .79) 0%, rgba(9, 11, 12, .52) 100%);
+  }
+}
