@@ -257,9 +257,14 @@ export default function Home() {
                   Lähetä verkkosivusi osoite, niin selvitetään tärkein kehityskohde.
                 </p>
               </div>
-              <ButtonLink href="/aloita?kartoitus=1" className="shrink-0 self-start md:self-center">
-                Pyydä maksuton näkyvyyskartoitus
-              </ButtonLink>
+              <div className="flex shrink-0 flex-col items-start gap-4 md:self-center">
+                <ButtonLink href="/aloita?kartoitus=1">
+                  Pyydä maksuton näkyvyyskartoitus
+                </ButtonLink>
+                <a href={businessConfig.whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-sm font-semibold text-foreground underline decoration-border underline-offset-4 hover:decoration-foreground">
+                  Keskustele WhatsAppissa<span className="sr-only"> (avautuu uuteen välilehteen)</span>
+                </a>
+              </div>
             </div>
           </SectionContainer>
         </section>
