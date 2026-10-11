@@ -11,7 +11,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "invalid_product" }, { status: 400 });
   }
 
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin;
+  // Keep redirects on the current Preview/production origin, never force users across environments.
+  const origin = new URL(request.url).origin;
   // Fail closed: written offer approval comes before any invoice or payment.
   if (requiresWrittenOffer(productId)) {
     const contactUrl = new URL("/aloita", origin);
