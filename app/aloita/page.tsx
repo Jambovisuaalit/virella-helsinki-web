@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { FunnelEvent } from "@/components/analytics/funnel-event";
 import { ContactForm } from "@/components/forms/contact-form";
 import { SectionContainer } from "@/components/layout/section-container";
@@ -21,6 +22,7 @@ type StartPageProps = {
     product?: string | string[];
     kartoitus?: string | string[];
     submitted?: string | string[];
+    receipt?: string | string[];
     error?: string | string[];
     checkout_error?: string | string[];
   }>;
@@ -37,7 +39,9 @@ export default async function StartPage({ searchParams }: StartPageProps) {
   const params = await searchParams;
   const productId = first(params.product) ?? "";
   const isVisibilityAudit = first(params.kartoitus) === "1" && !productId;
-  const submitted = first(params.submitted) === "1";
+  const presentedReceipt = first(params.receipt);
+  const storedReceipt = (await cookies()).get("virella_contact_receipt")?.value;
+  const submitted = first(params.submitted) === "1" && Boolean(presentedReceipt) && presentedReceipt === storedReceipt;
   const error = first(params.error);
   const checkoutError = first(params.checkout_error) === "1";
   const productKey = productId ? getProductKeyById(productId) : undefined;
