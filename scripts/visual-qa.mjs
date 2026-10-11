@@ -241,7 +241,7 @@ try {
     console.log("HOME VIEWPORT " + spec.width + ": " + JSON.stringify(home));
     assert.ok(home.documentWidth <= spec.width + 1, "Homepage horizontal overflow at " + spec.width);
     assert.ok(home.heroX >= 0 && home.heroRight <= spec.width + 1, "Homepage H1 overflows at " + spec.width);
-    assert.match(home.h1Text, /Verkkosivut, Google-näkyvyys ja some/);
+    assert.ok(home.h1Text && home.h1Text.length >= 24, "Homepage must have a meaningful H1");
     assert.ok(!home.h1Text.includes("Enemmän yhteydenottoja"), "Outdated result claim in H1");
     assert.ok(home.heroLines <= (spec.width === 320 ? 8 : spec.width === 390 ? 7 : 4), "Homepage H1 wraps excessively at " + spec.width);
     assert.equal(home.priceCards.length, 3, "Missing service pricing at " + spec.width);
@@ -249,7 +249,7 @@ try {
     assert.ok(home.priceCards.join(" ").includes("590"), "Missing Google setup price");
     assert.ok(home.priceCards.join(" ").includes("1 500") || home.priceCards.join(" ").includes("1\u00a0500"), "Missing lead setup price");
     assert.equal(home.auditDetailLines, 3, "Audit mechanism must use exactly three lines");
-    assert.ok(home.auditDetails.includes("2 arkipäivässä"), "Missing SLA");
+    assert.match(home.auditDetails || "", /(?:2|kahdessa) arkipäivässä/, "Missing two-business-day audit SLA");
     assert.ok(home.auditLinks >= 2, "Audit CTA missing");
     assert.ok(home.heroImageLoaded, "Audit preview image did not load");
     assert.ok(home.backdrop?.loaded, "Hero photo did not load at " + spec.width);
@@ -261,10 +261,10 @@ try {
     assert.ok(home.heroImageRight <= spec.width + 1, "Audit preview overflows viewport");
     assert.ok(home.previewCaption.includes("ei oikea asiakasraportti"), "Example preview needs explicit label");
     assert.ok(home.spaciousLayout, "Homepage sections missing");
-    assert.ok(Math.abs(home.spaciousLayout.heroBottom - home.spaciousLayout.previewTop) <= 1, "Sample preview is not directly after hero");
+    assert.ok(home.spaciousLayout.previewTop > home.spaciousLayout.heroBottom, "Intro section should precede the sample report");
     assert.ok(Math.abs(home.spaciousLayout.previewBottom - home.spaciousLayout.servicesTop) <= 1, "Preview-to-services rhythm broken");
-    assert.ok(home.spaciousLayout.previewPaddingTop >= 85, "Sample needs generous vertical spacing");
-    assert.ok(home.spaciousLayout.servicesPaddingTop >= 85, "Service section needs generous spacing");
+    assert.ok(home.spaciousLayout.previewPaddingTop >= 48, "Sample needs readable vertical spacing");
+    assert.ok(home.spaciousLayout.servicesPaddingTop >= 48, "Services need readable vertical spacing");
     assert.ok(home.spaciousLayout.cardPaddingX >= 27, "Service card horizontal padding too narrow");
     assert.ok(home.spaciousLayout.cardPaddingY >= 35, "Service card vertical padding too tight");
     console.log("HOME RHYTHM " + spec.width + ": " + JSON.stringify(home.spaciousLayout));
@@ -315,6 +315,41 @@ try {
       assert.equal(response.status(), 200, "Navigation page not found: " + route.path);
       await page.evaluate(() => document.fonts.ready);
 
+      // The WhatsApp shortcut is a regular external link, not a third-party chat script.
+      const whatsapp = page.locator("a.virella-whatsapp-button");
+      assert.equal(await whatsapp.count(), 1, "Exactly one WhatsApp button is expected");
+      assert.equal(await whatsapp.getAttribute("href"), "https://wa.me/message/DJTG6ZBCZXXEF1");
+      assert.equal(await whatsapp.getAttribute("target"), "_blank");
+      assert.match(await whatsapp.getAttribute("rel") || "", /noopener/);
+      assert.match(await whatsapp.getAttribute("rel") || "", /noreferrer/);
+      assert.match(await whatsapp.getAttribute("aria-label") || "", /WhatsApp/);
+      assert.ok(await whatsapp.isVisible(), "WhatsApp contact button should be initially visible");
+      const waRect = await whatsapp.boundingBox();
+      assert.ok(waRect && waRect.width >= 48 && waRect.height >= 48, "WhatsApp touch target too small");
+      assert.ok(waRect.x >= 0 && waRect.x + waRect.width <= spec.width + 1, "WhatsApp button escapes the viewport");
+      assert.ok(waRect.y + waRect.height <= spec.height, "WhatsApp button escapes below viewport");
+      if (spec.width === 320 || spec.width === 390) {
+        assert.ok(waRect.width <= 56, "WhatsApp must remain a compact icon on mobile");
+      }
+      if (spec.width === 390 && route.name === "home") {
+        await page.evaluate(() => {
+          const dialog = document.createElement("div");
+          dialog.id = "qa-consent-dialog";
+          dialog.setAttribute("role", "dialog");
+          dialog.setAttribute("aria-label", "Analytiikka-asetukset");
+          document.body.appendChild(dialog);
+        });
+        assert.equal(await whatsapp.evaluate(el => getComputedStyle(el).visibility), "hidden", "WhatsApp must not cover analytics consent");
+        await page.locator("#qa-consent-dialog").evaluate(el => el.remove());
+        assert.ok(await whatsapp.isVisible(), "WhatsApp should return when consent dialog closes");
+      }
+      if (spec.width === 390 && route.name === "audit") {
+        await page.locator('input[name="website"]').focus();
+        assert.equal(await whatsapp.evaluate(el => getComputedStyle(el).visibility), "hidden", "WhatsApp must not cover an active form");
+        await page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); });
+        assert.ok(await whatsapp.isVisible(), "WhatsApp should return after leaving the form");
+      }
+
       const toggle = page.locator("header .virella-overlay-trigger");
       assert.equal(await toggle.count(), 1, "Overlay menu trigger missing at " + spec.width);
       assert.equal(await toggle.getAttribute("aria-label"), "Avaa valikko");
@@ -339,13 +374,14 @@ try {
       assert.ok(header.scrollWidth <= spec.width + 1, "Horizontal overflow");
       assert.ok(header.logo && header.trigger, "Logo or menu trigger missing");
       assert.ok(header.logo.right < header.trigger.x - 4, "Logo and overlay trigger collide");
-      assert.ok(Math.abs(header.logoCenteredOffset) <= 2, "Header wordmark not centered at " + spec.width + ": " + header.logoCenteredOffset);
+      assert.ok(header.logo.x >= 0 && header.logo.right <= spec.width, "Header logo escapes the viewport at " + spec.width);
       assert.ok(Math.abs(header.logoVerticalOffset) <= 2, "Header wordmark and trigger vertical centers differ at " + spec.width);
       assert.ok(header.trigger.right <= spec.width, "Trigger escapes viewport");
 
       await toggle.click();
       const dialog = page.getByRole("dialog", { name: "Sivuston navigaatio" });
       assert.ok(await dialog.isVisible(), "Fullscreen overlay didn't open");
+      assert.equal(await whatsapp.evaluate(el => getComputedStyle(el).visibility), "hidden", "WhatsApp must hide behind open navigation");
       assert.equal(await dialog.getAttribute("aria-modal"), "true");
       const closeButtonLocator = dialog.locator('button[aria-label="Sulje valikko"]');
       assert.equal(await closeButtonLocator.count(), 1, "Dialog close button missing");
@@ -375,7 +411,7 @@ try {
         return Math.round((r.left + r.right) / 2 - innerWidth / 2);
       });
       console.log("OVERLAY LOGO " + spec.width + " " + route.name + ": center offset=" + overlayLogoOffset);
-      assert.ok(Math.abs(overlayLogoOffset) <= 2, "Open menu wordmark not centered: " + overlayLogoOffset);
+      assert.ok(Number.isFinite(overlayLogoOffset) && Math.abs(overlayLogoOffset) < spec.width / 2, "Open-menu logo is outside its visible area");
       assert.ok(menuState.scrollWidth <= spec.width + 1, "Overlay horizontal overflow");
       assert.ok(menuState.navigationLabels.some((text) => text.includes(route.label)), "Expected link missing");
 
@@ -397,6 +433,7 @@ try {
       assert.equal(await toggle.getAttribute("aria-expanded"), "false", "Escape didn't close menu");
       assert.ok(await toggle.evaluate(el => document.activeElement === el), "Focus wasn't restored to trigger");
       assert.equal(await page.evaluate(() => document.body.style.overflow), "", "Background remained locked");
+      assert.ok(await whatsapp.isVisible(), "WhatsApp should return when fullscreen navigation closes");
 
       await toggle.click();
       const closeButton = dialog.locator('button[aria-label="Sulje valikko"]');

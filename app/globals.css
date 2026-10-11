@@ -620,3 +620,50 @@ a {
       linear-gradient(90deg, rgba(9, 11, 12, .79) 0%, rgba(9, 11, 12, .52) 100%);
   }
 }
+
+
+/* WhatsApp is a secondary contact path; it never competes with the orange CTA.
+   The safe-area offsets keep the action clear of mobile browser controls. */
+.virella-whatsapp-button {
+  position: fixed;
+  z-index: 40;
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  display: inline-flex;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow: 0 8px 26px -14px rgba(0, 0, 0, .85);
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+.virella-whatsapp-button:hover {
+  border-color: #608977;
+  background: var(--mist);
+}
+.virella-whatsapp-button .virella-whatsapp-icon {
+  color: #25d366;
+}
+@media (min-width: 640px) {
+  .virella-whatsapp-button {
+    right: calc(24px + env(safe-area-inset-right, 0px));
+    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    width: auto;
+    min-width: 54px;
+    padding-inline: 18px;
+  }
+}
+/* Avoid obscuring cookie decisions, fullscreen navigation and active forms.
+   CSS-only gating works without storing personal data or loading chat scripts. */
+body:has([role="dialog"][aria-label="Analytiikka-asetukset"]) .virella-whatsapp-button,
+body:has(.virella-overlay[data-open="true"]) .virella-whatsapp-button,
+body:has(form:focus-within) .virella-whatsapp-button {
+  visibility: hidden;
+  pointer-events: none;
+}
