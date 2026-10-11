@@ -10,7 +10,7 @@ export const taxConfig = {
   vatRegistered: false,
   registrationStatusVerified: true, // Verified against owner-supplied YTJ extract, not a live lookup.
   registrationEvidence: "YTJ-ote käyttäjän toimittamana 11.10.2026: voimassa vain Verohallinnon perustiedot 24.11.2025 alkaen",
-  exemptionEligibilityVerified: true, // Owner's 2026-10-11 confirmation; not an independent OmaVero check.
+  exemptionEligibilityVerified: false, // Turnover reconciliation is separate from the owner's confirmed non-VAT status.
   confirmationSource: "Yrittäjän nimenomainen vahvistus 11.10.2026: ei ALV-velvollinen",
   publicMessage: "Arvonlisäveroa ei veloiteta vähäisen liiketoiminnan perusteella.",
 } as const;
