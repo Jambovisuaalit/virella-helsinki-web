@@ -82,6 +82,7 @@ try {
         proof: rect("#todisteet"),
         pricing: rect("#hinnoittelu"),
         cards: bounds,
+        serviceIconCounts: cards.map((card) => card.querySelectorAll("svg[aria-hidden='true']").length),
         stickyDisplay: getComputedStyle(sticky).display,
         stickyPosition: getComputedStyle(sticky).position,
         sticky: rect("#hinnoittelu .sticky"),
@@ -93,6 +94,8 @@ try {
     assert.ok(checks.hero.right <= spec.width + 1, `${spec.width}: hero width exceeds viewport`);
     assert.ok(checks.heroLines <= spec.maxHeroLines, `${spec.width}: hero wraps excessively (${checks.heroLines} lines)`);
     assert.ok(checks.logo.right <= checks.headerCta.x - 3, `${spec.width}: header logo and menu trigger overlap`);
+    assert.ok(checks.serviceIconCounts[0] >= 2, `${spec.width}: Instagram and Facebook plan icons missing`);
+    assert.ok(checks.serviceIconCounts[1] >= 1, `${spec.width}: LinkedIn plan icon missing`);
     assert.ok(checks.proof.y > checks.hero.bottom, `${spec.width}: proof does not follow hero`);
 
     for (const card of checks.cards) {
@@ -173,6 +176,23 @@ try {
         auditLinks: links.length,
         heroTracking: getComputedStyle(h1).letterSpacing,
         heroImageLoaded: (() => { const img = document.querySelector('img[src="/images/kartoitus-esimerkki.svg"]'); return Boolean(img && img.complete && img.naturalWidth > 0); })(),
+        backdrop: (() => {
+          const section = document.querySelector(".virella-photographic-hero");
+          const img = section?.querySelector('img[src="/images/virella-workspace-hero.webp"]');
+          const veil = section?.querySelector(".virella-hero-veil");
+          if (!section || !img || !veil) return null;
+          const s = section.getBoundingClientRect();
+          const v = veil.getBoundingClientRect();
+          return {
+            loaded: img.complete && img.naturalWidth >= 1000,
+            decorative: img.getAttribute("alt") === "",
+            naturalWidth: img.naturalWidth,
+            gradient: getComputedStyle(veil).backgroundImage,
+            filter: getComputedStyle(img).filter,
+            veilCovers: Math.abs(s.left - v.left) < 2 && Math.abs(s.right - v.right) < 2 &&
+              Math.abs(s.top - v.top) < 2 && Math.abs(s.bottom - v.bottom) < 2,
+          };
+        })(),
         heroImageRight: (() => { const img = document.querySelector('img[src="/images/kartoitus-esimerkki.svg"]'); return img ? Math.round(img.getBoundingClientRect().right) : null; })(),
         previewCaption: document.querySelector("figure figcaption")?.textContent?.trim(),
         contrastRows: (() => {
@@ -214,6 +234,12 @@ try {
     assert.ok(home.auditDetails.includes("2 arkipäivässä"), "Missing SLA");
     assert.ok(home.auditLinks >= 2, "Audit CTA missing");
     assert.ok(home.heroImageLoaded, "Audit preview image did not load");
+    assert.ok(home.backdrop?.loaded, "Hero photo did not load at " + spec.width);
+    assert.ok(home.backdrop?.decorative, "Hero photo should be decorative; content stays readable as HTML");
+    assert.ok(home.backdrop?.veilCovers, "Hero overlay does not cover whole photo section");
+    assert.ok(home.backdrop.gradient.includes("gradient"), "Responsive dark overlay not applied");
+    assert.ok(home.backdrop.filter.includes("brightness"), "Hero picture lacks contrast-controlled darkening");
+    console.log("HOME BACKDROP " + spec.width + ": " + JSON.stringify(home.backdrop));
     assert.ok(home.heroImageRight <= spec.width + 1, "Audit preview overflows viewport");
     assert.ok(home.previewCaption.includes("ei oikea asiakasraportti"), "Example preview needs explicit label");
     assert.ok(parseFloat(home.heroTracking) >= -1, "Hero letter spacing too tight at " + spec.width);
