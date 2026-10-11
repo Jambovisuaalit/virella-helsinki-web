@@ -16,6 +16,7 @@ const offers = [
  {id:"instagram",path:"/instagram",price:"490",mustInclude:["Facebook","Instagram"]},
  {id:"landing-page-seo",path:"/landing-page-seo",price:"990",mustInclude:["495","SEO"]},
  {id:"linkedin",path:"/linkedin",price:null,mustInclude:["Tarjouksen mukaan","LinkedIn"]},
+ {id:"verkkosivu-kuntoon",path:"/verkkosivu-kuntoon",price:null,mustInclude:["Tarjouksen mukaan","Conversion Fix"]},
 ];
 try {
  for(const width of [320,390,1440]){
@@ -29,7 +30,12 @@ try {
      assert.ok(text.includes(offer.price),offer.path+" has incorrect price");
    }else{
      assert.ok(!text.includes("490 €"),"LinkedIn public service page must not show the obsolete fixed price");
-     assert.ok(!text.includes("1 470 €"),"LinkedIn public service page must not promise a fixed commitment total");
+     assert.ok(!text.includes("1 470 €"),"Quote-only page must not promise a fixed commitment total");
+     if(offer.id==="verkkosivu-kuntoon"){
+       assert.ok(!text.includes("690 €"),"Conversion Fix must not promise an unapproved fixed price");
+       assert.ok(!text.includes("72 h"),"Conversion Fix must not promise an unapproved delivery SLA");
+       assert.ok(!text.includes("72 tunnin"),"Conversion Fix must not promise an unapproved delivery SLA in text");
+     }
    }
    for(const fragment of offer.mustInclude)assert.ok(text.includes(fragment),offer.path+" missing "+fragment);
    const pageInfo=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth}));
@@ -48,6 +54,12 @@ try {
    if(offer.id==="landing-page-seo"){
       const copy=await page.locator("main").innerText();
       assert.ok(copy.includes("495")&&copy.includes("990"),"landing payment milestones missing");
+   }
+   if(offer.id==="verkkosivu-kuntoon"){
+     const copy=await page.locator("main").innerText();
+     assert.ok(copy.includes("Korjausten sisältö, hinta ja aikataulu sovitaan erillisessä kirjallisessa tarjouksessa."),"Conversion Fix intake must disclose quotation-only pricing");
+     assert.ok(!copy.includes("690 €"),"Conversion Fix intake shows obsolete price");
+     assert.equal(await page.locator('form[action="/api/checkout"]').count(),0,"Conversion Fix intake must not allow direct checkout");
    }
    if(offer.id==="linkedin"){
      const copy=await page.locator("main").innerText();
@@ -105,6 +117,10 @@ try {
 
  const page=await browser.newPage({viewport:{width:390,height:844}});
  await page.goto(origin+"/sosiaalinen-media",{waitUntil:"networkidle"});
+ const socialCopy=await page.locator("main").innerText();
+ assert.ok(!socialCopy.includes("Molemmissa paketeissa vähimmäisjakso"),"Legacy LinkedIn commitment claim returned in FAQ");
+ assert.ok(!socialCopy.includes("Kummankin hinta"),"Legacy LinkedIn fixed price claim returned in FAQ");
+ assert.ok(socialCopy.includes("LinkedInin hinta, julkaisumäärä ja sopimuskausi määritellään"),"LinkedIn written quote statement missing from FAQ");
  const social=page.locator('a[href="/aloita?product=instagram"]');
  assert.ok(await social.count()>0,"social package must lead to intake");
  for(let i=0;i<await social.count();i++)assert.match((await social.nth(i).textContent())||"",/Aloita yhteistyö/,"social CTA inconsistent");

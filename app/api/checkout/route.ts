@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requiresWrittenOffer } from "@/config/offer-master";
+import { products } from "@/config/products";
 import { createCheckoutSession, getProductKeyById } from "@/lib/stripe/stripe-api";
 
 export async function POST(request: Request) {
@@ -14,7 +15,7 @@ export async function POST(request: Request) {
   // Keep redirects on the current Preview/production origin, never force users across environments.
   const origin = new URL(request.url).origin;
   // Fail closed: written offer approval comes before any invoice or payment.
-  if (requiresWrittenOffer(productId)) {
+  if (requiresWrittenOffer(productId) || products[productKey].billing === "quote") {
     const contactUrl = new URL("/aloita", origin);
     contactUrl.searchParams.set("product", productId);
     return NextResponse.redirect(contactUrl, 303);

@@ -27,6 +27,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
   const isConversionFix = productKey === "websiteFix";
   const isLinkedin = productKey === "linkedin";
   const quoteOnly = requiresWrittenOffer(product.id);
+  const isQuotedPrice = product.billing === "quote";
 
   return (
     <>
@@ -52,8 +53,8 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
               <p className="mt-7 max-w-[680px] text-[1.03rem] leading-8 text-muted sm:text-[1.14rem]">{content.lead}</p>
 
               <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <BuyButton productId={product.id} label={`Osta ${product.name}`} source="hero" />
-                <ButtonLink href="#sisalto" variant="secondary" className="sm:px-6">Katso mitä saat</ButtonLink>
+                <BuyButton productId={product.id} label="Aloita yhteistyö" source="hero" />
+                <ButtonLink href="#sisalto" variant="secondary" className="sm:px-6">{isQuotedPrice ? "Katso mitä arvioimme" : "Katso mitä saat"}</ButtonLink>
               </div>
 
               {isConversionFix ? (
@@ -62,7 +63,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
                   <span className="hidden text-border sm:inline">•</span>
                   <span>Ei salasanoja lomakkeella</span>
                   <span className="hidden text-border sm:inline">•</span>
-                  <span>Yksi korjauskierros mukana</span>
+                  <span>Toimitus sovitaan kirjallisesti</span>
                 </div>
               ) : null}
             </div>
@@ -70,30 +71,24 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
             <Card className="soft-ring relative overflow-hidden border-white/80 bg-surface/95 p-6 shadow-[0_34px_90px_-46px_rgba(23,33,38,0.48)] backdrop-blur sm:p-8">
               <div className="absolute right-0 top-0 h-28 w-28 rounded-bl-[5rem] bg-brand/5" aria-hidden="true" />
               <div className="relative">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.17em] text-brand">{isConversionFix ? "Conversion Fix" : isLinkedin ? "Asiakaskohtainen tarjous" : "Kiinteä hinta"}</p>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.17em] text-brand">{isQuotedPrice ? "Asiakaskohtainen tarjous" : "Vahvistettu hinta"}</p>
                 <div className="mt-5 flex items-end gap-2">
-                  <p className={`${isLinkedin ? "text-2xl" : "text-5xl"} font-extrabold tracking-[-0.055em] text-foreground`}>{isLinkedin ? "Tarjouksen mukaan" : euro.format(product.price)}</p>
-                  {product.billing === "month" && !isLinkedin ? <p className="pb-1 text-sm font-semibold text-muted">/ kk</p> : null}
+                  <p className={`${isQuotedPrice ? "text-2xl" : "text-5xl"} font-extrabold tracking-[-0.055em] text-foreground`}>{isQuotedPrice ? "Tarjouksen mukaan" : euro.format(product.price)}</p>
+                  {product.billing === "month" ? <p className="pb-1 text-sm font-semibold text-muted">/ kk</p> : null}
                 </div>
 
-                {isLinkedin ? (
-                  <p className="mt-2 text-sm text-muted">Julkaisumäärä, hinta ja sopimuskausi vahvistetaan kirjallisessa tarjouksessa.</p>
+                {isQuotedPrice ? (
+                  <p className="mt-2 text-sm text-muted">{isLinkedin ? "Julkaisumäärä, hinta ja sopimuskausi vahvistetaan kirjallisessa tarjouksessa." : "Korjausten sisältö, hinta ja aikataulu vahvistetaan kirjallisessa tarjouksessa."}</p>
                 ) : product.billing === "month" ? (
                   <p className="mt-2 text-sm text-muted">{product.commitmentMonths} kk · yhteensä {euro.format(product.totalPrice)}</p>
                 ) : (
                   <p className="mt-2 text-sm text-muted">Kertamaksu</p>
                 )}
 
-                {isConversionFix ? (
-                  <div className="mt-7 grid grid-cols-3 gap-2 border-y border-border/70 py-5 text-center">
-                    <div><p className="text-xl font-extrabold tracking-[-0.04em] text-brand">72 h</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.09em] text-muted">toimitus</p></div>
-                    <div><p className="text-xl font-extrabold tracking-[-0.04em] text-brand">8</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.09em] text-muted">korjauskohtaa</p></div>
-                    <div><p className="text-xl font-extrabold tracking-[-0.04em] text-brand">1</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.09em] text-muted">kierros</p></div>
-                  </div>
-                ) : null}
+
 
                 <p className={`${isConversionFix ? "mt-5" : "mt-6 border-t border-border/70 pt-5"} text-sm leading-6 text-muted`}>{taxConfig.publicMessage}</p>
-                <BuyButton productId={product.id} label={isConversionFix ? "Osta Conversion Fix" : undefined} className="mt-7" source="pricing_card" />
+                <BuyButton productId={product.id} label="Aloita yhteistyö" className="mt-7" source="pricing_card" />
               </div>
             </Card>
           </SectionContainer>
@@ -103,13 +98,13 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
           <SectionContainer className="py-20 sm:py-24 lg:py-28">
             <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
               <div className="max-w-[540px]">
-                <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand">{isConversionFix ? "Mitä saat" : "Sisältö"}</p>
-                <h2 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl">{isConversionFix ? "Mitä 690 €:lla korjataan." : isLinkedin ? "Sisältö määräytyy hyväksytyn tarjouksen mukaan." : "Näet ennen ostamista, mitä palveluun kuuluu."}</h2>
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand">{isQuotedPrice ? "Mitä sovimme" : "Sisältö"}</p>
+                <h2 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl">{isQuotedPrice ? "Sisältö määräytyy kirjallisen tarjouksen mukaan." : "Näet ennen tilausta, mitä palveluun kuuluu."}</h2>
                 <p className="mt-5 text-base leading-7 text-muted sm:text-lg">{content.summary}</p>
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2">
-                {(isLinkedin ? ["Julkaisumäärä ja kanavat yksilöidään tarjoukseen", "Sisältöstrategia sovitun tavoitteiden mukaan", "Mahdollinen profiilin optimointi ja raportointi sovitaan erikseen"] : product.features).map((feature, index) => (
+                {product.features.map((feature, index) => (
                   <Card key={feature} className="group flex min-h-32 items-start gap-4 p-5 shadow-none transition duration-200 hover:-translate-y-0.5 hover:border-brand/15 hover:bg-background sm:p-6">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand/7 text-[10px] font-extrabold text-brand">{String(index + 1).padStart(2, "0")}</span>
                     <p className="pt-1 font-bold leading-6 tracking-[-0.01em] text-foreground">{feature}</p>
@@ -159,7 +154,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
             <div className="grid gap-10 lg:grid-cols-[0.55fr_1fr] lg:gap-16">
               <div>
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand">Usein kysyttyä</p>
-                <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.05em] sm:text-5xl">Selkeät vastaukset ennen ostamista.</h2>
+                <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.05em] sm:text-5xl">Selkeät vastaukset ennen tilausta.</h2>
               </div>
               <div className="overflow-hidden rounded-[1.6rem] border border-border/80 bg-surface">
                 {content.faq.map((item) => (
@@ -180,11 +175,11 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
               <div className="pointer-events-none absolute -right-12 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
               <div className="relative flex flex-col gap-9 md:flex-row md:items-end md:justify-between">
                 <div className="max-w-[720px]">
-                  <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">{isConversionFix ? "Conversion Fix · 690 € · toimitus 72 h" : isLinkedin ? "Pyydä kirjallinen tarjous" : quoteOnly ? "Pyydä kirjallinen tarjous" : "Aloita verkossa"}</p>
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">{quoteOnly ? "Pyydä kirjallinen tarjous" : "Aloita verkossa"}</p>
                   <h2 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl">{isConversionFix ? "Tee yhteydenotosta asiakkaalle helpompi." : isLinkedin ? "Sovitaan juuri teille sopiva LinkedIn-palvelu." : quoteOnly ? "Lähetä aloituspyyntö. Hyväksy tarjous ennen laskutusta." : "Maksa verkossa ja täytä aloituskysely."}</h2>
-                  <p className="mt-5 max-w-[680px] text-base leading-7 text-white/70">{isConversionFix ? "Kiinteä 690 € kertamaksu. 72 tunnin toimitusaika alkaa, kun maksu, aloituskysely ja toteutukseen tarvittavat materiaalit tai käyttöoikeudet ovat käytettävissä." : isLinkedin ? "Lähetä aloituspyyntö. Määrittelemme julkaisumäärän, hinnan ja työvaiheet kirjallisessa tarjouksessa ennen sitoumusta." : quoteOnly ? "Saat yksilöidyn tarjouksen kirjalliseen hyväksyntään. Lasku lähetetään vasta hyväksynnän jälkeen, ja toteutus alkaa sovittujen maksujen ja materiaalien saavuttua." : "Maksun jälkeen tuotekohtainen aloituskysely avautuu automaattisesti ja toimitus voidaan käynnistää."}</p>
+                  <p className="mt-5 max-w-[680px] text-base leading-7 text-white/70">{isConversionFix ? "Lähetä maksuton aloituspyyntö. Korjausten laajuus, hinta, aikataulu ja mahdolliset käyttöoikeudet sovitaan kirjallisesti ennen työn aloitusta." : isLinkedin ? "Lähetä aloituspyyntö. Määrittelemme julkaisumäärän, hinnan ja työvaiheet kirjallisessa tarjouksessa ennen sitoumusta." : quoteOnly ? "Saat yksilöidyn tarjouksen kirjalliseen hyväksyntään. Lasku lähetetään vasta hyväksynnän jälkeen, ja toteutus alkaa sovittujen maksujen ja materiaalien saavuttua." : "Maksun jälkeen tuotekohtainen aloituskysely avautuu automaattisesti ja toimitus voidaan käynnistää."}</p>
                 </div>
-                <BuyButton productId={product.id} label={isConversionFix ? "Osta Conversion Fix · 690 €" : quoteOnly ? "Aloita yhteistyö" : "Osta nyt"} className="shrink-0" source="final_cta" />
+                <BuyButton productId={product.id} label={quoteOnly ? "Aloita yhteistyö" : "Aloita tästä"} className="shrink-0" source="final_cta" />
               </div>
             </div>
           </SectionContainer>

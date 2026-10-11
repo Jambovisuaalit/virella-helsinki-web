@@ -32,5 +32,5 @@ export const offerMasters = {
   },
 } as const;
 export function requiresWrittenOffer(productId: string): boolean {
-  return productId === offerMasters.visibility.id || productId === offerMasters.landing.id || productId === "linkedin";
+  return productId === offerMasters.visibility.id || productId === offerMasters.landing.id || productId === "linkedin" || productId === "verkkosivu-kuntoon";
 }
