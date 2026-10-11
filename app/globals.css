@@ -344,6 +344,18 @@ a {
   grid-row: auto;
 }
 
+
+/* Brand mark centered in the balanced navigation grid, across viewport sizes. */
+.virella-nav-shell .brand-logo {
+  justify-self: center;
+  min-width: 0;
+}
+.virella-nav-shell .brand-logo-image { width: 132px; }
+@media (max-width: 359px) {
+  .virella-nav-shell .brand-logo-image { width: 116px; }
+  .virella-overlay-heading > .brand-logo .brand-logo-image { width: 118px; }
+}
+
 /* Virella / Motion Overlay Menu. Original implementation for Next.js inspired
    by the Framer reference; no third-party code, animation runtime or assets. */
 .virella-site-header.landing-header {
@@ -417,27 +429,38 @@ a {
   flex-direction: column;
 }
 .virella-overlay-heading {
-  display: flex;
-  min-height: 100px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  min-height: 104px;
   flex: none;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  column-gap: 12px;
   border-bottom: 1px solid #354043;
 }
+.virella-overlay-heading-label {
+  justify-self: start;
+  color: #b0babc;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.virella-overlay-heading > .brand-logo { justify-self: center; }
+.virella-overlay-heading > .brand-logo .brand-logo-image { width: 148px; }
+.virella-overlay-heading > button { justify-self: end; }
 .virella-overlay-body {
   display: grid;
   flex: 1;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.52fr);
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 0.48fr);
   align-items: center;
-  gap: clamp(32px, 7vw, 108px);
-  padding-block: clamp(36px, 8vh, 104px);
+  gap: clamp(56px, 8vw, 120px);
+  padding-block: clamp(56px, 9vh, 116px);
 }
 .virella-overlay-main {
   min-width: 0;
 }
 .virella-overlay-overline {
-  margin-bottom: clamp(20px, 4vw, 44px);
+  margin-bottom: clamp(28px, 3.5vw, 42px);
   color: #b0babc;
   font-size: 12px;
   font-weight: 600;
@@ -447,7 +470,7 @@ a {
 .virella-overlay-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1.4vw, 18px);
+  gap: clamp(16px, 1.8vw, 28px);
   list-style: none;
   padding: 0;
   margin: 0;
@@ -471,15 +494,15 @@ a {
 }
 .virella-overlay-link {
   display: grid;
-  min-height: 66px;
+  min-height: 58px;
   grid-template-columns: 26px minmax(0, 1fr) auto;
   align-items: baseline;
   column-gap: clamp(12px, 2vw, 26px);
   color: #f4f5f2;
-  font-size: clamp(2.4rem, 5.1vw, 5rem);
-  font-weight: 650;
-  letter-spacing: -.035em;
-  line-height: 1.12;
+  font-size: clamp(2.3rem, 4.5vw, 4.2rem);
+  font-weight: 630;
+  letter-spacing: -.02em;
+  line-height: 1.14;
   text-decoration: none;
   transition: color 180ms ease;
 }
@@ -531,25 +554,27 @@ a {
   font-size: 13px;
 }
 @media(max-width: 767px) {
-  .virella-overlay-heading { min-height: 86px; }
+  .virella-overlay-heading { min-height: 88px; }
+  .virella-overlay-heading-label { visibility: hidden; }
+  .virella-overlay-heading > .brand-logo .brand-logo-image { width: 124px; }
   .virella-overlay-body {
     grid-template-columns: 1fr;
     align-content: center;
-    gap: clamp(28px, 6vh, 52px);
-    padding-block: 36px;
+    gap: clamp(24px, 5vh, 40px);
+    padding-block: 30px;
   }
   .virella-overlay-link {
     grid-template-columns: 23px minmax(0, 1fr) auto;
     min-height: 48px;
     column-gap: 12px;
-    font-size: clamp(2.12rem, 7vw, 3.7rem);
+    font-size: clamp(2.05rem, 6.8vw, 3.3rem);
   }
   .virella-overlay-aside {
     border-left: 0;
     border-top: 1px solid #354043;
     padding: 24px 0 0;
   }
-  .virella-overlay-overline { margin-bottom: 24px; }
+  .virella-overlay-overline { margin-bottom: 18px; }
 }
 @media(max-width: 359px) {
   .virella-overlay-link {
