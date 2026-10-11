@@ -25,7 +25,7 @@ export default async function LeadsPage({ searchParams }: {
     <nav className="mb-6 flex gap-5 text-sm"><Link href="/admin/sales">Sales Pipeline</Link><Link href="/admin/leads" aria-current="page">Aloituspyynnöt</Link></nav>
     <h1 className="text-3xl font-bold">Aloituspyynnöt ja toimitustila</h1>
     <p className="mt-2 text-sm text-muted">
-      Yhteinen palvelinpuolinen rekisteri. Enintään 200 tallennetta tässä MVP-näkymässä; muutokset näkyvät kaikilla kirjautuneilla laitteilla.
+      Yhteinen palvelinpuolinen rekisteri. Näyttää yhteisen rekisterin tallenteet; yli 1 000 liidin käsittely vaatii sivutuksen. Muutokset näkyvät kaikilla kirjautuneilla laitteilla.
     </p>
     {params.error && <p role="alert" className="mt-5 rounded-lg border p-4 text-sm">{params.error}</p>}
     {params.lead_result && params.lead_result !== "error" && <p role="status" className="mt-5 rounded-lg border p-4 text-sm">
