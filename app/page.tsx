@@ -160,46 +160,46 @@ export default function Home() {
           </SectionContainer>
         </section>
 
-        <section id="palvelut" className="scroll-mt-28 border-y border-border bg-cloud py-20 sm:py-24" aria-labelledby="services-title">
+        <section id="palvelut" className="scroll-mt-28 border-y border-border/75 bg-cloud py-[clamp(5.5rem,8vw,8rem)]" aria-labelledby="services-title">
           <SectionContainer>
-            <div className="max-w-[760px]">
-              <p className="text-xs font-bold uppercase tracking-[0.17em] text-brand">Virellan palvelut</p>
-              <h2 id="services-title" className="mt-4 text-[clamp(2.1rem,4vw,3.25rem)] font-bold leading-[1.12] tracking-[-0.045em]">
+            <div className="max-w-[670px]">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Virellan palvelut</p>
+              <h2 id="services-title" className="mt-6 text-[clamp(2.05rem,3.9vw,3.25rem)] font-semibold leading-[1.16] tracking-[-0.02em]">
                 Kolme palvelua. Yksi selkeä toteutus.
               </h2>
-              <p className="mt-5 text-base leading-8 text-muted">
+              <p className="mt-7 text-base leading-8 text-muted">
                 Valitse yrityksesi tilanteeseen sopiva palvelu. Kaikkea ei tarvitse hankkia kerralla.
               </p>
             </div>
-            <div className="mt-12 grid gap-4 lg:grid-cols-3">
+            <div className="mt-14 grid gap-6 lg:grid-cols-3 lg:gap-7">
               {services.map((service) => (
-                <article key={service.name} className="flex h-full flex-col rounded-2xl border border-border bg-surface p-6 sm:p-7">
+                <article key={service.name} className="flex h-full flex-col rounded-2xl border border-border/85 bg-surface px-7 py-9 sm:px-8 sm:py-10">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-brand">{service.name}</p>
-                    <span className="text-xs text-muted">{service.number}</span>
+                    <p className="text-xs font-semibold uppercase tracking-[0.09em] text-muted">{service.name}</p>
+                    <span className="font-mono text-xs text-muted">{service.number}</span>
                   </div>
-                  <h3 className="mt-6 text-2xl font-bold leading-[1.17] tracking-[-0.03em] text-foreground">{service.headline}</h3>
-                  <p className="mt-4 text-sm leading-7 text-muted">{service.description}</p>
-                  <div className="mt-6 border-t border-border pt-5" aria-label={`${service.name} -palvelun hinta`}>
-                    <p className="text-2xl font-bold tracking-[-0.03em] text-foreground">{service.price}</p>
-                    <p className="mt-1 text-sm text-muted">{service.priceDetail}</p>
+                  <h3 className="mt-8 text-[1.45rem] font-semibold leading-[1.22] tracking-[-0.015em] text-foreground">{service.headline}</h3>
+                  <p className="mt-5 text-[15px] leading-[1.8] text-muted">{service.description}</p>
+                  <div className="mt-8 border-t border-border pt-7" aria-label={`${service.name} -palvelun hinta`}>
+                    <p className="text-[1.75rem] font-semibold tracking-[-0.02em] text-foreground">{service.price}</p>
+                    <p className="mt-2 text-sm text-muted">{service.priceDetail}</p>
                   </div>
-                  <ul className="mt-6 space-y-3 text-sm text-foreground">
+                  <ul className="mt-8 space-y-3 text-sm leading-6 text-foreground">
                     {service.details.map((detail) => (
-                      <li key={detail} className="flex gap-3"><span className="text-brand" aria-hidden="true">✓</span>{detail}</li>
+                      <li key={detail} className="flex gap-3"><span className="text-muted" aria-hidden="true">✓</span>{detail}</li>
                     ))}
                   </ul>
-                  <a href={service.href} className="mt-9 inline-flex min-h-11 items-center font-semibold text-brand underline decoration-brand/40 underline-offset-4 hover:text-brand-strong lg:mt-auto lg:pt-7">
+                  <a href={service.href} className="mt-10 inline-flex min-h-11 items-center font-semibold text-foreground underline decoration-border underline-offset-[6px] transition-colors hover:decoration-foreground lg:mt-auto lg:pt-9">
                     {service.action} <span aria-hidden="true" className="ml-2">↗</span>
                   </a>
                 </article>
               ))}
             </div>
-            <p className="mt-5 text-sm text-muted">{taxConfig.publicMessage}</p>
-            <div className="mt-5 flex flex-col gap-4 rounded-2xl border border-border bg-background p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+            <p className="mt-7 text-sm leading-6 text-muted">{taxConfig.publicMessage}</p>
+            <div className="mt-12 flex flex-col gap-7 border-t border-border pt-10 sm:flex-row sm:items-center sm:justify-between sm:pt-12">
               <div>
-                <h3 className="text-lg font-bold text-foreground">Tarvitsetko myös uudet verkkosivut?</h3>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+                <h3 className="text-xl font-semibold text-foreground">Tarvitsetko myös uudet verkkosivut?</h3>
+                <p className="mt-3 max-w-2xl text-[15px] leading-7 text-muted">
                   Rakennamme yrityksellesi mobiilissa toimivat verkkosivut ja selkeän yhteydenottopolun. Hinta alkaen 1 500 €.
                 </p>
               </div>
@@ -208,12 +208,12 @@ export default function Home() {
           </SectionContainer>
         </section>
 
-        <section id="prosessi" className="scroll-mt-28 py-20 sm:py-24" aria-labelledby="process-title">
+        <section id="prosessi" className="scroll-mt-28 py-[clamp(5.5rem,8vw,8rem)]" aria-labelledby="process-title">
           <SectionContainer>
-            <div className="grid gap-8 md:grid-cols-[1.1fr_0.9fr] md:gap-12">
+            <div className="grid gap-9 md:grid-cols-[1.1fr_0.9fr] md:gap-20">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.17em] text-brand">Näin aloitat</p>
-                <h2 id="process-title" className="mt-4 text-[clamp(2.1rem,4vw,3.1rem)] font-bold leading-[1.12] tracking-[-0.045em]">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Näin aloitat</p>
+                <h2 id="process-title" className="mt-6 text-[clamp(2.05rem,3.8vw,3.2rem)] font-semibold leading-[1.16] tracking-[-0.02em]">
                   Ensin kartoitus. Sitten päätät jatkosta.
                 </h2>
               </div>
@@ -221,24 +221,24 @@ export default function Home() {
                 Kartoitus tehdään julkisesti saatavilla olevista tiedoista. Saat kolme konkreettista korjauskohdetta perusteluineen sähköpostiin 2 arkipäivässä.
               </p>
             </div>
-            <ol className="mt-12 grid gap-8 md:grid-cols-3">
+            <ol className="mt-16 grid gap-10 md:grid-cols-3 md:gap-12">
               {steps.map((step) => (
-                <li key={step.number} className="border-t border-border pt-6">
-                  <span className="text-sm font-bold text-brand">{step.number}</span>
-                  <h3 className="mt-7 text-xl font-bold tracking-[-0.025em]">{step.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-muted">{step.description}</p>
+                <li key={step.number} className="border-t border-border pt-8">
+                  <span className="font-mono text-sm text-muted">{step.number}</span>
+                  <h3 className="mt-8 text-xl font-semibold tracking-[-0.01em]">{step.title}</h3>
+                  <p className="mt-5 text-[15px] leading-[1.8] text-muted">{step.description}</p>
                 </li>
               ))}
             </ol>
           </SectionContainer>
         </section>
 
-        <section id="yhteys" className="scroll-mt-28 border-t border-border bg-cloud py-20 sm:py-24" aria-labelledby="contact-title">
+        <section id="yhteys" className="scroll-mt-28 border-t border-border/75 bg-cloud py-[clamp(6rem,9vw,9rem)]" aria-labelledby="contact-title">
           <SectionContainer>
-            <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-10 md:flex-row md:items-center md:justify-between md:gap-20">
               <div className="max-w-[730px]">
-                <p className="text-xs font-bold uppercase tracking-[0.17em] text-brand">Seuraava askel</p>
-                <h2 id="contact-title" className="mt-4 text-[clamp(2.1rem,4vw,3.2rem)] font-bold leading-[1.12] tracking-[-0.045em]">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Seuraava askel</p>
+                <h2 id="contact-title" className="mt-6 text-[clamp(2.05rem,3.8vw,3.2rem)] font-semibold leading-[1.16] tracking-[-0.02em]">
                   Selvitetään, mitä sivustollasi kannattaa korjata ensin.
                 </h2>
                 <p className="mt-5 text-base leading-8 text-muted">
