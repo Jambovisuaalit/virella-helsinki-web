@@ -70,6 +70,7 @@ function initialLead(qa = true) {
 function formUpdate(overrides = {}) {
   const fields = {
     action: "update", returnTo: "leads", id,
+    expectedRevision: "2026-10-11T06:48:04Z",
     stage: "Won", monthlyValue: "490",
     deliveryStatus: "draft_ready",
     owner: "Jami", nextAction: "Lähetä kolme korjausehdotusta",
@@ -108,7 +109,7 @@ test("shared server records never count QA as pipeline revenue", async () => {
   const types = h.load("lib/leads/types");
   const base = await store.getLeadRecord(id);
   const next = { ...base.state, stage: "Won", monthlyValue: 490, isTest: true };
-  assert.equal((await store.updateLeadState(id, next)).ok, true);
+  assert.equal((await store.updateLeadState(id, next, base.updatedAt ?? base.receivedAt)).ok, true);
   const metrics = types.leadMetrics(await store.listLeadRecords());
   assert.equal(metrics.tests, 1);
   assert.equal(metrics.leads, 0);
@@ -125,16 +126,38 @@ test("Gmail draft alone cannot mark a lead sent; delivery is read back across re
   assert.equal(first.status, 303);
   const store = h.load("lib/leads/store");
   assert.equal((await store.getLeadRecord(id)).state.deliveryStatus, "draft_ready");
-  const rejected = await POST(post(formUpdate({ deliveryStatus: "sent" })));
+  const revisedAt = (await store.getLeadRecord(id)).updatedAt;
+  const rejected = await POST(post(formUpdate({ deliveryStatus: "sent", expectedRevision: revisedAt })));
   assert.match(rejected.headers.get("location"), /lead_result=error/);
   assert.equal((await store.getLeadRecord(id)).state.deliveryStatus, "draft_ready");
   const evidence = "https://mail.google.com/mail/u/0/#all/0123456789abcdef";
-  const accepted = formUpdate({ deliveryStatus: "sent", sentEvidence: evidence, confirmSent: "on" });
+  const accepted = formUpdate({ deliveryStatus: "sent", sentEvidence: evidence, confirmSent: "on", expectedRevision: revisedAt });
   assert.equal((await POST(post(accepted))).status, 303);
   const freshlyLoaded = await store.listLeadRecords();
   assert.equal(freshlyLoaded[0].state.deliveryStatus, "sent");
   assert.equal(freshlyLoaded[0].state.sentEvidence, evidence);
   assert.equal(freshlyLoaded.length, 1);
+});
+
+test("stale update from another admin session cannot replace fresher lead state", async () => {
+  const h = harness();
+  h.objects.set(id, initialLead());
+  const { POST } = h.load("app/api/admin/leads/route");
+  const store = h.load("lib/leads/store");
+  const saved = await POST(post(formUpdate({ stage: "Qualified", monthlyValue: "0", nextAction: "Valmistele kartoitus" })));
+  assert.equal(saved.status, 303);
+  const current = await store.getLeadRecord(id);
+  assert.equal(current.state.stage, "Qualified");
+  assert.equal(current.state.nextAction, "Valmistele kartoitus");
+  const objectCount = h.objects.size;
+  // A second browser still holds the original record revision.
+  const stale = await POST(post(formUpdate({ stage: "Won", monthlyValue: "490", nextAction: "Vanha päivitys" })));
+  assert.match(stale.headers.get("location"), /lead_result=error/);
+  assert.match(stale.headers.get("location"), /error=/);
+  const after = await store.getLeadRecord(id);
+  assert.equal(after.state.stage, "Qualified");
+  assert.equal(after.state.nextAction, "Valmistele kartoitus");
+  assert.equal(h.objects.size, objectCount);
 });
 
 test("unauthenticated and cross-origin admin POSTs cannot update a lead", async () => {
