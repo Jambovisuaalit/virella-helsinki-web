@@ -72,3 +72,4 @@ export default function SalesPipeline({ leads }: { leads: LeadRecord[] }) {
       <p className="mt-7 text-sm text-muted">Myyntimittarit eivät sisällä QA-testejä. Tilamuutokset kirjautuvat yksityiseen tapahtumalokiin.</p>
     </div>
   </main>;
+}
