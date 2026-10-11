@@ -36,3 +36,6 @@ jobs:
 
       - name: Contact intake tests
         run: npm run test:contact
+
+      - name: Sales and delivery lifecycle tests
+        run: npm run test:delivery
