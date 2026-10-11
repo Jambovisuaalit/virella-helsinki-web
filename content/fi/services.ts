@@ -13,26 +13,26 @@ type ServicePageContent = {
 
 export const servicePageContent: Record<ProductId, ServicePageContent> = {
   websiteFix: {
-    eyebrow: "Conversion Fix · 690 € · toimitus 72 h",
-    title: "Sivustosi ei tarvitse aina uusimista. Sen pitää tehdä yhteydenotosta helpompi.",
-    lead: "Conversion Fix korjaa nykyisen verkkosivusi kohdat, jotka vaikeuttavat asiakkaan seuraavaa askelta. Selkeytämme viestin, toimintakehotukset, mobiilikokemuksen, yhteydenottopolun ja tärkeimmät luottamusta rakentavat kohdat kiinteällä 690 € hinnalla — ilman täyttä verkkosivuprojektia.",
-    summary: "Saat konkreettiset muutokset nykyiseen sivuun, et pelkkää auditointiraporttia. Korjaamme sovitut kohdat, tarkistamme lopputuloksen ja toimitamme ennen/jälkeen-yhteenvedon. Jos sivusto vaatii tätä laajemman uudistuksen, se erotetaan tästä työstä eikä lisätöitä tehdä ilman hyväksyntääsi.",
-    audienceTitle: "Conversion Fix sopii, kun sivu on olemassa mutta se ei ohjaa tarpeeksi selkeästi yhteydenottoon.",
+    eyebrow: "Verkkosivun korjaukset · asiakaskohtainen tarjous",
+    title: "Sivustosi ei aina tarvitse uusimista. Tärkeimmät korjaukset voidaan selvittää ensin.",
+    lead: "Conversion Fix -kartoituksessa arvioimme nykyisen verkkosivustosi pääviestin, toimintakehotukset, mobiilikäytön, yhteydenottopolun ja luottamusta rakentavat kohdat. Saat kirjallisen tarjouksen rajatusta korjaustyöstä ennen päätöstä.",
+    summary: "Korjattavat kohdat, toimitusmäärä, aikataulu, hinta sekä mahdolliset korjauskierrokset määritellään asiakaskohtaisessa kirjallisessa tarjouksessa. Aloituspyyntö ei velvoita ostamaan eikä käynnistä maksua tai työtä.",
+    audienceTitle: "Kenelle verkkosivun rajattu korjaustyö voi sopia?",
     audience: [
-      "Asiakas ei ymmärrä heti, mitä tarjoat, kenelle palvelu on tai miksi juuri sinuun kannattaa ottaa yhteyttä",
-      "Yhteydenottopainikkeet, lomake tai mobiilikäyttö tekevät asioinnista turhan vaikeaa",
-      "Haluat korjata nykyisen sivun tärkeimmät ongelmat nopeasti ilman kuukausien verkkosivuprojektia",
+      "Yritykselle, jonka nykyinen sivu ei kerro selkeästi palvelua tai toimialuetta",
+      "Yritykselle, jonka mobiilikäyttö tai yhteydenottopolku kaipaa kehitystä",
+      "Yritykselle, joka haluaa arvioida korjausmahdollisuudet ennen laajempaa verkkosivu-uudistusta",
     ],
     process: [
-      { title: "Osta ja anna lähtötiedot", text: "Maksat 690 € verkossa ja täytät lyhyen aloituskyselyn. Tarvitsemme nykyisen sivuston osoitteen, tavoitteen sekä toteutukseen tarvittavat materiaalit tai käyttöoikeudet. Salasanoja ei lähetetä lomakkeella." },
-      { title: "Korjaamme tärkeimmät kitkakohdat", text: "Käymme läpi pääviestin, toimintakehotukset, mobiilikäytön, yhteydenottopolun, luottamusta rakentavat elementit sekä perustason SEO- ja metatiedot. Toteutamme palveluun kuuluvat sovitut korjaukset suoraan nykyiseen sivuun." },
-      { title: "Saat valmiit muutokset ja yhteenvedon", text: "Toimitamme tehdyt korjaukset, ennen/jälkeen-yhteenvedon ja yhden kootun korjauskierroksen. Jos löydämme tämän palvelun ulkopuolelle jäävän suuremman ongelman, kerromme siitä erikseen — mitään lisätyötä ei tehdä automaattisesti." },
+      { title: "Lähetä aloituspyyntö", text: "Kerro nykyisen verkkosivusi osoite ja tärkein kehitystavoite. Lähetys ei ole maksullinen tilaus. Salasanoja ei toimiteta lomakkeella." },
+      { title: "Saat yksilöidyn tarjouksen", text: "Arvioimme toteutettavissa olevat korjaukset ja rajaamme kirjallisesti toimitussisällön, aikataulun, hinnan, hyväksynnät ja tarvittavat käyttöoikeudet." },
+      { title: "Toteutus vasta hyväksynnästä", text: "Työ käynnistyy vasta kirjallisesti hyväksytyn tarjouksen ja sovittujen lähtöedellytysten täyttymisen jälkeen. Mahdolliset lisätyöt sovitaan erikseen." },
     ],
     faq: [
-      { question: "Mitä 690 € sisältää?", answer: "Nykyisen sivun läpikäynnin ja sovitut korjaukset kahdeksalla osa-alueella: pääviesti, toimintakehotukset, mobiilikäyttö, yhteydenottopolku, luottamusta rakentavat elementit, perustason SEO ja metatiedot, ennen/jälkeen-yhteenveto sekä yksi koottu korjauskierros." },
-      { question: "Rakennatteko tällä hinnalla kokonaan uuden verkkosivun?", answer: "Emme. Conversion Fix on tarkoitettu olemassa olevan sivuston tärkeimpien myyntiä ja yhteydenottoa heikentävien kohtien korjaamiseen. Uusi sivusto, laaja brändiuudistus, CRM, maksettu mainonta, jatkuva SEO tai laajat integraatiot sovitaan erikseen." },
-      { question: "Milloin 72 tunnin toimitusaika alkaa?", answer: "72 tuntia alkaa, kun maksu, aloituskysely ja toteutukseen tarvittavat materiaalit tai käyttöoikeudet ovat käytettävissä. Asiakkaasta tai kolmannesta osapuolesta johtuva odotus ei kuluta toimitusaikaa." },
-      { question: "Tarvitseeko minun ostaa jatkopalvelua?", answer: "Ei. Conversion Fix on itsenäinen 690 € kertatoimitus. Jos työn aikana löytyy suurempi ongelma, saat siitä erillisen havainnon ja mahdollisen ehdotuksen. Jatkotyö tehdään vain, jos hyväksyt sen erikseen." },
+      { question: "Mitä Conversion Fix maksaa?", answer: "Kiinteää vakiohintaa ei ole vahvistettu. Saat korjattaviin kohtiin ja sivustosi tekniikkaan perustuvan kirjallisen tarjouksen ennen tilausta." },
+      { question: "Kuuluuko tähän kokonaan uusi verkkosivu?", answer: "Ei automaattisesti. Korjauksia arvioidaan olemassa olevaan sivustoon. Laajempi uudistus tarjotaan erikseen, jos se on tarkoituksenmukaista." },
+      { question: "Milloin korjaukset valmistuvat?", answer: "Aikataulu vahvistetaan asiakaskohtaisessa tarjouksessa korjausten laajuuden, sivuston tekniikan, materiaalien ja käyttöoikeuksien mukaan." },
+      { question: "Voiko aloituspyynnön lähettää ilman ostositoumusta?", answer: "Kyllä. Aloituspyyntö on maksuton yhteydenotto. Maksullinen toimeksianto syntyy vasta erikseen hyväksyttävällä kirjallisella tarjouksella ja sopimuksella." },
     ],
   },
   instagram: {
