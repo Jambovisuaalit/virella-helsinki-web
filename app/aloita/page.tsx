@@ -106,7 +106,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                       <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Palvelu</p>
                       <p className="mt-1 font-bold">{product.name}</p>
                       {product.billing === "month" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(product.price)} / kk · {product.commitmentMonths} kk minimi · yhteensä {euro.format(product.totalPrice)}</p> : null}
-                      {productId === "landing-page-seo" ? <p className="mt-2 text-sm leading-6 text-muted">990 € kertamaksu · 495 € ennakkoon ja 495 € hyväksytyn esikatselun jälkeen ennen julkaisua.</p> : null}
+                      {productId === "landing-page-seo" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(products.landingPageSeo.price)} kertamaksu · {euro.format(products.landingPageSeo.deposit)} ennakkoon ja {euro.format(products.landingPageSeo.finalPayment)} hyväksytyn esikatselun jälkeen ennen julkaisua.</p> : null}
                       {requiresOffer ? <p className="mt-2 text-sm leading-6 text-muted">Aloituspyyntö ei ole tilaus. Lasku lähetetään vasta, kun yksilöity tarjous on hyväksytty kirjallisesti.</p> : null}
                     </div>
                   ) : null}
