@@ -33,6 +33,13 @@ export default async function LeadsPage() {
     <nav className="mb-6 flex gap-5 text-sm"><Link href="/admin/sales">Sales Pipeline</Link><Link href="/admin/leads" aria-current="page">Aloituspyynnöt</Link></nav>
     <h1 className="text-3xl font-bold">Aloituspyynnöt</h1>
     <p className="mt-2 text-sm">Vain kirjautuneelle ylläpidolle. Näytetään korkeintaan 100 tallennetta. Tämä näkymä ei vielä sisällä sivutusta.</p>
+    {!process.env.RESEND_API_KEY || !process.env.VIRELLA_NOTIFICATION_FROM ? (
+      <p role="status" className="mt-5 rounded-xl border border-amber-700/60 bg-amber-950/30 px-4 py-3 text-sm leading-6 text-foreground">
+        Automaattiset sähköposti-ilmoitukset eivät ole käytössä. Kartoituspyynnöt tallentuvat tähän näkymään:
+        tarkista uudet pyynnöt vähintään kerran jokaisena arkipäivänä, jotta 2 arkipäivän vastauslupaus toteutuu.
+        Virellan oma lähetysverkkotunnus ja sähköpostipalvelun asetukset puuttuvat.
+      </p>
+    ) : null}
     {error ? <p role="alert" className="mt-6 rounded-lg border p-4">{error}</p> : null}
     {!error && leads.length === 0 ? <p className="mt-6">Ei tallennettuja aloituspyyntöjä.</p> : null}
     <div className="mt-8 space-y-4">{leads.map(({ path, lead }) => <article key={path} className="rounded-xl border p-5">
