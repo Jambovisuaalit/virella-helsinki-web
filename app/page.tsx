@@ -7,6 +7,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { businessConfig } from "@/config/business";
 import { seoConfig } from "@/config/seo";
 import { homepagePricing } from "@/config/homepage-pricing";
+import { offerMasters } from "@/config/offer-master";
 import { taxConfig } from "@/config/tax";
 
 export const metadata: Metadata = {
@@ -50,8 +51,8 @@ const services = [
     name: "Virella Verkkosivut",
     headline: "Verkkosivut, joilta on helppo ottaa yhteyttä.",
     pricing: homepagePricing.website,
-    description: "Näytä palvelusi, toimialueesi ja työnjälkesi selkeästi. Rakennamme laskeutumissivun, jolta asiakas löytää tarvitsemansa ja pääsee helposti pyytämään tarjouksen.",
-    details: ["Laskeutumissivut", "Yhteydenottolomakkeet", "Konversion seuranta"],
+    description: "Näytä palvelusi, toimialueesi ja työnjälkesi selkeästi. Rakennamme 1–5 sivun verkkosivuston sovitulla sivukartalla, yhteydenottolomakkeella ja SEO-perusteilla.",
+    details: ["1–5 suomenkielistä sivua", "Yhteydenottolomake ja SEO-perusteet", "Analytiikan perusasennus"],
     href: "/aloita",
     action: "Kerro sivustotarpeestasi",
   },
@@ -191,7 +192,7 @@ export default function Home() {
                   <div className="mt-8 border-t border-border pt-7" aria-label={`${service.name} -palvelun hinta`}>
                     <dl className="space-y-4">
                       <div><dt className="text-sm text-muted">Aloitus</dt><dd className="mt-1 text-xl font-semibold text-foreground">{service.pricing.startup}</dd></div>
-                      <div><dt className="text-sm text-muted">Kuukausipalvelu</dt><dd className="mt-1 text-xl font-semibold text-foreground">{service.pricing.monthly}</dd></div>
+                      <div><dt className="text-sm text-muted">{service.number === "01" ? "Kuukausipalvelu" : "Valinnainen ylläpito"}</dt><dd className="mt-1 text-xl font-semibold text-foreground">{service.pricing.monthly}</dd></div>
                     </dl>
                     <p className="mt-4 text-sm leading-6 text-muted">{service.pricing.note}</p>
                   </div>
@@ -206,7 +207,8 @@ export default function Home() {
                 </article>
               ))}
             </div>
-            <p className="mt-7 text-sm leading-6 text-muted">{taxConfig.publicMessage}</p>
+            <p className="mt-7 text-sm leading-6 text-muted">Yksi myyntisivu? <a href="/landing-page-seo" className="font-semibold text-foreground underline underline-offset-4">Landing Page + SEO {offerMasters.landing.price} €</a>. Laajempi myyntipolku ja konversioseuranta kuuluvat erilliseen Liidit-palveluun. <a href="/palvelut" className="font-semibold text-foreground underline underline-offset-4">Katso kaikki palvelut ja hinnat</a>.</p>
+            <p className="mt-4 text-sm leading-6 text-muted">{taxConfig.publicMessage}</p>
           </SectionContainer>
         </section>
 

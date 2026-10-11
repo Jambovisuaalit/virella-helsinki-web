@@ -39,7 +39,7 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
     eyebrow: "Instagram-markkinointi yrityksille",
     title: "Instagram-markkinointi valmiina palveluna.",
     lead: "Virella tuottaa 12 alkuperäistä sisältöä kuukaudessa. Jokainen asiakkaan hyväksymä sisältö julkaistaan sekä Instagramissa että Facebookissa.",
-    summary: "490 €/kk, kolmen kuukauden aloitusjakso yhteensä 1 470 €. Sisältää 12 sisältöä, 24 kanavajulkaisua, yhden kootun korjauskierroksen ja raportin kuukaudessa. Kirjallinen tarjous hyväksytään ennen laskutusta.",
+    summary: "490 €/kk, kolmen kuukauden aloitusjakso yhteensä 1 470 €. Sisältää 12 sisältöä, 24 kanavajulkaisua, yhden kootun korjauskierroksen ja raportin kuukaudessa. Tarjous ja sopimusehdot hyväksytään kirjallisesti ennen laskutusta. Aloitusjakson jälkeen palvelu jatkuu toistaiseksi samalla hinnalla, kirjallinen irtisanomisaika 30 päivää.",
     audienceTitle: "Kenelle Instagram-palvelu sopii?",
     audience: [
       "Yritykselle, jolla ei ole omaa markkinointitiimiä",
@@ -60,7 +60,7 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
     eyebrow: "LinkedIn-markkinointi yrityksille",
     title: "LinkedIn-sisältö ilman jatkuvaa kirjoittamisrumbaa.",
     lead: "Virella auttaa yritystäsi tai asiantuntijabrändiäsi näkymään LinkedInissä johdonmukaisesti, selkeästi ja oman alan asiantuntemukseen nojaten.",
-    summary: "Palvelu yhdistää sisältöstrategian, julkaisujen toteutuksen, profiilin optimoinnin ja kuukausittaisen raportoinnin.",
+    summary: "LinkedIn toteutetaan yksilöidyn tarjouksen mukaan. Tarkka julkaisumäärä, toimitussisältö, hinta, sopimuskausi ja jatko sovitaan kirjallisesti ennen laskutusta.",
     audienceTitle: "Kenelle LinkedIn-palvelu sopii?",
     audience: [
       "B2B-palveluyritykselle, joka haluaa vahvistaa asiantuntijanäkyvyyttä",
@@ -70,18 +70,18 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
     process: [
       { title: "Aloituskysely", text: "Kartoitamme asiantuntemuksen, kohderyhmän, palvelut ja tavoitellun LinkedIn-roolin." },
       { title: "Sisältöstrategia", text: "Määritämme aiheet, näkökulmat ja julkaisurytmin ennen tuotannon käynnistymistä." },
-      { title: "Julkaisut ja optimointi", text: "Sisältö tuotetaan sovitun mallin mukaan ja profiilin kokonaisuutta kehitetään rinnalla." },
+      { title: "Julkaisut ja optimointi", text: "Sisältö tuotetaan sovitun mallin mukaan ja profiilin kehittämisestä sovitaan tarjouksessa." },
     ],
     faq: [
       { question: "Kirjoitetaanko julkaisut puolestani?", answer: "Kyllä. Sisältö rakennetaan alkukyselyn ja sovitun sisältöstrategian pohjalta." },
-      { question: "Voiko palvelu keskittyä yrityssivuun?", answer: "Kyllä. Toteutus voidaan painottaa henkilöprofiiliin, yrityssivuun tai niiden yhdistelmään lähtötilanteen mukaan." },
+      { question: "Voiko palvelu keskittyä yrityssivuun?", answer: "Kyllä. Toteutus voidaan painottaa henkilöprofiiliin, yrityssivuun tai niiden yhdistelmään kirjallisen tarjouksen mukaan." },
     ],
   },
   landingPageSeo: {
     eyebrow: "Landing Page + SEO",
     title: "Selkeä laskeutumissivu, jolla on yksi tehtävä.",
     lead: "Virella rakentaa responsiivisen landing pagen, jonka sisältö, tekninen toteutus ja hakukoneperusta ohjaavat kävijää kohti seuraavaa toimintaa.",
-    summary: "990 € kertamaksu: 495 € ennen tuotannon aloitusta ja 495 € hyväksytyn esikatselun jälkeen ennen julkaisua. Yksi suomenkielinen myyntisivu, copy, yhteydenottolomake, SEO-perusteet ja yksi korjauskierros. Analytiikka ja suostumusten hallinta eivät sisälly.",
+    summary: "990 € kertamaksu: 495 € ennen tuotannon aloitusta ja 495 € hyväksytyn esikatselun jälkeen ennen julkaisua. Yksi suomenkielinen myyntisivu, copy, yhteydenottolomake, SEO-perusteet, yksi korjauskierros, julkaisu ja sovitun asiakaskohtaisen lähdekoodin luovutus. Analytiikka ja suostumusten hallinta eivät sisälly.",
     audienceTitle: "Kenelle Landing Page + SEO sopii?",
     audience: [
       "Yritykselle, joka tarvitsee yhden selkeän palvelu- tai kampanjasivun",
@@ -89,7 +89,7 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
       "Yritykselle, joka haluaa yhdistää konversiorakenteen ja teknisen SEO-perustan samaan toimitukseen",
     ],
     process: [
-      { title: "Tarjous ja hyväksyntä", text: "Lähetämme kirjallisen tarjouksen ja ehdot. Työ alkaa hyväksynnän, 495 € ennakkomaksun sekä materiaalien ja käyttöoikeuksien jälkeen." },
+      { title: "Tarjous ja hyväksyntä", text: "Lähetämme kirjallisen tarjouksen ja sopimusehdot. Työ alkaa molemminpuolisen kirjallisen hyväksynnän, 495 € ennakkomaksun sekä materiaalien ja käyttöoikeuksien jälkeen." },
       { title: "Rakenne ja sisältö", text: "Suunnittelemme sivun viestihierarkian, CTA-polun ja SEO-kriittisen sisällön." },
       { title: "Esikatselu ja julkaisu", text: "Toteutamme sivun, testaamme lomakkeen ja SEO-asetukset sekä pyydämme kirjallisen hyväksynnän. Loppumaksu 495 € ennen julkaisua." },
     ],

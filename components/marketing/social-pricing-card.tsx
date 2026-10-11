@@ -50,9 +50,9 @@ export function SocialPricingCard() {
               <SocialIcon network={selectedChannel} width={16} height={16} className="shrink-0" />
               <span className="truncate">{channelDetails[selectedChannel].title}</span>
             </p>
-            <p className="mt-1 whitespace-nowrap font-mono text-3xl leading-none text-cyan-400">
-              {euro.format(selectedProduct.price)}
-              <span className="ml-1 font-sans text-xs text-zinc-300">/ kk</span>
+            <p className="mt-1 font-mono text-xl sm:text-3xl leading-none text-cyan-400">
+              {selectedProduct.price === null ? "Tarjouksen mukaan" : euro.format(selectedProduct.price)}
+              {selectedProduct.price !== null ? <span className="ml-1 font-sans text-xs text-zinc-300">/ kk</span> : null}
             </p>
           </div>
           <Link
@@ -109,12 +109,12 @@ export function SocialPricingCard() {
                 {selected ? "Valittu kanava" : "Valitse kanava"}
               </button>
 
-              <p className="mt-7 font-mono text-5xl leading-none tracking-tight text-cyan-400">
-                {euro.format(product.price)}
-                <span className="ml-2 font-sans text-sm font-normal tracking-normal text-zinc-400">/ kk</span>
+              <p className={`mt-7 font-mono ${product.price === null ? "text-3xl" : "text-5xl"} leading-tight tracking-tight text-cyan-400`}>
+                {product.price === null ? "Tarjouksen mukaan" : euro.format(product.price)}
+                {product.price !== null ? <span className="ml-2 font-sans text-sm font-normal tracking-normal text-zinc-400">/ kk</span> : null}
               </p>
               <p className="mt-3 text-sm leading-6 text-zinc-300">
-                {product.commitmentMonths} kk vähimmäisjakso · yhteensä {euro.format(product.totalPrice)}
+                {product.totalPrice == null ? "Tarkka julkaisumäärä, hinta ja sopimuskausi määritellään tarjouksessa." : `${product.commitmentMonths} kk aloitusjakso · yhteensä ${euro.format(product.totalPrice)}`}
               </p>
 
               <ul className="mt-7 space-y-3 border-t border-zinc-800 pt-6 text-sm leading-6 text-zinc-200">

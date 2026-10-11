@@ -13,19 +13,37 @@ mkdirSync(out, {recursive:true});
 const browser = await chromium.launch({headless:true,args:["--no-sandbox"]});
 const results = [];
 const offers = [
+ {id:"linkedin",path:"/linkedin",price:"Tarjouksen mukaan",mustInclude:["Julkaisumäärä", "sopimuskausi"]},
  {id:"instagram",path:"/instagram",price:"490",mustInclude:["Facebook","Instagram"]},
  {id:"landing-page-seo",path:"/landing-page-seo",price:"990",mustInclude:["495","SEO"]},
 ];
 try {
- for(const width of [320,390,1440]){
+ for(const width of [320,360,375,390,430,768,1024,1280,1440]){
   for(const offer of offers){
-   const page=await browser.newPage({viewport:{width,height:width===320?640:900},deviceScaleFactor:1,reducedMotion:"reduce"});
+   for (const width of [320,390,768,1440]) {
+  const p = await browser.newPage({viewport:{width,height:900}});
+  for (const path of ["/", "/palvelut", "/sopimusehdot"]) {
+   assert.equal((await p.goto(origin+path,{waitUntil:"networkidle"})).status(),200);
+   assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1), path+" overflows at "+width);
+   await p.screenshot({path:out+"/commercial-"+(path.slice(1)||"home")+"-"+width+".png",fullPage:true});
+  }
+  await p.goto(origin+"/sosiaalinen-media",{waitUntil:"networkidle"});
+  await p.getByRole("button",{name:"Valitse LinkedIn vertailuun"}).click();
+  assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1), "selected LinkedIn overflows");
+  const linkedin = p.locator("article").filter({has:p.locator("#plan-linkedin")});
+  assert.ok(!(await linkedin.innerText()).includes("490"), "LinkedIn card has old price");
+  await p.screenshot({path:out+"/social-linkedin-selected-"+width+".png",fullPage:true});
+  await p.close();
+ }
+ const page=await browser.newPage({viewport:{width,height:width===320?640:900},deviceScaleFactor:1,reducedMotion:"reduce"});
    const errors=[];page.on("pageerror",e=>errors.push(e.message));
    const response=await page.goto(origin+offer.path,{waitUntil:"networkidle"});
    assert.equal(response?.status(),200,offer.path+" is unavailable");
    const text=await page.locator("main").innerText();
    assert.ok(text.includes(offer.price),offer.path+" has incorrect price");
    for(const fragment of offer.mustInclude)assert.ok(text.includes(fragment),offer.path+" missing "+fragment);
+   if(offer.id === "linkedin") assert.ok(!/490|1[ \u00a0]470|4–8/.test(text), "LinkedIn must not inherit a fixed package");
+   assert.ok(!text.includes("Maksa verkossa"), "offer service must not promise direct payment");
    const pageInfo=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth}));
    assert.ok(pageInfo.scrollWidth<=width+1,offer.path+" horizontal overflow at "+width);
    assert.equal(await page.locator('form[action="/api/checkout"]').count(),0,offer.path+" must not offer direct checkout");
@@ -71,6 +89,21 @@ try {
  await forged.close();
  results.push({forgedReceipt:"blocked"});
 
+ for (const width of [320,390,768,1440]) {
+  const p = await browser.newPage({viewport:{width,height:900}});
+  for (const path of ["/", "/palvelut", "/sopimusehdot"]) {
+   assert.equal((await p.goto(origin+path,{waitUntil:"networkidle"})).status(),200);
+   assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1), path+" overflows at "+width);
+   await p.screenshot({path:out+"/commercial-"+(path.slice(1)||"home")+"-"+width+".png",fullPage:true});
+  }
+  await p.goto(origin+"/sosiaalinen-media",{waitUntil:"networkidle"});
+  await p.getByRole("button",{name:"Valitse LinkedIn vertailuun"}).click();
+  assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1), "selected LinkedIn overflows");
+  const linkedin = p.locator("article").filter({has:p.locator("#plan-linkedin")});
+  assert.ok(!(await linkedin.innerText()).includes("490"), "LinkedIn card has old price");
+  await p.screenshot({path:out+"/social-linkedin-selected-"+width+".png",fullPage:true});
+  await p.close();
+ }
  const page=await browser.newPage({viewport:{width:390,height:844}});
  await page.goto(origin+"/sosiaalinen-media",{waitUntil:"networkidle"});
  const social=page.locator('a[href="/aloita?product=instagram"]');
