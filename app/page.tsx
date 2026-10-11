@@ -27,24 +27,24 @@ const services = [
   {
     number: "01",
     name: "Virella Näkyvyys",
-    headline: "Sovittu määrä somejulkaisuja joka kuukausi.",
+    headline: "Työnjälkesi esiin somessa.",
     price: "490 €/kk",
     priceDetail: "3 kk vähimmäisjakso",
-    description: "Sosiaalisen median sisällöntuotanto, julkaisukalenteri ja sovitut julkaisut ilman omaa somevastaavaa.",
-    details: ["Instagram ja Facebook", "12 julkaisua kuukaudessa", "Hyväksyntä ennen julkaisua"],
+    description: "Toimita kuvat ja lähtötiedot. Me suunnittelemme sisällöt, kirjoitamme tekstit ja hoidamme sovitut julkaisut Instagramiin ja Facebookiin. Hyväksyt sisällöt ennen julkaisua.",
+    details: ["Instagram ja Facebook", "12 sisältöä kuukaudessa, jokainen molempiin kanaviin", "Hyväksyntä ennen julkaisua"],
     href: "/sosiaalinen-media",
     action: "Tutustu somepalveluun",
   },
   {
     number: "02",
     name: "Virella Löydettävyys",
-    headline: "Google-yritysprofiili ja paikallinen löydettävyys kuntoon.",
+    headline: "Google-näkyvyys kuntoon.",
     price: "590 € aloitus",
     priceDetail: "Ylläpito 290 €/kk",
-    description: "Google-yritysprofiilin, paikallisen hakunäkyvyyden ja arvosteluprosessin kehittäminen.",
+    description: "Autamme kehittämään Google-yritysprofiilia, paikallista hakunäkyvyyttä ja arvostelujen keräämisen käytäntöjä. Tavoitteena on ajantasainen ja luotettava kuva yrityksestäsi.",
     details: ["Google Business Profile", "Paikallinen SEO", "Seuranta ja kehitys"],
     href: "/aloita?kartoitus=1",
-    action: "Pyydä näkyvyyskartoitus",
+    action: "Pyydä maksuton näkyvyyskartoitus",
   },
   {
     number: "03",
@@ -52,28 +52,28 @@ const services = [
     headline: "Selkeä polku tarjouspyyntöön.",
     price: "1 500 € aloitus",
     priceDetail: "Ylläpito alkaen 500 €/kk",
-    description: "Selkeä laskeutumissivu, helppo tarjouspyyntöpolku ja mitattavat toimintakehotukset.",
+    description: "Näytä palvelusi, toimialueesi ja työnjälkesi selkeästi. Rakennamme laskeutumissivun, jolta asiakas löytää tarvitsemansa ja pääsee helposti pyytämään tarjouksen.",
     details: ["Laskeutumissivut", "Yhteydenottolomakkeet", "Konversion seuranta"],
     href: "/aloita?kartoitus=1",
-    action: "Pyydä näkyvyyskartoitus",
+    action: "Pyydä maksuton näkyvyyskartoitus",
   },
 ] as const;
 
 const steps = [
   {
     number: "01",
-    title: "Kerro yrityksestäsi.",
-    description: "Lähetä verkkosivusi osoite sekä yhteystietosi. Kerro halutessasi, mikä verkkonäkyvyydessäsi kaipaa huomiota.",
+    title: "Lähetä verkkosivusi osoite.",
+    description: "Kerro yrityksestäsi ja siitä, mihin haluat apua. Jos yritykselläsi ei vielä ole verkkosivuja, jätä erillinen aloituspyyntö.",
   },
   {
     number: "02",
-    title: "Tunnistamme tärkeimmät korjaukset.",
-    description: "Käymme läpi sivustosi, julkisen paikallisen Google-näkyvyyden ja yhteydenottopolun. Valitsemme kolme perusteltua korjausehdotusta.",
+    title: "Saat kolme tärkeintä korjausehdotusta.",
+    description: "Tarkistamme julkisen verkkonäkyvyytesi ja yhteydenottopolun. Saat kolme priorisoitua ehdotusta perusteluineen sähköpostiisi kahdessa arkipäivässä.",
   },
   {
     number: "03",
-    title: "Saat kolme korjausta sähköpostiisi.",
-    description: "Toimitamme kolme priorisoitua korjausehdotusta 2 arkipäivässä. Kartoitus on maksuton. Jos haluat toteutuksen, palveluiden hinnat näkyvät yllä ja työ hyväksytään erikseen.",
+    title: "Valitse, mitä haluat toteuttaa.",
+    description: "Jos tarvitset apua korjauksiin, sovimme työn sisällön, hinnan ja aikataulun ennen aloitusta. Kartoitus ei velvoita ostamaan mitään.",
   },
 ] as const;
 
@@ -102,11 +102,11 @@ export default function Home() {
                 Digitaalista näkyvyyttä paikallisille palveluyrityksille
               </p>
               <h1 id="home-title" className="max-w-[720px] text-[clamp(2.25rem,5.3vw,4.6rem)] font-bold leading-[1.13] tracking-[-0.01em] text-foreground">
-                Verkkosivut, Google-näkyvyys ja some.{" "}
-                <span className="text-brand">Yhdeltä tekijältä.</span>
+                Näytä verkossa, miksi asiakkaan kannattaa{ " "}
+                <span className="text-brand">valita sinut.</span>
               </h1>
               <p className="mt-8 max-w-[570px] text-base leading-[1.85] text-foreground/85 sm:mt-9 sm:text-lg">
-                Virella Helsinki toteuttaa paikallisille palveluyrityksille verkkosivut, Google-näkyvyyden ja somesisällöt. Aloita maksuttomalla kartoituksella.
+                Virella Helsinki toteuttaa verkkosivut, Google-näkyvyyden ja somesisällöt paikallisille palveluyrityksille. Teemme osaamisestasi näkyvää ja yhteydenotosta helppoa.
               </p>
               <div className="mt-9 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-7">
                 <ButtonLink href="/aloita?kartoitus=1" className="w-full sm:w-auto">
@@ -117,10 +117,20 @@ export default function Home() {
                 </a>
               </div>
               <div className="mt-10 max-w-[600px] space-y-1 border-t border-white/20 pt-6 text-sm leading-7 text-foreground/85" aria-label="Näkyvyyskartoituksen toimitus">
-                <p>Lähetä verkkosivusi osoite.</p>
+                <p>Lähetä verkkosivusi osoite. <a href="/aloita" className="underline underline-offset-4">Ei vielä verkkosivuja? Jätä aloituspyyntö.</a></p>
                 <p>Tarkistamme sivun, Google-löydettävyyden ja yhteydenottopolun.</p>
-                <p className="font-semibold text-foreground">Saat 3 tärkeintä korjausehdotusta 2 arkipäivässä.</p>
+                <p className="font-semibold text-foreground">Saat kolme tärkeintä korjausehdotusta kahdessa arkipäivässä. Maksuton, ei ostopakkoa.</p>
               </div>
+            </div>
+          </SectionContainer>
+        </section>
+
+        <section className="border-b border-border/75 py-16 sm:py-24" aria-labelledby="visibility-title">
+          <SectionContainer>
+            <div className="max-w-[760px]">
+              <h2 id="visibility-title" className="text-[clamp(2rem,3.8vw,3.2rem)] font-semibold leading-[1.16] tracking-[-0.02em]">Sinä osaat työsi. Näkeekö asiakas sen verkossa?</h2>
+              <p className="mt-7 text-base leading-8 text-muted">Asiakas haluaa tietää, mitä teet, missä palvelet ja miksi sinuun voi luottaa.</p>
+              <p className="mt-5 text-base leading-8 text-muted">Vanhentuneet sivut, puutteelliset yritystiedot tai hiljainen some voivat jättää nämä kysymykset auki. Virella auttaa näyttämään työnjälkesi, selkeyttämään palvelusi ja rakentamaan suoran polun tarjouspyyntöön.</p>
             </div>
           </SectionContainer>
         </section>
@@ -165,7 +175,7 @@ export default function Home() {
             <div className="max-w-[670px]">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Virellan palvelut</p>
               <h2 id="services-title" className="mt-6 text-[clamp(2.05rem,3.9vw,3.25rem)] font-semibold leading-[1.16] tracking-[-0.02em]">
-                Kolme palvelua. Yksi selkeä toteutus.
+                Apua siihen, mikä yrityksesi näkyvyydessä kaipaa korjausta.
               </h2>
               <p className="mt-7 text-base leading-8 text-muted">
                 Valitse yrityksesi tilanteeseen sopiva palvelu. Kaikkea ei tarvitse hankkia kerralla.
@@ -200,7 +210,7 @@ export default function Home() {
               <div>
                 <h3 className="text-xl font-semibold text-foreground">Tarvitsetko myös uudet verkkosivut?</h3>
                 <p className="mt-3 max-w-2xl text-[15px] leading-7 text-muted">
-                  Rakennamme yrityksellesi mobiilissa toimivat verkkosivut ja selkeän yhteydenottopolun. Hinta alkaen 1 500 €.
+                  Näytä palvelusi, toimialueesi ja työnjälkesi selkeästi. Rakennamme mobiilissa toimivan sivuston, jolta asiakas löytää tarvitsemansa ja pääsee helposti ottamaan yhteyttä. Verkkosivut alkaen 1 500 €.
                 </p>
               </div>
               <ButtonLink href="/aloita" variant="secondary" className="shrink-0">Kerro sivustotarpeestasi</ButtonLink>
@@ -214,7 +224,7 @@ export default function Home() {
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Näin aloitat</p>
                 <h2 id="process-title" className="mt-6 text-[clamp(2.05rem,3.8vw,3.2rem)] font-semibold leading-[1.16] tracking-[-0.02em]">
-                  Ensin kartoitus. Sitten päätät jatkosta.
+                  Ensin selvitetään tarve. Sitten päätät toteutuksesta.
                 </h2>
               </div>
               <p className="self-end text-base leading-8 text-muted">
@@ -233,16 +243,26 @@ export default function Home() {
           </SectionContainer>
         </section>
 
+        <section className="border-t border-border/75 py-16 sm:py-24" aria-labelledby="partner-title">
+          <SectionContainer>
+            <div className="max-w-[760px]">
+              <h2 id="partner-title" className="text-[clamp(2rem,3.8vw,3.2rem)] font-semibold leading-[1.16] tracking-[-0.02em]">Yksi yhteyshenkilö. Selkeästi sovittu työ.</h2>
+              <p className="mt-7 text-base leading-8 text-muted">Virella Helsingin takana on {businessConfig.contactName}. Keskustelet suoraan tekijän kanssa ja tiedät, mitä työ sisältää.</p>
+              <p className="mt-5 text-base leading-8 text-muted">Sinä tuot yrityksesi osaamisen ja aidot materiaalit. Me autamme muuttamaan ne selkeäksi verkkonäkyvyydeksi.</p>
+            </div>
+          </SectionContainer>
+        </section>
+
         <section id="yhteys" className="scroll-mt-28 border-t border-border/75 bg-cloud py-[clamp(6rem,9vw,9rem)]" aria-labelledby="contact-title">
           <SectionContainer>
             <div className="flex flex-col gap-10 md:flex-row md:items-center md:justify-between md:gap-20">
               <div className="max-w-[730px]">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Seuraava askel</p>
                 <h2 id="contact-title" className="mt-6 text-[clamp(2.05rem,3.8vw,3.2rem)] font-semibold leading-[1.16] tracking-[-0.02em]">
-                  Selvitetään, mitä sivustollasi kannattaa korjata ensin.
+                  Mitä yrityksesi näkyvyydessä kannattaa korjata ensin?
                 </h2>
                 <p className="mt-5 text-base leading-8 text-muted">
-                  Lähetä verkkosivusi osoite. Saat kolme priorisoitua korjausehdotusta ja lyhyet perustelut sähköpostiisi 2 arkipäivässä. Maksuton, ei ostopakkoa.
+                  Aloita maksuttomalla kartoituksella. Saat kolme konkreettista korjausehdotusta perusteluineen sähköpostiisi kahdessa arkipäivässä. Niiden avulla voit päättää seuraavan askeleen.
                 </p>
               </div>
               <ButtonLink href="/aloita?kartoitus=1" className="shrink-0 self-start md:self-center">
