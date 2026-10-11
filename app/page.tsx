@@ -62,17 +62,17 @@ const services = [
 const steps = [
   {
     number: "01",
-    title: "Lähetä lähtötiedot."
+    title: "Lähetä lähtötiedot.",
     description: "Anna verkkosivun osoite ja yhteystiedot. Lisähuomiot ovat vapaaehtoisia.",
   },
   {
     number: "02",
-    title: "Käymme tiedot läpi."
+    title: "Käymme tiedot läpi.",
     description: "Arvioimme julkiset tiedot ja asetamme havainnot tärkeysjärjestykseen.",
   },
   {
     number: "03",
-    title: "Päätät jatkosta."
+    title: "Päätät jatkosta.",
     description: "Saat ehdotukset sähköpostitse. Toteutuksesta sovitaan vain halutessasi.",
   },
 ] as const;
