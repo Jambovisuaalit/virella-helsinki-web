@@ -7,6 +7,7 @@ import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
 import { products } from "@/config/products";
+import { requiresWrittenOffer } from "@/config/offer-master";
 import { getProductKeyById } from "@/lib/stripe/stripe-api";
 
 export const metadata: Metadata = {
@@ -60,7 +61,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
   const productKey = productId ? getProductKeyById(productId) : undefined;
   const product = productKey ? products[productKey] : undefined;
   const isSocial = product?.billing === "month";
-  const requiresOffer = productId === "instagram" || productId === "landing-page-seo";
+  const requiresOffer = requiresWrittenOffer(productId);
   const euro = new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 
   return (
@@ -118,7 +119,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                     <div className="rounded-xl border border-brand/15 bg-brand/5 p-4">
                       <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Palvelu</p>
                       <p className="mt-1 font-bold">{product.name}</p>
-                      {product.billing === "month" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(product.price)} / kk · {product.commitmentMonths} kk minimi · yhteensä {euro.format(product.totalPrice)}</p> : null}
+                      {productKey === "linkedin" ? <p className="mt-2 text-sm leading-6 text-muted">Hinta, julkaisumäärä ja sopimuskausi sovitaan erillisessä kirjallisessa tarjouksessa.</p> : product.billing === "month" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(product.price)} / kk · {product.commitmentMonths} kk minimi · yhteensä {euro.format(product.totalPrice)}</p> : null}
                       {productId === "landing-page-seo" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(products.landingPageSeo.price)} kertamaksu · {euro.format(products.landingPageSeo.deposit)} ennakkoon ja {euro.format(products.landingPageSeo.finalPayment)} hyväksytyn esikatselun jälkeen ennen julkaisua.</p> : null}
                       {requiresOffer ? <p className="mt-2 text-sm leading-6 text-muted">Aloituspyyntö ei ole tilaus. Lasku lähetetään vasta, kun yksilöity tarjous on hyväksytty kirjallisesti.</p> : null}
                     </div>
