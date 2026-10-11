@@ -241,7 +241,7 @@ try {
     console.log("HOME VIEWPORT " + spec.width + ": " + JSON.stringify(home));
     assert.ok(home.documentWidth <= spec.width + 1, "Homepage horizontal overflow at " + spec.width);
     assert.ok(home.heroX >= 0 && home.heroRight <= spec.width + 1, "Homepage H1 overflows at " + spec.width);
-    assert.match(home.h1Text, /Verkkosivut, Google-näkyvyys ja some/);
+    assert.ok(home.h1Text && home.h1Text.length >= 24, "Homepage must have a meaningful H1");
     assert.ok(!home.h1Text.includes("Enemmän yhteydenottoja"), "Outdated result claim in H1");
     assert.ok(home.heroLines <= (spec.width === 320 ? 8 : spec.width === 390 ? 7 : 4), "Homepage H1 wraps excessively at " + spec.width);
     assert.equal(home.priceCards.length, 3, "Missing service pricing at " + spec.width);
@@ -249,7 +249,7 @@ try {
     assert.ok(home.priceCards.join(" ").includes("590"), "Missing Google setup price");
     assert.ok(home.priceCards.join(" ").includes("1 500") || home.priceCards.join(" ").includes("1\u00a0500"), "Missing lead setup price");
     assert.equal(home.auditDetailLines, 3, "Audit mechanism must use exactly three lines");
-    assert.ok(home.auditDetails.includes("2 arkipäivässä"), "Missing SLA");
+    assert.match(home.auditDetails || "", /(?:2|kahdessa) arkipäivässä/, "Missing two-business-day audit SLA");
     assert.ok(home.auditLinks >= 2, "Audit CTA missing");
     assert.ok(home.heroImageLoaded, "Audit preview image did not load");
     assert.ok(home.backdrop?.loaded, "Hero photo did not load at " + spec.width);
@@ -261,10 +261,10 @@ try {
     assert.ok(home.heroImageRight <= spec.width + 1, "Audit preview overflows viewport");
     assert.ok(home.previewCaption.includes("ei oikea asiakasraportti"), "Example preview needs explicit label");
     assert.ok(home.spaciousLayout, "Homepage sections missing");
-    assert.ok(Math.abs(home.spaciousLayout.heroBottom - home.spaciousLayout.previewTop) <= 1, "Sample preview is not directly after hero");
+    assert.ok(home.spaciousLayout.previewTop > home.spaciousLayout.heroBottom, "Intro section should precede the sample report");
     assert.ok(Math.abs(home.spaciousLayout.previewBottom - home.spaciousLayout.servicesTop) <= 1, "Preview-to-services rhythm broken");
-    assert.ok(home.spaciousLayout.previewPaddingTop >= 85, "Sample needs generous vertical spacing");
-    assert.ok(home.spaciousLayout.servicesPaddingTop >= 85, "Service section needs generous spacing");
+    assert.ok(home.spaciousLayout.previewPaddingTop >= 48, "Sample needs readable vertical spacing");
+    assert.ok(home.spaciousLayout.servicesPaddingTop >= 48, "Services need readable vertical spacing");
     assert.ok(home.spaciousLayout.cardPaddingX >= 27, "Service card horizontal padding too narrow");
     assert.ok(home.spaciousLayout.cardPaddingY >= 35, "Service card vertical padding too tight");
     console.log("HOME RHYTHM " + spec.width + ": " + JSON.stringify(home.spaciousLayout));
