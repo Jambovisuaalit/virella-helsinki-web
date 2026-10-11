@@ -10,5 +10,5 @@ export const taxConfig = {
   registrationStatusVerified: true, // Verified against owner-supplied YTJ extract, not a live lookup.
   registrationEvidence: "YTJ-ote käyttäjän toimittamana 11.10.2026: voimassa vain Verohallinnon perustiedot 24.11.2025 alkaen",
   exemptionEligibilityVerified: false, // 2025 and 2026 turnover and special VAT obligations unverified.
-  publicMessage: "Arvonlisäveroa ei tällä hetkellä veloiteta vähäisen liiketoiminnan perusteella. Verokäsittely vahvistetaan kirjallisessa tarjouksessa.",
+  publicMessage: "Myyjä ei ole ALV-rekisterissä toimitetun YTJ-otteen mukaan. Lopullinen verokäsittely vahvistetaan kirjallisessa tarjouksessa.",
 } as const;
