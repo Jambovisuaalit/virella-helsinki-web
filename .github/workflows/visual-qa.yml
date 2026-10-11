@@ -44,6 +44,7 @@ jobs:
             sleep 2
           done
           node scripts/visual-qa.mjs
+          node scripts/offer-flow-qa.mjs
 
       - name: Upload screenshots and measurements
         if: always()
