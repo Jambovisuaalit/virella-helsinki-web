@@ -50,9 +50,9 @@ export function SocialPricingCard() {
               <SocialIcon network={selectedChannel} width={16} height={16} className="shrink-0" />
               <span className="truncate">{channelDetails[selectedChannel].title}</span>
             </p>
-            <p className={`mt-1 font-mono leading-none text-cyan-400 ${selectedChannel === "linkedin" ? "text-lg" : "whitespace-nowrap text-3xl"}`}>
-              {selectedChannel === "linkedin" ? "Tarjouksen mukaan" : euro.format(selectedProduct.price)}
-              {selectedChannel !== "linkedin" && <span className="ml-1 font-sans text-xs text-zinc-300">/ kk</span>}
+            <p className={`mt-1 font-mono leading-none text-cyan-400 ${selectedProduct.billing === "quote" ? "text-lg" : "whitespace-nowrap text-3xl"}`}>
+              {selectedProduct.billing === "quote" ? "Tarjouksen mukaan" : euro.format(selectedProduct.price)}
+              {selectedProduct.billing !== "quote" && <span className="ml-1 font-sans text-xs text-zinc-300">/ kk</span>}
             </p>
           </div>
           <Link
@@ -109,16 +109,16 @@ export function SocialPricingCard() {
                 {selected ? "Valittu kanava" : "Valitse kanava"}
               </button>
 
-              <p className={`mt-7 font-mono leading-none tracking-tight text-cyan-400 ${channel === "linkedin" ? "text-2xl" : "text-5xl"}`}>
-                {channel === "linkedin" ? "Tarjouksen mukaan" : euro.format(product.price)}
-                {channel !== "linkedin" && <span className="ml-2 font-sans text-sm font-normal tracking-normal text-zinc-400">/ kk</span>}
+              <p className={`mt-7 font-mono leading-none tracking-tight text-cyan-400 ${product.billing === "quote" ? "text-2xl" : "text-5xl"}`}>
+                {product.billing === "quote" ? "Tarjouksen mukaan" : euro.format(product.price)}
+                {product.billing !== "quote" && <span className="ml-2 font-sans text-sm font-normal tracking-normal text-zinc-400">/ kk</span>}
               </p>
               <p className="mt-3 text-sm leading-6 text-zinc-300">
-                {channel === "linkedin" ? "Julkaisumäärä, hinta ja sopimuskausi sovitaan kirjallisessa tarjouksessa." : `${product.commitmentMonths} kk vähimmäisjakso · yhteensä ${euro.format(product.totalPrice)}`}
+                {product.billing === "quote" ? "Julkaisumäärä, hinta ja sopimuskausi sovitaan kirjallisessa tarjouksessa." : `${product.commitmentMonths} kk vähimmäisjakso · yhteensä ${euro.format(product.totalPrice)}`}
               </p>
 
               <ul className="mt-7 space-y-3 border-t border-zinc-800 pt-6 text-sm leading-6 text-zinc-200">
-                {(channel === "linkedin" ? ["Julkaisumäärä sovitaan asiakaskohtaisesti", "Sisältöstrategia ja mahdollinen profiilin optimointi tarjouksen mukaan", "Raportointi ja hyväksyntä sovitussa laajuudessa"] : product.features).map((feature) => (
+                {product.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3">
                     <span aria-hidden="true" className="mt-px font-semibold text-zinc-400">✓</span>
                     <span>{feature}</span>
