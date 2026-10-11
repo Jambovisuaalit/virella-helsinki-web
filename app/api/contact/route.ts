@@ -81,6 +81,10 @@ export async function POST(request: Request) {
       subject: `Uusi aloituspyyntö — ${productName}`,
       idempotencyKey: `contact-${crypto.randomUUID()}`,
       replyTo: email,
+      lead: {
+        name, email, company: company || "", website: website || "",
+        requestType: isVisibilityAudit ? "visibility_audit" : "general",
+      },
       text: [
         "Virella Helsinki — uusi aloituspyyntö",
         "",
