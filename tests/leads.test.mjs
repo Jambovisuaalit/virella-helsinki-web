@@ -161,3 +161,13 @@ test("outbound manual lead deduplicates and defaults to zero revenue", async () 
   assert.equal(leads[0].state.monthlyValue, 0);
   assert.equal(leads[0].source, "Outbound");
 });
+
+test("admin never silently drops older leads or reports partial sales KPIs", async () => {
+  const h = harness();
+  for (let n = 0; n < 1001; n++) {
+    const day = String(1 + n % 28).padStart(2, "0");
+    const uuid = n.toString(16).padStart(12, "0");
+    h.objects.set(`contact-leads/production/2026-10-${day}/00000000-0000-4000-8000-${uuid}.json`, initialLead(false));
+  }
+  await assert.rejects(() => h.load("lib/leads/store").listLeadRecords(), /pagination capacity exceeded/);
+});
