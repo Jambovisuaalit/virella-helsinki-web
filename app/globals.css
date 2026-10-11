@@ -152,7 +152,7 @@ a {
 .landing-deliverables span + span { border-left: 1px solid var(--border); }
 .landing-process { padding: 96px 0; }
 .landing-section-intro { display: grid; grid-template-columns: 1.2fr 1fr; align-items: end; gap: 60px; }
-.landing-page h2 { margin: 16px 0 0; font-size: clamp(32px, 3.6vw, 46px); font-weight: 600; line-height: 1.15; letter-spacing: -.045em; }
+.social-landing h2 { margin: 16px 0 0; font-size: clamp(32px, 3.6vw, 46px); font-weight: 600; line-height: 1.15; letter-spacing: -.035em; }
 .landing-section-intro > p { max-width: 440px; margin: 0; color: var(--muted); font-size: 17px; line-height: 1.8; }
 .landing-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; margin: 54px 0 0; padding: 0; list-style: none; }
 .landing-steps li { border-top: 1px solid var(--border); padding-top: 24px; }
