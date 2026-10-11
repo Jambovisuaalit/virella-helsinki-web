@@ -69,8 +69,9 @@ export default function SocialMediaPage() {
             </p>
             <ButtonLink href="#hinnoittelu" className="landing-primary">Katso palvelut ja hinnat</ButtonLink>
             <p className="landing-hero-price">
-              Alkaen <strong>{euro.format(product.price)} / kk</strong>
+              Instagram + Facebook: <strong>{euro.format(product.price)} / kk</strong>
               <span aria-hidden="true">·</span>{product.commitmentMonths} kk vähimmäisjakso
+              <span aria-hidden="true">·</span> LinkedIn tarjouksen mukaan
             </p>
             <a href="#todisteet" className="landing-text-link">Katso konkreettinen esimerkki</a>
           </SectionContainer>
