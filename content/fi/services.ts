@@ -38,8 +38,8 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
   instagram: {
     eyebrow: "Instagram-markkinointi yrityksille",
     title: "Instagram-markkinointi valmiina palveluna.",
-    lead: "Virella suunnittelee ja toteuttaa yrityksesi Instagram-sisällön, jotta näkyvyys ei jää muun työn jalkoihin.",
-    summary: "Saat selkeän kuukausittaisen sisältömallin, suunnittelun, julkaisujen toteutuksen ja raportoinnin yhdestä paikasta.",
+    lead: "Virella tuottaa 12 alkuperäistä sisältöä kuukaudessa. Jokainen asiakkaan hyväksymä sisältö julkaistaan sekä Instagramissa että Facebookissa.",
+    summary: "490 €/kk, kolmen kuukauden aloitusjakso yhteensä 1 470 €. Sisältää 12 sisältöä, 24 kanavajulkaisua, yhden kootun korjauskierroksen ja raportin kuukaudessa. Kirjallinen tarjous hyväksytään ennen laskutusta.",
     audienceTitle: "Kenelle Instagram-palvelu sopii?",
     audience: [
       "Yritykselle, jolla ei ole omaa markkinointitiimiä",
@@ -81,7 +81,7 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
     eyebrow: "Landing Page + SEO",
     title: "Selkeä laskeutumissivu, jolla on yksi tehtävä.",
     lead: "Virella rakentaa responsiivisen landing pagen, jonka sisältö, tekninen toteutus ja hakukoneperusta ohjaavat kävijää kohti seuraavaa toimintaa.",
-    summary: "Kertatoimitus sisältää responsiivisen landing pagen, on-page SEO:n, suorituskyvyn optimoinnin ja analytiikan integroinnin.",
+    summary: "990 € kertamaksu: 495 € ennen tuotannon aloitusta ja 495 € hyväksytyn esikatselun jälkeen ennen julkaisua. Yksi suomenkielinen myyntisivu, copy, yhteydenottolomake, SEO-perusteet ja yksi korjauskierros. Analytiikka ja suostumusten hallinta eivät sisälly.",
     audienceTitle: "Kenelle Landing Page + SEO sopii?",
     audience: [
       "Yritykselle, joka tarvitsee yhden selkeän palvelu- tai kampanjasivun",
@@ -89,13 +89,14 @@ export const servicePageContent: Record<ProductId, ServicePageContent> = {
       "Yritykselle, joka haluaa yhdistää konversiorakenteen ja teknisen SEO-perustan samaan toimitukseen",
     ],
     process: [
-      { title: "Aloituskysely", text: "Keräämme palvelun, kohderyhmän, kilpailuedut ja tarvittavat materiaalit." },
+      { title: "Tarjous ja hyväksyntä", text: "Lähetämme kirjallisen tarjouksen ja ehdot. Työ alkaa hyväksynnän, 495 € ennakkomaksun sekä materiaalien ja käyttöoikeuksien jälkeen." },
       { title: "Rakenne ja sisältö", text: "Suunnittelemme sivun viestihierarkian, CTA-polun ja SEO-kriittisen sisällön." },
-      { title: "Toteutus ja julkaisuvalmius", text: "Rakennamme responsiivisen sivun, optimoimme suorituskyvyn ja viimeistelemme tekniset perusteet." },
+      { title: "Esikatselu ja julkaisu", text: "Toteutamme sivun, testaamme lomakkeen ja SEO-asetukset sekä pyydämme kirjallisen hyväksynnän. Loppumaksu 495 € ennen julkaisua." },
     ],
     faq: [
       { question: "Sisältyykö hakukoneoptimointi toimitukseen?", answer: "Kyllä. Palveluun kuuluu sivukohtainen on-page SEO ja tekninen perusoptimointi." },
-      { question: "Onko kyse kokonaisesta verkkosivustosta?", answer: "Ei. Palvelu on rajattu yhteen selkeään landing page -kokonaisuuteen." },
+      { question: "Onko kyse kokonaisesta verkkosivustosta?", answer: "Ei. Toteutus koskee yhtä suomenkielistä myyntisivua, yhtä pääpalvelua ja yhtä kohderyhmää." },
+      { question: "Sisältyvätkö analytiikka ja ylläpito?", answer: "Eivät. Analytiikka, suostumusten hallinta, verkkotunnus, maksulliset työkalut ja jatkuva ylläpito tai SEO hinnoitellaan erikseen." },
     ],
   },
 };

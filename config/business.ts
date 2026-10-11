@@ -4,7 +4,7 @@ export const businessConfig = {
   businessId: "3581581-6",
   contactName: "Jami Harju",
   contactTitle: "Yrittäjä | Virella Helsinki",
-  streetAddress: "Mannerheimintie 109",
+  streetAddress: "Kalasatamankatu 9 A 97",
   city: "Helsinki",
   country: "Finland",
   email: "visualjambo@gmail.com",

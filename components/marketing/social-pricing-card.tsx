@@ -6,6 +6,7 @@ import { products } from "@/config/products";
 import { taxConfig } from "@/config/tax";
 import { SocialIcon } from "@/components/site/social-icon";
 import { trackAnalyticsEvent } from "@/lib/analytics/client";
+import { requiresWrittenOffer } from "@/config/offer-master";
 
 const euro = new Intl.NumberFormat("fi-FI", {
   style: "currency",
@@ -28,7 +29,7 @@ const channelDetails: Record<Channel, { title: string; description: string }> = 
 };
 
 function trackServiceRequest(productId: string) {
-  trackAnalyticsEvent("purchase_click", {
+  trackAnalyticsEvent(requiresWrittenOffer(productId) ? "offer_request_click" : "purchase_click", {
     productId,
     source: "social_landing_pricing",
   });
@@ -58,9 +59,9 @@ export function SocialPricingCard() {
             href={`/aloita?product=${selectedProduct.id}`}
             onClick={() => trackServiceRequest(selectedProduct.id)}
             className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-lg bg-cyan-400 px-3 py-2 text-center text-xs font-bold text-zinc-950 transition hover:bg-cyan-300 focus-visible:outline-offset-4 sm:px-4 sm:text-sm"
-            aria-label={`Lähetä aloituspyyntö: ${channelDetails[selectedChannel].title}`}
+            aria-label={`Aloita yhteistyö: ${channelDetails[selectedChannel].title}`}
           >
-            Aloituspyyntö
+            Aloita yhteistyö
           </Link>
         </div>
       </div>
@@ -131,7 +132,7 @@ export function SocialPricingCard() {
                   onClick={() => trackServiceRequest(product.id)}
                   className="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-zinc-950 transition hover:bg-cyan-300 focus-visible:outline-offset-4"
                 >
-                  Lähetä aloituspyyntö
+                  Aloita yhteistyö
                   <span className="sr-only"> – {description.title}</span>
                 </Link>
                 <p className="mt-3 text-center text-xs leading-5 text-zinc-400">

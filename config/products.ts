@@ -1,4 +1,5 @@
 import type { Product } from "@/types/product";
+import { offerMasters } from "@/config/offer-master";
 
 export const products = {
   websiteFix: {
@@ -20,18 +21,11 @@ export const products = {
   instagram: {
     id: "instagram",
     name: "Instagram + Facebook 3 kk -paketti",
-    price: 490,
+    price: offerMasters.visibility.price,
     billing: "month",
-    commitmentMonths: 3,
-    totalPrice: 1470,
-    features: [
-      "12 alkuperäistä julkaisua / 30 päivää (Instagram ja Facebook)",
-      "Sisältösuunnittelu ja julkaisukalenteri",
-      "Julkaisutekstit ja asiakkaan toimittaman kuvamateriaalin hyödyntäminen",
-      "Julkaisujen ajastus ja julkaisu sovituille kanaville",
-      "Yksi koottu korjauskierros",
-      "Kuukausiraportti",
-    ],
+    commitmentMonths: offerMasters.visibility.commitmentMonths,
+    totalPrice: offerMasters.visibility.totalPrice,
+    features: [...offerMasters.visibility.features],
   },
   linkedin: {
     id: "linkedin",
@@ -50,14 +44,9 @@ export const products = {
   landingPageSeo: {
     id: "landing-page-seo",
     name: "Landing Page + SEO",
-    price: 390,
+    price: offerMasters.landing.price,
     billing: "one_time",
-    features: [
-      "Responsiivinen landing page",
-      "On-page SEO",
-      "Suorituskyvyn optimointi",
-      "Analytiikan integrointi",
-    ],
+    features: [...offerMasters.landing.features],
   },
 } satisfies Record<string, Product>;
 

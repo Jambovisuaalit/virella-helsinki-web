@@ -87,14 +87,15 @@ export default function SocialMediaPage() {
                   Mitä yrityksesi oikeasti saa?
                 </h2>
                 <p className="mt-5 max-w-lg text-base leading-7 text-zinc-300">
-                  Instagram + Facebook -pakettiin sisältyy 12 alkuperäistä julkaisua
-                  kuukaudessa, yksi koottu korjauskierros ja kuukausiraportti.
+                  Instagram + Facebook -pakettiin sisältyy 12 alkuperäistä sisältöä
+                  kuukaudessa. Jokainen julkaistaan molemmissa kanavissa, eli 24 kanavajulkaisua kuukaudessa.
+                  Lisäksi saat yhden kootun korjauskierroksen ja kuukausiraportin.
                   LinkedIn-palvelulla on oma sisältönsä ja julkaisumääränsä.
                 </p>
                 <div className="mt-7 grid grid-cols-2 gap-4 border-t border-zinc-800 pt-6">
                   <div>
                     <p className="font-mono text-3xl text-zinc-100">12</p>
-                    <p className="mt-1 text-sm text-zinc-400">Julkaisua / 30 päivää, Instagram + Facebook</p>
+                    <p className="mt-1 text-sm text-zinc-400">Sisältöä / 30 päivää, kumpaankin kanavaan</p>
                   </div>
                   <div>
                     <p className="font-mono text-3xl text-zinc-100">1</p>
@@ -131,7 +132,7 @@ export default function SocialMediaPage() {
                   ))}
                 </ol>
                 <p className="mt-5 text-xs leading-5 text-zinc-400">
-                  Näiden teemojen pohjalta voidaan suunnitella 12 julkaisua.
+                  Näiden teemojen pohjalta voidaan suunnitella 12 alkuperäistä sisältöä.
                   Todelliset aiheet määräytyvät asiakkaan palvelujen ja materiaalien mukaan.
                 </p>
               </div>

@@ -2,6 +2,7 @@ export const analyticsEventNames = [
   "page_view",
   "service_view",
   "purchase_click",
+  "offer_request_click",
   "checkout_started",
   "checkout_success",
   "questionnaire_started",
