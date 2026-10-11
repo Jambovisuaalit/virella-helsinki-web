@@ -124,6 +124,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
         >
           <div className="virella-overlay-inner">
             <div className="virella-overlay-heading">
+              <span className="virella-overlay-heading-label" aria-hidden="true">Valikko</span>
               <BrandLogo />
               <button
                 ref={closeRef}
@@ -141,7 +142,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
 
             <div className="virella-overlay-body">
               <div className="virella-overlay-main">
-                <p className="virella-overlay-overline">Virella Helsinki / Navigaatio</p>
+                <p className="virella-overlay-overline">Siirry sivulle</p>
                 <nav aria-label="Päänavigaatio">
                   <ol className="virella-overlay-list">
                     {items.map((item, index) => (
@@ -163,7 +164,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
               <div className="virella-overlay-aside">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Seuraava askel</p>
                 <p className="mt-3 max-w-[18rem] text-base leading-7 text-foreground">
-                  {social ? "Valitse sopiva kanava ja tutustu palvelun sisältöön." : "Lähetä verkkosivusi osoite. Saat kolme korjausehdotusta kahdessa arkipäivässä."}
+                  {social ? "Instagram + Facebook tai LinkedIn. Tutustu palveluihin." : "Maksuton kartoitus. Kolme korjausehdotusta 2 arkipäivässä."}
                 </p>
                 <Link
                   href={cta.href}

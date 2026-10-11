@@ -23,15 +23,19 @@ export function SiteHeader({ landing = false }: { landing?: boolean }) {
   return (
     <header className={`virella-site-header sticky top-0 z-[100] bg-transparent pt-3 ${landing ? "landing-header" : ""}`}>
       <SectionContainer>
-        <div className="virella-nav-shell flex min-h-[68px] items-center justify-between gap-3 rounded-2xl border border-border bg-surface/95 px-4 shadow-[0_12px_38px_-24px_rgba(0,0,0,0.75)] backdrop-blur-md sm:px-6">
-          <BrandLogo compact />
-          <div className="ml-auto flex shrink-0 items-center gap-3">
+        <div className="virella-nav-shell grid min-h-[72px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 rounded-2xl border border-border/80 bg-surface/95 px-3 shadow-[0_12px_38px_-28px_rgba(0,0,0,0.7)] backdrop-blur-md sm:gap-5 sm:px-6">
+          <div className="flex min-w-0 items-center justify-start">
             <Link
               href={cta.href}
-              className={`hidden min-h-11 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-bold transition-colors duration-200 focus-visible:outline-offset-4 sm:inline-flex ${landing ? "bg-cyan-400 text-zinc-950 hover:bg-cyan-300" : "bg-action text-white hover:bg-[#ac381d]"}`}
+              className={`hidden min-h-11 items-center justify-center whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors duration-200 focus-visible:outline-offset-4 lg:inline-flex ${landing ? "bg-cyan-400 text-zinc-950 hover:bg-cyan-300" : "bg-action text-white hover:bg-[#ac381d]"}`}
             >
               {landing ? "Katso hinnat" : "Maksuton kartoitus"}
             </Link>
+          </div>
+          <div className="flex min-w-0 items-center justify-center">
+            <BrandLogo compact />
+          </div>
+          <div className="flex min-w-0 items-center justify-end">
             <OverlayNavigation items={items} cta={cta} social={landing} />
           </div>
         </div>
