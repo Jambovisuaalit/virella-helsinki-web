@@ -76,8 +76,9 @@ export async function listLeadRecords(): Promise<LeadRecord[]> {
   } while (cursor);
   const ids = blobs.map(item => item.pathname).filter(leadPathValid);
   const leads = await Promise.all(ids.map(getLeadRecord));
-  return leads.filter((lead): lead is LeadRecord => lead !== null)
-    .sort((a, b) => b.receivedAt.localeCompare(a.receivedAt));
+  // Never silently drop a listed Blob: missing entries distort pipeline totals.
+  if (leads.some(lead => lead === null)) throw new Error("Lead storage readback incomplete");
+  return (leads as LeadRecord[]).sort((a, b) => b.receivedAt.localeCompare(a.receivedAt));
 }
 
 export async function updateLeadState(
@@ -102,7 +103,9 @@ export async function updateLeadState(
     access: "private", contentType: "application/json", addRandomSuffix: false,
   });
   const persisted = await getLeadRecord(id);
-  if (!persisted) throw new Error("Lead update readback missing");
+  if (!persisted || persisted.updatedAt !== event.changedAt) {
+    throw new Error("Lead update readback mismatch");
+  }
   // Concurrent writes can supersede this event; UI always displays the latest snapshot.
   return { ok: true };
 }
