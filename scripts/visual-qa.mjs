@@ -318,6 +318,10 @@ try {
 
       // Focus stays inside the modal panel, including wrap from the last element.
       const lastCTA = dialog.getByRole("link", { name: route.cta });
+      if (spec.width === 320) {
+        const ctaRect = await lastCTA.boundingBox();
+        assert.ok(ctaRect && ctaRect.y + ctaRect.height <= spec.height - 4, "Small-phone menu action below first viewport: " + route.name);
+      }
       await lastCTA.focus();
       await page.keyboard.press("Tab");
       const focusWrapped = await dialog.locator(".brand-logo").evaluate(el => document.activeElement === el);
