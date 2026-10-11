@@ -83,7 +83,7 @@ export default function Home() {
       <a href="#main-content" className="landing-skip-link">Siirry sisältöön</a>
       <SiteHeader />
       <main id="main-content">
-        <section className="virella-photographic-hero relative isolate overflow-hidden px-0 pb-14 pt-14 sm:pb-20 sm:pt-20 lg:pt-28" aria-labelledby="home-title">
+        <section className="virella-photographic-hero relative isolate flex min-h-[650px] items-center overflow-hidden py-20 sm:min-h-[700px] sm:py-28 lg:min-h-[740px] lg:py-32" aria-labelledby="home-title">
           <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
             <Image
               src="/images/virella-workspace-hero.webp"
@@ -97,34 +97,51 @@ export default function Home() {
             <div className="virella-hero-veil absolute inset-0" />
           </div>
           <SectionContainer className="relative z-10">
-            <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:gap-10 xl:gap-16">
-              <div className="min-w-0">
-                <p className="mb-6 text-xs font-bold uppercase tracking-[0.12em] text-brand sm:text-sm">
-                  Digitaalista näkyvyyttä paikallisille palveluyrityksille
+            <div className="max-w-[720px]">
+              <p className="mb-7 max-w-[520px] text-xs font-semibold uppercase leading-6 tracking-[0.10em] text-brand sm:text-sm">
+                Digitaalista näkyvyyttä paikallisille palveluyrityksille
+              </p>
+              <h1 id="home-title" className="max-w-[720px] text-[clamp(2.25rem,5.3vw,4.6rem)] font-bold leading-[1.13] tracking-[-0.01em] text-foreground">
+                Verkkosivut, Google-näkyvyys ja some.{" "}
+                <span className="text-brand">Yhdeltä tekijältä.</span>
+              </h1>
+              <p className="mt-8 max-w-[570px] text-base leading-[1.85] text-foreground/85 sm:mt-9 sm:text-lg">
+                Virella Helsinki toteuttaa paikallisille palveluyrityksille verkkosivut, Google-näkyvyyden ja somesisällöt. Aloita maksuttomalla kartoituksella.
+              </p>
+              <div className="mt-9 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-7">
+                <ButtonLink href="/aloita?kartoitus=1" className="w-full sm:w-auto">
+                  Pyydä maksuton näkyvyyskartoitus
+                </ButtonLink>
+                <a href="#palvelut" className="inline-flex min-h-11 items-center text-sm font-semibold text-foreground underline decoration-white/40 underline-offset-[6px] transition-colors hover:decoration-white focus-visible:decoration-white">
+                  Katso palvelut ja hinnat <span aria-hidden="true" className="ml-2">↗</span>
+                </a>
+              </div>
+              <div className="mt-10 max-w-[600px] space-y-1 border-t border-white/20 pt-6 text-sm leading-7 text-foreground/85" aria-label="Näkyvyyskartoituksen toimitus">
+                <p>Lähetä verkkosivusi osoite.</p>
+                <p>Tarkistamme sivun, Google-löydettävyyden ja yhteydenottopolun.</p>
+                <p className="font-semibold text-foreground">Saat 3 tärkeintä korjausehdotusta 2 arkipäivässä.</p>
+              </div>
+            </div>
+          </SectionContainer>
+        </section>
+
+        <section id="esimerkkikartoitus" className="border-b border-border/75 py-24 sm:py-28 lg:py-36" aria-labelledby="preview-title">
+          <SectionContainer>
+            <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:gap-20">
+              <div className="max-w-[460px]">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Kartoituksen esimerkki</p>
+                <h2 id="preview-title" className="mt-6 text-[clamp(2.05rem,3.8vw,3.25rem)] font-semibold leading-[1.16] tracking-[-0.02em] text-foreground">
+                  Kolme konkreettista korjausta. Selkeässä järjestyksessä.
+                </h2>
+                <p className="mt-7 text-base leading-8 text-muted">
+                  Saat kolme priorisoitua ehdotusta perusteluineen. Näet, mitä kannattaa korjata ensin ja miksi. Kartoitus ei velvoita ostamaan mitään.
                 </p>
-                <h1 id="home-title" className="max-w-[710px] text-[clamp(2.05rem,4.4vw,4rem)] font-extrabold leading-[1.12] tracking-[-0.01em] text-foreground">
-                  Verkkosivut, Google-näkyvyys ja some.{" "}
-                  <span className="text-brand">Yhdeltä tekijältä.</span>
-                </h1>
-                <p className="mt-7 max-w-[590px] text-base leading-8 text-muted sm:text-lg">
-                  Virella Helsinki tekee paikallisille palveluyrityksille verkkosivut, Google-näkyvyyden ja sosiaalisen median sisällöt. Aloita maksuttomalla kartoituksella ja päätä vasta sen jälkeen, mitä haluat toteuttaa.
-                </p>
-                <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row">
-                  <ButtonLink href="/aloita?kartoitus=1" className="w-full sm:w-auto">
-                    Pyydä maksuton näkyvyyskartoitus
-                  </ButtonLink>
-                  <ButtonLink href="#palvelut" variant="secondary" className="w-full sm:w-auto">
-                    Katso palvelut ja hinnat
-                  </ButtonLink>
-                </div>
-                <div className="mt-6 space-y-1.5 text-sm leading-6 text-muted" aria-label="Näkyvyyskartoituksen toimitus">
-                  <p>Lähetä verkkosivusi osoite.</p>
-                  <p>Tarkistamme sivun, Google-löydettävyyden ja yhteydenottopolun.</p>
-                  <p className="font-semibold text-foreground">Saat 3 tärkeintä korjausehdotusta 2 arkipäivässä.</p>
-                </div>
+                <a href="/aloita?kartoitus=1" className="mt-8 inline-flex min-h-11 items-center text-sm font-semibold text-foreground underline decoration-border underline-offset-[6px] transition-colors hover:decoration-foreground">
+                  Pyydä oma kartoituksesi <span aria-hidden="true" className="ml-2">↗</span>
+                </a>
               </div>
               <figure className="min-w-0">
-                <div className="rounded-[22px] border border-border bg-surface p-2 shadow-[0_24px_80px_-35px_rgba(0,0,0,0.8)] sm:p-3">
+                <div className="overflow-hidden rounded-2xl border border-border bg-surface p-2 sm:p-3">
                   <Image
                     src="/images/kartoitus-esimerkki.svg"
                     alt="Havainnekuva näkyvyyskartoituksen malliraportista: kolme esimerkkikorjausta verkkosivun viestiin, Google-yritysprofiiliin ja tarjouspyyntöpolkuun."
@@ -132,20 +149,13 @@ export default function Home() {
                     height={648}
                     loading="lazy"
                     unoptimized
-                    className="h-auto w-full rounded-2xl"
+                    className="h-auto w-full rounded-xl"
                   />
                 </div>
-                <figcaption className="mt-3 text-center text-sm leading-6 text-muted">
+                <figcaption className="mt-4 text-center text-sm leading-6 text-muted">
                   Mallikartoituksen esikatselu – ei oikea asiakasraportti.
                 </figcaption>
               </figure>
-            </div>
-            <div className="mt-16 grid grid-cols-2 gap-y-5 border-y border-border py-6 text-center text-sm font-medium text-muted md:grid-cols-4 md:gap-y-0">
-              {["Verkkosivut", "Google-löydettävyys", "Sosiaalinen media", "Yhteydenottopolku"].map((item, index) => (
-                <span key={item} className={index % 2 === 1 ? "border-l border-border px-3 md:border-l" : "px-3 md:border-l md:first:border-l-0"}>
-                  {item}
-                </span>
-              ))}
             </div>
           </SectionContainer>
         </section>
