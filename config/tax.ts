@@ -1,4 +1,5 @@
 export const taxConfig = {
   vatRegistered: false,
-  publicMessage: "Hintoihin ei lisätä arvonlisäveroa. Myyjä ei ole ALV-rekisterissä.",
+  registrationStatusVerified: false, // Verify via YTJ/OmaVero before binding customer documents.
+  publicMessage: "Arvonlisäveroa ei veloiteta vähäisen liiketoiminnan perusteella. ALV-asema tarkistetaan ennen sitovan tarjouksen lähettämistä.",
 } as const;
