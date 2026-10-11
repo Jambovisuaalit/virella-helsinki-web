@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { products } from "@/config/products";
 import { taxConfig } from "@/config/tax";
+import { SocialIcon } from "@/components/site/social-icon";
 import { trackAnalyticsEvent } from "@/lib/analytics/client";
 
 const euro = new Intl.NumberFormat("fi-FI", {
@@ -44,8 +45,9 @@ export function SocialPricingCard() {
       <div className="sticky top-[88px] z-30 mb-5 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 shadow-[0_12px_35px_rgba(0,0,0,0.55)] sm:top-[100px] lg:hidden">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <p className="truncate text-xs font-semibold text-zinc-300">
-              {channelDetails[selectedChannel].title}
+            <p className="flex min-w-0 items-center gap-2 text-xs font-semibold text-zinc-300">
+              <SocialIcon network={selectedChannel} width={16} height={16} className="shrink-0" />
+              <span className="truncate">{channelDetails[selectedChannel].title}</span>
             </p>
             <p className="mt-1 whitespace-nowrap font-mono text-3xl leading-none text-cyan-400">
               {euro.format(selectedProduct.price)}
@@ -77,9 +79,21 @@ export function SocialPricingCard() {
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <h3 id={`plan-${channel}`} className="text-xl font-semibold leading-snug text-zinc-100">
-                    {description.title}
-                  </h3>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex items-center gap-2 text-zinc-200" aria-hidden="true">
+                      {channel === "instagram" ? (
+                        <>
+                          <SocialIcon network="instagram" />
+                          <SocialIcon network="facebook" />
+                        </>
+                      ) : (
+                        <SocialIcon network="linkedin" />
+                      )}
+                    </div>
+                    <h3 id={`plan-${channel}`} className="text-xl font-semibold leading-snug text-zinc-100">
+                      {description.title}
+                    </h3>
+                  </div>
                   <p className="mt-3 text-sm leading-6 text-zinc-400">{description.description}</p>
                 </div>
               </div>
