@@ -625,12 +625,79 @@ a {
 }
 @media (max-width: 1023px) {
   .virella-hero-photo {
-    object-position: 69% center;
-    filter: saturate(.65) brightness(.68);
+    object-position: 72% 60%;
+    filter: saturate(.74) brightness(.88);
   }
   .virella-hero-veil {
     background:
-      linear-gradient(180deg, rgba(9, 11, 12, .95) 0%, rgba(9, 11, 12, .83) 38%, rgba(9, 11, 12, .85) 74%, rgba(9, 11, 12, .96) 100%),
-      linear-gradient(90deg, rgba(9, 11, 12, .79) 0%, rgba(9, 11, 12, .52) 100%);
+      linear-gradient(180deg, rgba(9, 11, 12, .94) 0%, rgba(9, 11, 12, .78) 38%, rgba(9, 11, 12, .51) 72%, rgba(9, 11, 12, .77) 100%),
+      linear-gradient(90deg, rgba(9, 11, 12, .90) 0%, rgba(9, 11, 12, .69) 54%, rgba(9, 11, 12, .30) 100%);
+  }
+}
+@media (max-width: 639px) {
+  .virella-hero-photo {
+    object-position: 74% 62%;
+  }
+  .virella-hero-veil {
+    background:
+      linear-gradient(180deg, rgba(9, 11, 12, .95) 0%, rgba(9, 11, 12, .82) 34%, rgba(9, 11, 12, .49) 72%, rgba(9, 11, 12, .79) 100%),
+      linear-gradient(90deg, rgba(9, 11, 12, .93) 0%, rgba(9, 11, 12, .68) 57%, rgba(9, 11, 12, .27) 100%);
+  }
+}
+
+
+/* Shared editorial rhythm for Virella's home and social service pages. */
+.virella-section-block {
+  padding-block: clamp(5.5rem, 8vw, 8rem);
+}
+.virella-section-eyebrow {
+  margin: 0;
+  color: var(--muted);
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.virella-section-title {
+  margin-top: 1.5rem;
+  font-size: clamp(2.05rem, 3.8vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.16;
+}
+.virella-section-copy {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.social-landing .virella-section-eyebrow {
+  color: #a1a1aa;
+}
+.social-landing .virella-section-title {
+  margin-top: 1.5rem;
+  font-size: clamp(2.05rem, 3.8vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.16;
+}
+.social-landing .virella-section-copy {
+  margin-top: 1.5rem;
+  color: #d4d4d8;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.social-landing .landing-process,
+.social-landing .landing-pricing,
+.social-landing .landing-contact {
+  padding-block: clamp(5.5rem, 8vw, 8rem);
+}
+.social-landing .landing-hero h1 {
+  letter-spacing: -.025em;
+}
+@media (max-width: 767px) {
+  .social-landing .landing-hero h1 {
+    letter-spacing: -.02em;
   }
 }
