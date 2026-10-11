@@ -80,6 +80,7 @@ export async function POST(request: Request) {
     await sendAdminNotification({
       subject: `Uusi aloituspyyntö — ${productName}`,
       idempotencyKey: `contact-${crypto.randomUUID()}`,
+      replyTo: email,
       text: [
         "Virella Helsinki — uusi aloituspyyntö",
         "",
