@@ -24,17 +24,31 @@ function validAuditWebsite(value: string) {
 }
 
 export async function POST(request: Request) {
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin;
+  // Redirect to the environment receiving the request (Preview stays in Preview).
+  const origin = new URL(request.url).origin;
   const redirectUrl = new URL("/aloita", origin);
-  function respond(error?: "invalid" | "send") {
+  function respond(error?: "invalid" | "send", persisted = false) {
     redirectUrl.searchParams.set(error ? "error" : "submitted", error ?? "1");
-    if (request.headers.get("accept")?.includes("application/json")) {
-      return NextResponse.json(
-        { ok: !error, error, redirect: `${redirectUrl.pathname}${redirectUrl.search}` },
-        { status: error === "invalid" ? 400 : error ? 503 : 200 },
-      );
+    // Only successfully stored requests receive a short-lived proof of receipt.
+    // The query string alone must never create a false success confirmation.
+    const receiptId = persisted ? crypto.randomUUID() : null;
+    if (receiptId) redirectUrl.searchParams.set("receipt", receiptId);
+    const response = request.headers.get("accept")?.includes("application/json")
+      ? NextResponse.json(
+          { ok: !error, error, redirect: `${redirectUrl.pathname}${redirectUrl.search}` },
+          { status: error === "invalid" ? 400 : error ? 503 : 200 },
+        )
+      : NextResponse.redirect(redirectUrl, 303);
+    if (receiptId) {
+      response.cookies.set("virella_contact_receipt", receiptId, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: new URL(request.url).protocol === "https:",
+        path: "/aloita",
+        maxAge: 600,
+      });
     }
-    return NextResponse.redirect(redirectUrl, 303);
+    return response;
   }
 
   let formData: FormData;
@@ -102,7 +116,7 @@ export async function POST(request: Request) {
       ].join("\n"),
     });
 
-    return respond();
+    return respond(undefined, true);
   } catch {
     // Do not log errors that may contain submitted personal data or storage credentials.
     console.error("Contact intake failed");
