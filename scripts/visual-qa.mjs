@@ -195,6 +195,24 @@ try {
         })(),
         heroImageRight: (() => { const img = document.querySelector('img[src="/images/kartoitus-esimerkki.svg"]'); return img ? Math.round(img.getBoundingClientRect().right) : null; })(),
         previewCaption: document.querySelector("figure figcaption")?.textContent?.trim(),
+        spaciousLayout: (() => {
+          const hero = document.querySelector(".virella-photographic-hero");
+          const preview = document.querySelector("#esimerkkikartoitus");
+          const services = document.querySelector("#palvelut");
+          const firstCard = services?.querySelector("article");
+          if (!hero || !preview || !services || !firstCard) return null;
+          const hr = hero.getBoundingClientRect(), pr = preview.getBoundingClientRect(), sr = services.getBoundingClientRect();
+          return {
+            heroBottom: Math.round(hr.bottom),
+            previewTop: Math.round(pr.top),
+            previewBottom: Math.round(pr.bottom),
+            servicesTop: Math.round(sr.top),
+            previewPaddingTop: parseFloat(getComputedStyle(preview).paddingTop),
+            servicesPaddingTop: parseFloat(getComputedStyle(services).paddingTop),
+            cardPaddingX: parseFloat(getComputedStyle(firstCard).paddingLeft),
+            cardPaddingY: parseFloat(getComputedStyle(firstCard).paddingTop),
+          };
+        })(),
         contrastRows: (() => {
           function luminance(color) {
             const parts = color.match(/[\d.]+/g)?.slice(0, 3).map(Number);
@@ -242,6 +260,14 @@ try {
     console.log("HOME BACKDROP " + spec.width + ": " + JSON.stringify(home.backdrop));
     assert.ok(home.heroImageRight <= spec.width + 1, "Audit preview overflows viewport");
     assert.ok(home.previewCaption.includes("ei oikea asiakasraportti"), "Example preview needs explicit label");
+    assert.ok(home.spaciousLayout, "Homepage sections missing");
+    assert.ok(Math.abs(home.spaciousLayout.heroBottom - home.spaciousLayout.previewTop) <= 1, "Sample preview is not directly after hero");
+    assert.ok(Math.abs(home.spaciousLayout.previewBottom - home.spaciousLayout.servicesTop) <= 1, "Preview-to-services rhythm broken");
+    assert.ok(home.spaciousLayout.previewPaddingTop >= 85, "Sample needs generous vertical spacing");
+    assert.ok(home.spaciousLayout.servicesPaddingTop >= 85, "Service section needs generous spacing");
+    assert.ok(home.spaciousLayout.cardPaddingX >= 27, "Service card horizontal padding too narrow");
+    assert.ok(home.spaciousLayout.cardPaddingY >= 35, "Service card vertical padding too tight");
+    console.log("HOME RHYTHM " + spec.width + ": " + JSON.stringify(home.spaciousLayout));
     assert.ok(parseFloat(home.heroTracking) >= -1, "Hero letter spacing too tight at " + spec.width);
     for (const row of home.contrastRows) {
       assert.ok(row.ratio >= 4.5, "AA text contrast failed at " + spec.width + ": " + row.text + " ratio=" + row.ratio);
@@ -301,12 +327,20 @@ try {
           const r = el.getBoundingClientRect();
           return { x: Math.round(r.x), right: Math.round(r.right), top: Math.round(r.top), bottom: Math.round(r.bottom) };
         };
-        return { logo: rect(logo), trigger: rect(trigger), scrollWidth: document.documentElement.scrollWidth };
+        return {
+          logo: rect(logo),
+          trigger: rect(trigger),
+          scrollWidth: document.documentElement.scrollWidth,
+          logoCenteredOffset: logo ? Math.round((logo.getBoundingClientRect().left + logo.getBoundingClientRect().right) / 2 - innerWidth / 2) : null,
+          logoVerticalOffset: logo && trigger ? Math.round((logo.getBoundingClientRect().top + logo.getBoundingClientRect().bottom - trigger.getBoundingClientRect().top - trigger.getBoundingClientRect().bottom) / 2) : null,
+        };
       });
       console.log("MENU HEADER " + spec.width + " " + route.name + ": " + JSON.stringify(header));
       assert.ok(header.scrollWidth <= spec.width + 1, "Horizontal overflow");
       assert.ok(header.logo && header.trigger, "Logo or menu trigger missing");
       assert.ok(header.logo.right < header.trigger.x - 4, "Logo and overlay trigger collide");
+      assert.ok(Math.abs(header.logoCenteredOffset) <= 2, "Header wordmark not centered at " + spec.width + ": " + header.logoCenteredOffset);
+      assert.ok(Math.abs(header.logoVerticalOffset) <= 2, "Header wordmark and trigger vertical centers differ at " + spec.width);
       assert.ok(header.trigger.right <= spec.width, "Trigger escapes viewport");
 
       await toggle.click();
@@ -336,6 +370,12 @@ try {
       assert.equal(menuState.revealVisible, "visible", "Overlay not visible");
       assert.equal(menuState.rect.left, 0);
       assert.equal(menuState.rect.right, spec.width);
+      const overlayLogoOffset = await dialog.locator(".virella-overlay-heading .brand-logo").evaluate(el => {
+        const r = el.getBoundingClientRect();
+        return Math.round((r.left + r.right) / 2 - innerWidth / 2);
+      });
+      console.log("OVERLAY LOGO " + spec.width + " " + route.name + ": center offset=" + overlayLogoOffset);
+      assert.ok(Math.abs(overlayLogoOffset) <= 2, "Open menu wordmark not centered: " + overlayLogoOffset);
       assert.ok(menuState.scrollWidth <= spec.width + 1, "Overlay horizontal overflow");
       assert.ok(menuState.navigationLabels.some((text) => text.includes(route.label)), "Expected link missing");
 
