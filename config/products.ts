@@ -45,6 +45,8 @@ export const products = {
     id: "landing-page-seo",
     name: "Landing Page + SEO",
     price: offerMasters.landing.price,
+    deposit: offerMasters.landing.deposit,
+    finalPayment: offerMasters.landing.finalPayment,
     billing: "one_time",
     features: [...offerMasters.landing.features],
   },
