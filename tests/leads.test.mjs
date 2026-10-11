@@ -45,7 +45,7 @@ function harness() {
         if (name === "server-only") return {};
         if (name === "@vercel/blob") return blob;
         if (name === "@/lib/admin-auth") return { isAdminAuthenticated: async () => authenticated };
-        if (name === "next/server") return { NextResponse: { redirect: (url, status) => Response.redirect(url, status) } };
+        if (name === "next/server") return { NextResponse: { redirect: (url, status) => new Response(null, { status: status || 307, headers: { location: String(url) } }) } };
         return name.startsWith("@/") ? load(name.slice(2)) : require(name);
       },
       process: { env: { BLOB_READ_WRITE_TOKEN: "test", VERCEL_ENV: "production" } },
