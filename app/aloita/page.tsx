@@ -43,6 +43,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
   const productKey = productId ? getProductKeyById(productId) : undefined;
   const product = productKey ? products[productKey] : undefined;
   const isSocial = product?.billing === "month";
+  const requiresOffer = productId === "instagram" || productId === "landing-page-seo";
   const euro = new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 
   return (
@@ -65,15 +66,15 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                   : isVisibilityAudit
                     ? "Lähetä verkkosivusi osoite ja sähköpostisi. Käymme läpi sivuston, paikallisen Google-näkyvyyden ja yhteydenottopolun. Saat kolme tärkeintä korjausehdotusta perusteluineen 2 arkipäivässä. Maksuton, ei ostopakkoa."
                     : isSocial
-                    ? "Kerro yrityksestäsi ja siitä, mitä haluat tuoda esiin. Instagram-paketti kattaa myös Facebookin; LinkedIn on erillinen palvelu. Vahvistamme lähtötiedot ja aloituksen sähköpostilla."
-                    : "Lähetä tärkeimmät lähtötiedot. Saat vastauksen sähköpostilla ilman erillistä myyntipalaveria tai pitkää tarjousprosessia."}
+                    ? "Kerro yrityksestäsi ja siitä, mitä haluat tuoda esiin. Instagram-paketti kattaa myös Facebookin; LinkedIn on erillinen palvelu. Lähetämme kirjallisen tarjouksen hyväksyttäväksi ennen laskutusta."
+                    : "Lähetä tärkeimmät lähtötiedot. Saat yksilöidyn kirjallisen tarjouksen tai tarkennuspyynnön. Aloituspyyntö ei ole tilaus."}
               </p>
 
               {!submitted ? (
                 <div className="mt-8 space-y-3 text-sm leading-6 text-muted">
                   <p className="rounded-xl border border-border bg-surface p-4">1. {isVisibilityAudit ? "Lähetä verkkosivusi osoite ja yhteystietosi." : isSocial ? "Kerro yrityksesi palvelut, kohderyhmä ja tavoite." : "Kerro yritys, verkkosivu ja tärkein tavoite."}</p>
                   <p className="rounded-xl border border-border bg-surface p-4">2. {isVisibilityAudit ? "Käymme läpi julkisen sivuston, paikallisen Google-näkyvyyden ja yhteydenottopolun." : isSocial ? "Sovimme materiaalit, käyttöoikeudet ja sisältöjen hyväksynnän." : "Arvioimme sopiiko rajattu toteutus tilanteeseesi."}</p>
-                  <p className="rounded-xl border border-border bg-surface p-4">3. {isVisibilityAudit ? "Saat 3 priorisoitua korjausehdotusta sähköpostiin 2 arkipäivässä. Toteutus on erillinen maksullinen päätös." : isSocial ? "Vahvistamme maksutavan ja aloituksen sähköpostilla." : "Saat selkeän seuraavan askeleen sähköpostilla."}</p>
+                  <p className="rounded-xl border border-border bg-surface p-4">3. {isVisibilityAudit ? "Saat 3 priorisoitua korjausehdotusta sähköpostiin 2 arkipäivässä. Toteutus on erillinen maksullinen päätös." : isSocial ? "Lähetämme yksilöidyn tarjouksen kirjallisesti hyväksyttäväksi." : "Saat kirjallisen tarjouksen tai tarkennuspyynnön. Maksua ei pyydetä ilman hyväksyntää."}</p>
                 </div>
               ) : null}
             </div>
@@ -101,6 +102,8 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                       <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Palvelu</p>
                       <p className="mt-1 font-bold">{product.name}</p>
                       {product.billing === "month" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(product.price)} / kk · {product.commitmentMonths} kk minimi · yhteensä {euro.format(product.totalPrice)}</p> : null}
+                      {productId === "landing-page-seo" ? <p className="mt-2 text-sm leading-6 text-muted">990 € kertamaksu · 495 € ennakkoon ja 495 € hyväksytyn esikatselun jälkeen ennen julkaisua.</p> : null}
+                      {requiresOffer ? <p className="mt-2 text-sm leading-6 text-muted">Aloituspyyntö ei ole tilaus. Lasku lähetetään vasta, kun yksilöity tarjous on hyväksytty kirjallisesti.</p> : null}
                     </div>
                   ) : null}
 
