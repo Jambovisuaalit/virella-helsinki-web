@@ -59,9 +59,11 @@ export default async function StartPage({ searchParams }: StartPageProps) {
               </h1>
               <p className="mt-5 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8">
                 {submitted
-                  ? "Virella sai lähtötietosi. Palaamme asiaan sähköpostilla seuraavaa askelta varten."
+                  ? isVisibilityAudit
+                    ? "Kartoituspyyntösi on vastaanotettu. Saat kolme tärkeintä korjausehdotusta ja perustelut sähköpostiisi 2 arkipäivässä."
+                    : "Virella sai lähtötietosi. Palaamme asiaan sähköpostilla seuraavaa askelta varten."
                   : isVisibilityAudit
-                    ? "Kerro yrityksestäsi ja lisää verkkosivusi osoite, jos sellainen on. Tarkastelemme julkista verkkonäkyvyyttä ja ehdotamme kolmea tärkeintä korjauskohdetta. Kartoitus on maksuton eikä velvoita ostamaan palvelua."
+                    ? "Lähetä verkkosivusi osoite ja sähköpostisi. Käymme läpi sivuston, paikallisen Google-näkyvyyden ja yhteydenottopolun. Saat kolme tärkeintä korjausehdotusta perusteluineen 2 arkipäivässä. Maksuton, ei ostopakkoa."
                     : isSocial
                     ? "Kerro yrityksestäsi ja siitä, mitä haluat tuoda esiin. Instagram-paketti kattaa myös Facebookin; LinkedIn on erillinen palvelu. Vahvistamme lähtötiedot ja aloituksen sähköpostilla."
                     : "Lähetä tärkeimmät lähtötiedot. Saat vastauksen sähköpostilla ilman erillistä myyntipalaveria tai pitkää tarjousprosessia."}
@@ -69,9 +71,9 @@ export default async function StartPage({ searchParams }: StartPageProps) {
 
               {!submitted ? (
                 <div className="mt-8 space-y-3 text-sm leading-6 text-muted">
-                  <p className="rounded-xl border border-border bg-surface p-4">1. {isVisibilityAudit ? "Kerro yrityksesi nimi ja näkyvyyden tärkein haaste." : isSocial ? "Kerro yrityksesi palvelut, kohderyhmä ja tavoite." : "Kerro yritys, verkkosivu ja tärkein tavoite."}</p>
-                  <p className="rounded-xl border border-border bg-surface p-4">2. {isVisibilityAudit ? "Tarkastelemme sivustoa, Google-löydettävyyttä ja somekanavia julkisten tietojen perusteella." : isSocial ? "Sovimme materiaalit, käyttöoikeudet ja sisältöjen hyväksynnän." : "Arvioimme sopiiko rajattu toteutus tilanteeseesi."}</p>
-                  <p className="rounded-xl border border-border bg-surface p-4">3. {isVisibilityAudit ? "Saat tiedon tärkeimmistä korjauksista. Mahdollinen jatkotyö sovitaan erikseen." : isSocial ? "Vahvistamme maksutavan ja aloituksen sähköpostilla." : "Saat selkeän seuraavan askeleen sähköpostilla."}</p>
+                  <p className="rounded-xl border border-border bg-surface p-4">1. {isVisibilityAudit ? "Lähetä verkkosivusi osoite ja yhteystietosi." : isSocial ? "Kerro yrityksesi palvelut, kohderyhmä ja tavoite." : "Kerro yritys, verkkosivu ja tärkein tavoite."}</p>
+                  <p className="rounded-xl border border-border bg-surface p-4">2. {isVisibilityAudit ? "Käymme läpi julkisen sivuston, paikallisen Google-näkyvyyden ja yhteydenottopolun." : isSocial ? "Sovimme materiaalit, käyttöoikeudet ja sisältöjen hyväksynnän." : "Arvioimme sopiiko rajattu toteutus tilanteeseesi."}</p>
+                  <p className="rounded-xl border border-border bg-surface p-4">3. {isVisibilityAudit ? "Saat 3 priorisoitua korjausehdotusta sähköpostiin 2 arkipäivässä. Toteutus on erillinen maksullinen päätös." : isSocial ? "Vahvistamme maksutavan ja aloituksen sähköpostilla." : "Saat selkeän seuraavan askeleen sähköpostilla."}</p>
                 </div>
               ) : null}
             </div>
@@ -80,13 +82,13 @@ export default async function StartPage({ searchParams }: StartPageProps) {
               {submitted ? (
                 <div>
                   <p className="text-sm font-bold text-brand">Lähetys onnistui.</p>
-                  <p className="mt-3 text-sm leading-6 text-muted">Voit sulkea sivun tai palata etusivulle.</p>
+                  <p className="mt-3 text-sm leading-6 text-muted">{isVisibilityAudit ? "Kartoitus toimitetaan antamaasi sähköpostiosoitteeseen. Voit sulkea sivun tai palata etusivulle." : "Voit sulkea sivun tai palata etusivulle."}</p>
                   <Link href="/" className="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-action px-5 py-3 text-sm font-bold text-white">
                     Takaisin etusivulle
                   </Link>
                 </div>
               ) : (
-                <ContactForm initialError={error}>
+                <ContactForm initialError={error} submitLabel={isVisibilityAudit ? "Lähetä maksuton kartoituspyyntö" : "Lähetä aloituspyyntö"} formLabel={isVisibilityAudit ? "Näkyvyyskartoituspyyntö" : "Aloituspyyntö"}>
                   {productId ? <input type="hidden" name="productId" value={productId} /> : null}
                   {isVisibilityAudit ? <input type="hidden" name="requestType" value="visibility_audit" /> : null}
                   <div className="sr-only" aria-hidden="true">
@@ -116,16 +118,16 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                     <input id="email" name="email" type="email" required maxLength={200} autoComplete="email" className={fieldClassName} />
                   </div>
                   <div>
+                    <label htmlFor="website" className="text-sm font-bold">{isVisibilityAudit ? "Verkkosivun osoite *" : "Verkkosivu"}</label>
+                    <input id="website" name="website" type="url" required={isVisibilityAudit} maxLength={300} placeholder="https://yritys.fi" className={fieldClassName} />
+                  </div>
+                  <div>
                     <label htmlFor="company" className="text-sm font-bold">Yritys</label>
                     <input id="company" name="company" maxLength={160} autoComplete="organization" className={fieldClassName} />
                   </div>
                   <div>
-                    <label htmlFor="website" className="text-sm font-bold">Verkkosivu</label>
-                    <input id="website" name="website" type="url" maxLength={300} placeholder="https://" className={fieldClassName} />
-                  </div>
-                  <div>
-                    <label htmlFor="message" className="text-sm font-bold">{isVisibilityAudit ? "Missä kaipaat eniten näkyvyyttä tai yhteydenottoja? *" : isSocial ? "Mitä yrityksesi tekee ja kenelle? *" : "Mitä haluat saada kuntoon? *"}</label>
-                    <textarea id="message" name="message" required maxLength={2000} rows={6} className={fieldClassName} />
+                    <label htmlFor="message" className="text-sm font-bold">{isVisibilityAudit ? "Mitä haluaisit kehittää? (vapaaehtoinen)" : isSocial ? "Mitä yrityksesi tekee ja kenelle? *" : "Mitä haluat saada kuntoon? *"}</label>
+                    <textarea id="message" name="message" required={!isVisibilityAudit} maxLength={2000} rows={isVisibilityAudit ? 4 : 6} className={fieldClassName} />
                   </div>
 
                   <p className="text-xs leading-5 text-muted">

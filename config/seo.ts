@@ -3,7 +3,7 @@ import { brandConfig } from "@/config/brand";
 export const seoConfig = {
   siteName: brandConfig.name,
   siteUrl: "https://virellahelsinki.com",
-  defaultTitle: "Digitaalista näkyvyyttä paikallisille yrityksille | Virella Helsinki",
+  defaultTitle: "Verkkosivut, Google-näkyvyys ja some | Virella Helsinki",
   titleTemplate: `%s | ${brandConfig.name}`,
-  defaultDescription: "Virella Helsinki auttaa paikallisia palveluyrityksiä löytymään Googlesta, näyttämään uskottavilta verkossa ja saamaan enemmän yhteydenottoja.",
+  defaultDescription: "Virella Helsinki toteuttaa paikallisille palveluyrityksille verkkosivuja, Google-näkyvyyttä ja somepalveluita. Maksuton kartoitus: 3 korjausehdotusta 2 arkipäivässä.",
 } as const;

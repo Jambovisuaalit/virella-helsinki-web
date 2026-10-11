@@ -1,44 +1,38 @@
 import Link from "next/link";
 import { SectionContainer } from "@/components/layout/section-container";
 import { BrandLogo } from "@/components/site/brand-logo";
+import { OverlayNavigation } from "@/components/site/overlay-navigation";
 import { primaryNavigation } from "@/config/navigation";
 
-const isPreview = process.env.VERCEL_ENV !== "production";
+const socialNavigation = [
+  { label: "Etusivu", href: "/" },
+  { label: "Esimerkki", href: "#todisteet" },
+  { label: "Näin toimii", href: "#prosessi" },
+  { label: "Hinnoittelu", href: "#hinnoittelu" },
+] as const;
 
 export function SiteHeader({ landing = false }: { landing?: boolean }) {
-  if (landing) {
-    return (
-      <header className="landing-header">
-        <SectionContainer>
-          <div className="landing-header-inner">
-            <BrandLogo landing />
-            <nav aria-label="Päänavigaatio" className="landing-navigation"><a href="#prosessi">Näin toimii</a><a href="#hinnoittelu">Hinnoittelu</a></nav>
-            <a href="#hinnoittelu" className="landing-header-cta">Katso hinnat</a>
-          </div>
-        </SectionContainer>
-      </header>
-    );
-  }
-  return (
-    <header className="sticky top-0 z-50 bg-transparent pt-3">
-      <SectionContainer>
-        <div className="flex min-h-14 items-center justify-between gap-4 rounded-full border border-border/80 bg-background/88 px-4 shadow-[0_16px_50px_-32px_rgba(23,33,38,0.5)] backdrop-blur-xl sm:px-5">
-          <BrandLogo compact />
+  const items = landing ? socialNavigation : [
+    { label: "Etusivu", href: "/" },
+    ...primaryNavigation,
+  ];
+  const cta = landing
+    ? { label: "Katso palvelut ja hinnat", href: "#hinnoittelu" }
+    : { label: "Pyydä maksuton näkyvyyskartoitus", href: "/aloita?kartoitus=1" };
 
-          <div className="flex items-center gap-3">
-            <nav aria-label="Päänavigaatio" className="hidden items-center gap-1 text-sm font-semibold text-muted lg:flex">
-              {primaryNavigation.map((item) => (
-                <Link key={item.href} href={item.href} className="rounded-full px-3 py-2 transition hover:bg-surface hover:text-foreground">
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-            <Link href="/aloita?kartoitus=1" aria-label="Pyydä maksuton näkyvyyskartoitus" className="inline-flex min-h-11 items-center justify-center rounded-lg bg-action px-3 py-2 text-xs font-bold text-white transition hover:brightness-95 sm:px-4 sm:text-sm"><span className="sm:hidden">Kartoitus</span><span className="hidden sm:inline">Pyydä maksuton kartoitus</span></Link>
-            {isPreview ? (
-              <span className="hidden rounded-full border border-brand/15 bg-brand/5 px-2.5 py-1 text-xs font-semibold text-brand xl:inline-flex">
-                Preview
-              </span>
-            ) : null}
+  return (
+    <header className={`virella-site-header sticky top-0 z-[100] bg-transparent pt-3 ${landing ? "landing-header" : ""}`}>
+      <SectionContainer>
+        <div className="virella-nav-shell flex min-h-[68px] items-center justify-between gap-3 rounded-2xl border border-border bg-surface/95 px-4 shadow-[0_12px_38px_-24px_rgba(0,0,0,0.75)] backdrop-blur-md sm:px-6">
+          <BrandLogo compact />
+          <div className="ml-auto flex shrink-0 items-center gap-3">
+            <Link
+              href={cta.href}
+              className={`hidden min-h-11 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-bold transition-colors duration-200 focus-visible:outline-offset-4 sm:inline-flex ${landing ? "bg-cyan-400 text-zinc-950 hover:bg-cyan-300" : "bg-action text-white hover:bg-[#ac381d]"}`}
+            >
+              {landing ? "Katso hinnat" : "Maksuton kartoitus"}
+            </Link>
+            <OverlayNavigation items={items} cta={cta} social={landing} />
           </div>
         </div>
       </SectionContainer>

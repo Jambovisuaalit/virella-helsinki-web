@@ -6,21 +6,23 @@ import { useRouter } from "next/navigation";
 type ContactFormProps = {
   children: ReactNode;
   initialError?: string;
+  submitLabel?: string;
+  formLabel?: string;
 };
 
 function errorMessage(error: string) {
   return error === "invalid"
-    ? "Tarkista pakolliset kentät ja sähköpostiosoite. Kirjoittamasi tiedot ovat edelleen lomakkeella."
+    ? "Tarkista pakolliset kentät, sähköposti ja verkkosivun osoite. Kirjoittamasi tiedot ovat edelleen lomakkeella."
     : "Lähetys ei onnistunut. Kirjoittamasi tiedot ovat edelleen lomakkeella. Yritä uudelleen tai ota yhteyttä sivun alareunan yhteystiedoilla.";
 }
 
-export function ContactForm({ children, initialError }: ContactFormProps) {
+export function ContactForm({ children, initialError, submitLabel = "Lähetä aloituspyyntö", formLabel = "Aloituspyyntö" }: ContactFormProps) {
   const router = useRouter();
   const busy = useRef(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(initialError
     ? initialError === "invalid"
-      ? "Tarkista pakolliset kentät ja sähköpostiosoite ja yritä uudelleen."
+      ? "Tarkista pakolliset kentät, sähköposti ja verkkosivun osoite ja yritä uudelleen."
       : "Lähetys ei onnistunut. Yritä uudelleen tai ota yhteyttä sivun alareunan yhteystiedoilla."
     : "");
 
@@ -60,11 +62,11 @@ export function ContactForm({ children, initialError }: ContactFormProps) {
   }
 
   return (
-    <form action="/api/contact" method="post" onSubmit={submit} className="space-y-5" aria-label="Aloituspyyntö" aria-busy={pending}>
+    <form action="/api/contact" method="post" onSubmit={submit} className="space-y-5" aria-label={formLabel} aria-busy={pending}>
       {children}
       {error ? <p role="alert" className="rounded-xl border border-action/20 bg-action/5 p-4 text-sm font-semibold text-action">{error}</p> : null}
       <button type="submit" disabled={pending} className="min-h-12 w-full rounded-full bg-action px-5 py-3 text-sm font-bold text-white transition hover:brightness-95 disabled:cursor-wait disabled:opacity-70 sm:w-auto">
-        {pending ? "Lähetetään…" : "Lähetä aloituspyyntö"}
+        {pending ? "Lähetetään…" : submitLabel}
       </button>
       <p role="status" className="sr-only">{pending ? "Aloituspyyntöä lähetetään." : ""}</p>
     </form>

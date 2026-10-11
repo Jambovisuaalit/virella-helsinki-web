@@ -38,6 +38,12 @@ export default async function LeadsPage() {
     <div className="mt-8 space-y-4">{leads.map(({ path, lead }) => <article key={path} className="rounded-xl border p-5">
       <p className="text-sm text-muted">{lead.receivedAt ?? "Aikaleima puuttuu"} · {lead.status ?? "new"}</p>
       <h2 className="mt-2 text-lg font-bold">{lead.subject ?? "Aloituspyyntö"}</h2>
+      {lead.subject?.includes("Maksuton näkyvyyskartoitus") ? (
+        <p className="mt-2 rounded-lg border border-border bg-surface p-3 text-sm text-foreground">
+          Käsittele 2 arkipäivässä vastaanotosta: tarkista verkkosivu, Google-löydettävyys ja yhteydenottopolku.
+          Vastaa asiakkaan sähköpostiin kolmella priorisoidulla korjausehdotuksella ja perusteluilla. Tämä vaihe on manuaalinen.
+        </p>
+      ) : null}
       <pre className="mt-3 whitespace-pre-wrap break-words font-sans text-sm">{lead.text ?? "Tietoja ei saatavilla"}</pre>
     </article>)}</div>
   </main>;

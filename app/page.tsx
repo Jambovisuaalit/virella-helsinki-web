@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
 import { ButtonLink } from "@/components/ui/button";
 import { businessConfig } from "@/config/business";
 import { seoConfig } from "@/config/seo";
+import { taxConfig } from "@/config/tax";
 
 export const metadata: Metadata = {
   title: { absolute: seoConfig.defaultTitle },
@@ -25,7 +27,9 @@ const services = [
   {
     number: "01",
     name: "Virella Näkyvyys",
-    headline: "Yrityksesi näkyy aktiivisena.",
+    headline: "Sovittu määrä somejulkaisuja joka kuukausi.",
+    price: "490 €/kk",
+    priceDetail: "3 kk vähimmäisjakso",
     description: "Sosiaalisen median sisällöntuotanto, julkaisukalenteri ja sovitut julkaisut ilman omaa somevastaavaa.",
     details: ["Instagram ja Facebook", "12 julkaisua kuukaudessa", "Hyväksyntä ennen julkaisua"],
     href: "/sosiaalinen-media",
@@ -34,7 +38,9 @@ const services = [
   {
     number: "02",
     name: "Virella Löydettävyys",
-    headline: "Asiakas löytää sinut Googlesta.",
+    headline: "Google-yritysprofiili ja paikallinen löydettävyys kuntoon.",
+    price: "590 € aloitus",
+    priceDetail: "Ylläpito 290 €/kk",
     description: "Google-yritysprofiilin, paikallisen hakunäkyvyyden ja arvosteluprosessin kehittäminen.",
     details: ["Google Business Profile", "Paikallinen SEO", "Seuranta ja kehitys"],
     href: "/aloita?kartoitus=1",
@@ -43,7 +49,9 @@ const services = [
   {
     number: "03",
     name: "Virella Liidit",
-    headline: "Kiinnostus muuttuu yhteydenotoksi.",
+    headline: "Selkeä polku tarjouspyyntöön.",
+    price: "1 500 € aloitus",
+    priceDetail: "Ylläpito alkaen 500 €/kk",
     description: "Selkeä laskeutumissivu, helppo tarjouspyyntöpolku ja mitattavat toimintakehotukset.",
     details: ["Laskeutumissivut", "Yhteydenottolomakkeet", "Konversion seuranta"],
     href: "/aloita?kartoitus=1",
@@ -55,17 +63,17 @@ const steps = [
   {
     number: "01",
     title: "Kerro yrityksestäsi.",
-    description: "Lähetä verkkosivusi tai yrityksesi tiedot. Voit aloittaa maksuttomalla näkyvyyskartoituksella.",
+    description: "Lähetä verkkosivusi osoite sekä yhteystietosi. Kerro halutessasi, mikä verkkonäkyvyydessäsi kaipaa huomiota.",
   },
   {
     number: "02",
     title: "Tunnistamme tärkeimmät korjaukset.",
-    description: "Tarkastelemme verkkosivujen, Google-näkyvyyden, sosiaalisen median ja yhteydenottopolun tilannetta.",
+    description: "Käymme läpi sivustosi, julkisen paikallisen Google-näkyvyyden ja yhteydenottopolun. Valitsemme kolme perusteltua korjausehdotusta.",
   },
   {
     number: "03",
-    title: "Sovimme selkeän toteutuksen.",
-    description: "Saat ehdotuksen tärkeimmistä toimenpiteistä. Mahdollinen maksullinen työ sovitaan erikseen.",
+    title: "Saat kolme korjausta sähköpostiisi.",
+    description: "Toimitamme kolme priorisoitua korjausehdotusta 2 arkipäivässä. Kartoitus on maksuton. Jos haluat toteutuksen, palveluiden hinnat näkyvät yllä ja työ hyväksytään erikseen.",
   },
 ] as const;
 
@@ -75,33 +83,52 @@ export default function Home() {
       <a href="#main-content" className="landing-skip-link">Siirry sisältöön</a>
       <SiteHeader />
       <main id="main-content">
-        <section className="px-0 pb-14 pt-24 sm:pb-20 sm:pt-32 lg:pt-36" aria-labelledby="home-title">
+        <section className="px-0 pb-14 pt-14 sm:pb-20 sm:pt-20 lg:pt-28" aria-labelledby="home-title">
           <SectionContainer>
-            <div className="mx-auto max-w-[1040px] text-center">
-              <p className="mb-7 text-xs font-bold uppercase tracking-[0.17em] text-brand sm:text-sm">
-                Digitaalista näkyvyyttä paikallisille palveluyrityksille
-              </p>
-              <h1 id="home-title" className="text-[clamp(2.65rem,6.1vw,5.25rem)] font-extrabold leading-[1.08] tracking-[-0.062em] text-foreground">
-                Enemmän näkyvyyttä.<br />
-                Enemmän luottamusta.<br />
-                <span className="text-brand">Enemmän yhteydenottoja.</span>
-              </h1>
-              <p className="mx-auto mt-7 max-w-[640px] text-base leading-8 text-muted sm:text-lg">
-                Virella Helsinki hoitaa paikallisen yrityksesi verkkosivut, Google-näkyvyyden ja sosiaalisen median, jotta sinä voit keskittyä asiakkaisiin ja työn tekemiseen.
-              </p>
-              <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <ButtonLink href="/aloita?kartoitus=1" className="w-full max-w-[330px] sm:w-auto">
-                  Pyydä maksuton näkyvyyskartoitus
-                </ButtonLink>
-                <ButtonLink href="#palvelut" variant="secondary" className="w-full max-w-[330px] sm:w-auto">
-                  Tutustu palveluihin
-                </ButtonLink>
+            <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:gap-10 xl:gap-16">
+              <div className="min-w-0">
+                <p className="mb-6 text-xs font-bold uppercase tracking-[0.12em] text-brand sm:text-sm">
+                  Digitaalista näkyvyyttä paikallisille palveluyrityksille
+                </p>
+                <h1 id="home-title" className="max-w-[710px] text-[clamp(2.05rem,4.4vw,4rem)] font-extrabold leading-[1.12] tracking-[-0.01em] text-foreground">
+                  Verkkosivut, Google-näkyvyys ja some.{" "}
+                  <span className="text-brand">Yhdeltä tekijältä.</span>
+                </h1>
+                <p className="mt-7 max-w-[590px] text-base leading-8 text-muted sm:text-lg">
+                  Virella Helsinki tekee paikallisille palveluyrityksille verkkosivut, Google-näkyvyyden ja sosiaalisen median sisällöt. Aloita maksuttomalla kartoituksella ja päätä vasta sen jälkeen, mitä haluat toteuttaa.
+                </p>
+                <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row">
+                  <ButtonLink href="/aloita?kartoitus=1" className="w-full sm:w-auto">
+                    Pyydä maksuton näkyvyyskartoitus
+                  </ButtonLink>
+                  <ButtonLink href="#palvelut" variant="secondary" className="w-full sm:w-auto">
+                    Katso palvelut ja hinnat
+                  </ButtonLink>
+                </div>
+                <div className="mt-6 space-y-1.5 text-sm leading-6 text-muted" aria-label="Näkyvyyskartoituksen toimitus">
+                  <p>Lähetä verkkosivusi osoite.</p>
+                  <p>Tarkistamme sivun, Google-löydettävyyden ja yhteydenottopolun.</p>
+                  <p className="font-semibold text-foreground">Saat 3 tärkeintä korjausehdotusta 2 arkipäivässä.</p>
+                </div>
               </div>
-              <p className="mt-5 text-sm text-muted">
-                Kartoitus ei sido palvelun ostamiseen.
-              </p>
+              <figure className="min-w-0">
+                <div className="rounded-[22px] border border-border bg-surface p-2 shadow-[0_24px_80px_-35px_rgba(0,0,0,0.8)] sm:p-3">
+                  <Image
+                    src="/images/kartoitus-esimerkki.svg"
+                    alt="Havainnekuva näkyvyyskartoituksen malliraportista: kolme esimerkkikorjausta verkkosivun viestiin, Google-yritysprofiiliin ja tarjouspyyntöpolkuun."
+                    width={760}
+                    height={648}
+                    priority
+                    unoptimized
+                    className="h-auto w-full rounded-2xl"
+                  />
+                </div>
+                <figcaption className="mt-3 text-center text-sm leading-6 text-muted">
+                  Mallikartoituksen esikatselu – ei oikea asiakasraportti.
+                </figcaption>
+              </figure>
             </div>
-            <div className="mt-20 grid grid-cols-2 gap-y-5 border-y border-border py-6 text-center text-sm font-medium text-muted md:grid-cols-4 md:gap-y-0">
+            <div className="mt-16 grid grid-cols-2 gap-y-5 border-y border-border py-6 text-center text-sm font-medium text-muted md:grid-cols-4 md:gap-y-0">
               {["Verkkosivut", "Google-löydettävyys", "Sosiaalinen media", "Yhteydenottopolku"].map((item, index) => (
                 <span key={item} className={index % 2 === 1 ? "border-l border-border px-3 md:border-l" : "px-3 md:border-l md:first:border-l-0"}>
                   {item}
@@ -116,7 +143,7 @@ export default function Home() {
             <div className="max-w-[760px]">
               <p className="text-xs font-bold uppercase tracking-[0.17em] text-brand">Virellan palvelut</p>
               <h2 id="services-title" className="mt-4 text-[clamp(2.1rem,4vw,3.25rem)] font-bold leading-[1.12] tracking-[-0.045em]">
-                Näy. Löydy. Saa yhteydenottoja.
+                Kolme palvelua. Yksi selkeä toteutus.
               </h2>
               <p className="mt-5 text-base leading-8 text-muted">
                 Valitse yrityksesi tilanteeseen sopiva palvelu. Kaikkea ei tarvitse hankkia kerralla.
@@ -131,7 +158,11 @@ export default function Home() {
                   </div>
                   <h3 className="mt-6 text-2xl font-bold leading-[1.17] tracking-[-0.03em] text-foreground">{service.headline}</h3>
                   <p className="mt-4 text-sm leading-7 text-muted">{service.description}</p>
-                  <ul className="mt-6 space-y-3 border-t border-border pt-5 text-sm text-foreground">
+                  <div className="mt-6 border-t border-border pt-5" aria-label={`${service.name} -palvelun hinta`}>
+                    <p className="text-2xl font-bold tracking-[-0.03em] text-foreground">{service.price}</p>
+                    <p className="mt-1 text-sm text-muted">{service.priceDetail}</p>
+                  </div>
+                  <ul className="mt-6 space-y-3 text-sm text-foreground">
                     {service.details.map((detail) => (
                       <li key={detail} className="flex gap-3"><span className="text-brand" aria-hidden="true">✓</span>{detail}</li>
                     ))}
@@ -142,11 +173,12 @@ export default function Home() {
                 </article>
               ))}
             </div>
+            <p className="mt-5 text-sm text-muted">{taxConfig.publicMessage}</p>
             <div className="mt-5 flex flex-col gap-4 rounded-2xl border border-border bg-background p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
               <div>
                 <h3 className="text-lg font-bold text-foreground">Tarvitsetko myös uudet verkkosivut?</h3>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
-                  Rakennamme yrityksellesi selkeät, mobiilissa toimivat verkkosivut ja toimivan yhteydenottopolun.
+                  Rakennamme yrityksellesi mobiilissa toimivat verkkosivut ja selkeän yhteydenottopolun. Hinta alkaen 1 500 €.
                 </p>
               </div>
               <ButtonLink href="/aloita" variant="secondary" className="shrink-0">Kerro sivustotarpeestasi</ButtonLink>
@@ -160,11 +192,11 @@ export default function Home() {
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.17em] text-brand">Näin aloitat</p>
                 <h2 id="process-title" className="mt-4 text-[clamp(2.1rem,4vw,3.1rem)] font-bold leading-[1.12] tracking-[-0.045em]">
-                  Ensin tärkeimmät korjaukset. Sitten toteutus.
+                  Ensin kartoitus. Sitten päätät jatkosta.
                 </h2>
               </div>
               <p className="self-end text-base leading-8 text-muted">
-                Ei yleistä markkinointijargonia. Katsomme, mistä asiakkaasi löytävät yrityksesi ja miten heidän on helpointa ottaa yhteyttä.
+                Kartoitus tehdään julkisesti saatavilla olevista tiedoista. Saat kolme konkreettista korjauskohdetta perusteluineen sähköpostiin 2 arkipäivässä.
               </p>
             </div>
             <ol className="mt-12 grid gap-8 md:grid-cols-3">
@@ -185,10 +217,10 @@ export default function Home() {
               <div className="max-w-[730px]">
                 <p className="text-xs font-bold uppercase tracking-[0.17em] text-brand">Seuraava askel</p>
                 <h2 id="contact-title" className="mt-4 text-[clamp(2.1rem,4vw,3.2rem)] font-bold leading-[1.12] tracking-[-0.045em]">
-                  Selvitetään, mistä kasvun esteet löytyvät.
+                  Selvitetään, mitä sivustollasi kannattaa korjata ensin.
                 </h2>
                 <p className="mt-5 text-base leading-8 text-muted">
-                  Pyydä maksuton digitaalisen näkyvyyden kartoitus. Saat arvion kolmesta tärkeimmästä korjauskohteesta ilman ostopakkoa.
+                  Lähetä verkkosivusi osoite. Saat kolme priorisoitua korjausehdotusta ja lyhyet perustelut sähköpostiisi 2 arkipäivässä. Maksuton, ei ostopakkoa.
                 </p>
               </div>
               <ButtonLink href="/aloita?kartoitus=1" className="shrink-0 self-start md:self-center">

@@ -126,17 +126,19 @@ test("generic contact requests remain supported", async () => {
 
 test("free visibility audit is persisted and returns to the audit confirmation", async () => {
   const { POST, notifications } = handler();
-  const response = await POST(request({ productId: "", requestType: "visibility_audit" }));
+  const response = await POST(request({ productId: "", requestType: "visibility_audit", website: "https://example.fi", message: "" }));
   assert.equal(response.status, 200);
   assert.deepEqual(await response.json(), { ok: true, redirect: "/aloita?kartoitus=1&submitted=1" });
   assert.equal(notifications.length, 1);
   assert.match(notifications[0].subject, /Maksuton näkyvyyskartoitus/);
   assert.match(notifications[0].text, /Pyyntötyyppi: visibility_audit/);
+  assert.match(notifications[0].text, /2 arkipäivässä/);
+  assert.match(notifications[0].text, /https:\/\/example\.fi/);
 });
 
 test("audit storage failures do not report successful delivery", async () => {
   const { POST } = handler({ failStorage: true });
-  const response = await POST(request({ productId: "", requestType: "visibility_audit" }));
+  const response = await POST(request({ productId: "", requestType: "visibility_audit", website: "https://example.fi", message: "" }));
   assert.equal(response.status, 503);
   assert.deepEqual(await response.json(), { ok: false, error: "send", redirect: "/aloita?kartoitus=1&error=send" });
 });
@@ -149,6 +151,21 @@ for (const input of [
     const { POST, notifications } = handler();
     const response = await POST(request(input));
     assert.equal(response.status, 400);
+    assert.equal(notifications.length, 0);
+  });
+}
+
+for (const [label, fields] of Object.entries({
+  "missing website": { productId: "", requestType: "visibility_audit", website: "" },
+  "invalid URL": { productId: "", requestType: "visibility_audit", website: "example.fi" },
+  "unsafe protocol": { productId: "", requestType: "visibility_audit", website: "javascript:alert(1)" },
+  "embedded URL credentials": { productId: "", requestType: "visibility_audit", website: "https://x:y@example.fi/" },
+})) {
+  test(`audit rejects ${label} without persisting a lead`, async () => {
+    const { POST, notifications } = handler();
+    const response = await POST(request(fields));
+    assert.equal(response.status, 400);
+    assert.equal((await response.json()).error, "invalid");
     assert.equal(notifications.length, 0);
   });
 }
