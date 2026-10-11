@@ -59,8 +59,10 @@ export async function POST(request: Request) {
 
     if (action !== "update") return responseUrl(request, "error", "Tuntematon toiminto.", view);
     const id = value("id", 200);
+    const expectedRevision = value("expectedRevision", 60);
     const existing = await getLeadRecord(id);
     if (!existing) return responseUrl(request, "error", "Liidiä ei löydy.", view);
+    if (!expectedRevision) return responseUrl(request, "error", "Päivitä sivu ennen tallennusta.", view);
     const stage = value("stage", 30);
     const deliveryStatus = value("deliveryStatus", 30);
     const owner = value("owner", 100);
@@ -83,7 +85,7 @@ export async function POST(request: Request) {
         (form.get("confirmSent") !== "on" || !sentEvidence)) {
       return responseUrl(request, "error", "Vahvista lähetys ja lisää Gmailin lähetyslinkki.", view);
     }
-    const result = await updateLeadState(id, next);
+    const result = await updateLeadState(id, next, expectedRevision);
     return result.ok ? responseUrl(request, "updated", "", view)
       : responseUrl(request, "error", result.error, view);
   } catch {
