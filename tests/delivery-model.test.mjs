@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createClientProject, applyDeliveryEvent, customerView } from "../lib/delivery/project-model.mjs";
+import { createClientProject, applyDeliveryEvent, customerView, buildClientRuleset } from "../lib/delivery/project-model.mjs";
 const u = ["https://instagram.com/p/1","https://facebook.com/p/1"];
 function begin(productId) {
  let p = createClientProject({ clientId: "TEST-Y-000", projectId: "VH-TEST-"+productId, productId });
@@ -74,4 +74,19 @@ test("Client view never exposes internal hours or margin",()=>{
  p.internal.hours=8;p.internal.profitEstimate=600;
  assert.equal("internal" in customerView(p),false);
  assert.equal("history" in customerView(p),false);
+});
+
+test("AI ruleset blocks missing facts and unlicensed material", () => {
+  const r=buildClientRuleset({clientId:"T1",projectId:"P1",productId:"landing-page-seo",audience:"LVI",primaryService:"Putkityöt",cta:"Soita",tone:"Asiallinen",approver:"Customer CEO",facts:[{claim:"sertifikaatti",source:null,verified:false}],materials:[{id:"photo-1",licensed:false}]});
+  assert.equal(r.status,"blocked");
+  assert.ok(r.missing.some(x=>x.startsWith("fact:")));
+  assert.ok(r.missing.some(x=>x.startsWith("asset:")));
+  assert.equal(r.rulesetHash.length,64);
+});
+test("AI ruleset creates a reproducible ready version from verified inputs", () => {
+  const input={clientId:"T2",projectId:"P2",productId:"instagram",audience:"Uusimaa",primaryService:"Sähköasennus",cta:"Pyydä tarjous",tone:"Suora",approver:"Customer CEO",facts:[{claim:"Helsinki",source:"customer-confirmed",verified:true}],materials:[{id:"photo-1",licensed:true,evidenceId:"permission:1"}]};
+  const first=buildClientRuleset(input),second=buildClientRuleset(input);
+  assert.equal(first.status,"ready");
+  assert.equal(first.rulesetHash,second.rulesetHash);
+  assert.deepEqual(first.approvedChannels,["instagram","facebook"]);
 });
