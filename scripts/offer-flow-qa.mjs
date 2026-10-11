@@ -15,6 +15,7 @@ const results = [];
 const offers = [
  {id:"instagram",path:"/instagram",price:"490",mustInclude:["Facebook","Instagram"]},
  {id:"landing-page-seo",path:"/landing-page-seo",price:"990",mustInclude:["495","SEO"]},
+ {id:"linkedin",path:"/linkedin",price:null,mustInclude:["Tarjouksen mukaan","LinkedIn"]},
 ];
 try {
  for(const width of [320,390,1440]){
@@ -24,7 +25,12 @@ try {
    const response=await page.goto(origin+offer.path,{waitUntil:"networkidle"});
    assert.equal(response?.status(),200,offer.path+" is unavailable");
    const text=await page.locator("main").innerText();
-   assert.ok(text.includes(offer.price),offer.path+" has incorrect price");
+   if(offer.price){
+     assert.ok(text.includes(offer.price),offer.path+" has incorrect price");
+   }else{
+     assert.ok(!text.includes("490 €"),"LinkedIn public service page must not show the obsolete fixed price");
+     assert.ok(!text.includes("1 470 €"),"LinkedIn public service page must not promise a fixed commitment total");
+   }
    for(const fragment of offer.mustInclude)assert.ok(text.includes(fragment),offer.path+" missing "+fragment);
    const pageInfo=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth}));
    assert.ok(pageInfo.scrollWidth<=width+1,offer.path+" horizontal overflow at "+width);
@@ -43,9 +49,16 @@ try {
       const copy=await page.locator("main").innerText();
       assert.ok(copy.includes("495")&&copy.includes("990"),"landing payment milestones missing");
    }
+   if(offer.id==="linkedin"){
+     const copy=await page.locator("main").innerText();
+     assert.ok(copy.includes("Hinta, julkaisumäärä ja sopimuskausi sovitaan erillisessä kirjallisessa tarjouksessa."),"LinkedIn intake must disclose quotation-only pricing");
+     assert.ok(!copy.includes("490 €"),"LinkedIn intake leaks a historical package price");
+     assert.ok(!copy.includes("1 470 €"),"LinkedIn intake leaks a historical minimum total");
+     assert.equal(await page.locator('form[action="/api/checkout"]').count(),0,"LinkedIn intake must not allow direct checkout");
+   }
    await page.screenshot({path:out+"/intake-"+offer.id+"-"+width+".png",fullPage:true,animations:"disabled"});
    assert.deepEqual(errors,[],"browser error at "+offer.path+" "+width);
-   results.push({width,productId:offer.id,priceVisible:offer.price,cta:href,form:true,overflow:false,errors});
+   results.push({width,productId:offer.id,priceVisible:offer.price??"quote-only",cta:href,form:true,overflow:false,errors});
    await page.close();
   }
  }
