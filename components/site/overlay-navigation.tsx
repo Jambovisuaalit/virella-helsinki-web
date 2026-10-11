@@ -101,9 +101,9 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
           if (isOpen) dismiss(true);
           else setIsOpen(true);
         }}
-        className="virella-overlay-trigger inline-flex min-h-11 shrink-0 items-center justify-center gap-3 rounded-full border border-border bg-surface px-4 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-zinc-500 hover:bg-mist focus-visible:outline-offset-4"
+        className="virella-overlay-trigger inline-flex min-h-11 shrink-0 items-center justify-center gap-3 rounded-lg border border-border bg-surface px-4 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-zinc-500 hover:bg-mist focus-visible:outline-offset-4"
       >
-        <span className="hidden sm:inline">{isOpen ? "Sulje" : "Valikko"}</span>
+        <span className="inline">{isOpen ? "Sulje" : "Valikko"}</span>
         <span aria-hidden="true" className={`virella-hamburger ${isOpen ? "is-open" : ""}`}>
           <span />
           <span />
@@ -124,16 +124,15 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
         >
           <div className="virella-overlay-inner">
             <div className="virella-overlay-heading">
-              <span className="virella-overlay-heading-label" aria-hidden="true">Valikko</span>
               <BrandLogo />
               <button
                 ref={closeRef}
                 type="button"
                 onClick={() => dismiss(true)}
-                className="inline-flex min-h-11 items-center gap-3 rounded-full border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:bg-mist focus-visible:outline-offset-4"
+                className="inline-flex min-h-11 items-center gap-3 rounded-lg border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:bg-mist focus-visible:outline-offset-4"
                 aria-label="Sulje valikko"
               >
-                <span className="hidden sm:inline">Sulje</span>
+                <span className="inline">Sulje</span>
                 <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round">
                   <path d="M5 5 19 19M19 5 5 19" />
                 </svg>
@@ -149,7 +148,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
                       <li key={item.href} style={{ "--index": index } as React.CSSProperties}>
                         <Link
                           href={item.href}
-                          onClick={() => dismiss(false)}
+                          onClick={() => dismiss(true)}
                           className="virella-overlay-link"
                         >
                           <span className="virella-overlay-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
@@ -168,7 +167,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
                 </p>
                 <Link
                   href={cta.href}
-                  onClick={() => dismiss(false)}
+                  onClick={() => dismiss(true)}
                   className={`mt-6 inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-center text-sm font-bold transition-colors duration-200 focus-visible:outline-offset-4 ${social ? "bg-cyan-400 text-zinc-950 hover:bg-cyan-300" : "bg-action text-white hover:bg-[#ac381d]"}`}
                 >
                   {cta.label}
