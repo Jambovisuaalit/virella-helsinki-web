@@ -13,6 +13,7 @@ export function LeadUpdateForm({ lead, view }: { lead: LeadRecord; view: "leads"
     <form action="/api/admin/leads" method="post" className="mt-4 grid gap-3 border-t border-border pt-4 text-sm">
       <input name="action" type="hidden" value="update" />
       <input name="id" type="hidden" value={lead.id} />
+      <input name="expectedRevision" type="hidden" value={lead.updatedAt ?? lead.receivedAt} />
       <input name="returnTo" type="hidden" value={view} />
       <div className="grid gap-3 sm:grid-cols-2">
         <label>Myyntivaihe
