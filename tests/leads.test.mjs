@@ -13,6 +13,7 @@ const id = "contact-leads/production/2026-10-11/11111111-1111-4111-8111-11111111
 function harness() {
   const objects = new Map();
   const modules = new Map();
+  const unreadable = new Set();
   let authenticated = true;
   const blob = {
     async put(path, value) {
@@ -21,7 +22,7 @@ function harness() {
       return { pathname: path };
     },
     async get(path) {
-      if (!objects.has(path)) return null;
+      if (unreadable.has(path) || !objects.has(path)) return null;
       return { statusCode: 200, stream: new Response(JSON.stringify(objects.get(path))).body };
     },
     async list({ prefix, limit, cursor }) {
@@ -53,7 +54,7 @@ function harness() {
     }, { filename: path });
     return mod.exports;
   }
-  return { objects, load, setAuthenticated: value => { authenticated = value; } };
+  return { objects, load, setUnreadable: path => unreadable.add(path), setAuthenticated: value => { authenticated = value; } };
 }
 
 function initialLead(qa = true) {
@@ -193,4 +194,11 @@ test("admin never silently drops older leads or reports partial sales KPIs", asy
     h.objects.set(`contact-leads/production/2026-10-${day}/00000000-0000-4000-8000-${uuid}.json`, initialLead(false));
   }
   await assert.rejects(() => h.load("lib/leads/store").listLeadRecords(), /pagination capacity exceeded/);
+});
+
+test("a listed Blob that cannot be read must not silently disappear from CRM totals", async () => {
+  const h = harness();
+  h.objects.set(id, initialLead(false));
+  h.setUnreadable(id);
+  await assert.rejects(() => h.load("lib/leads/store").listLeadRecords(), /readback incomplete/);
 });
