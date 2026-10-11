@@ -23,7 +23,7 @@ export function SiteHeader({ landing = false }: { landing?: boolean }) {
   return (
     <header className={`virella-site-header sticky top-0 z-[100] bg-transparent pt-3 ${landing ? "landing-header" : ""}`}>
       <SectionContainer>
-        <div className="virella-nav-shell flex min-h-[72px] items-center justify-between gap-4 rounded-2xl border border-border/80 bg-surface/95 px-4 shadow-[0_12px_38px_-28px_rgba(0,0,0,0.7)] backdrop-blur-md sm:px-6">
+        <div className="virella-nav-shell flex min-h-[72px] items-center justify-between gap-2 rounded-2xl border border-border/80 bg-surface/95 px-3 shadow-[0_12px_38px_-28px_rgba(0,0,0,0.7)] backdrop-blur-md sm:gap-4 sm:px-6">
           <BrandLogo compact />
           <div className="flex min-w-0 items-center justify-end gap-3 sm:gap-4">
             <Link
