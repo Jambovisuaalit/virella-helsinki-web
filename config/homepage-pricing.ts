@@ -1,6 +1,7 @@
 import { products } from "@/config/products";
 
-// Existing homepage offer prices; presentation changes do not alter the offers.
+// MASTER v3.0 prices. All domestic prices are the amount payable; no VAT is added
+// while Tmi Jami Harju remains outside VAT registration.
 export const homepagePricing = {
   social: {
     startup: "Ei erillistä aloitusmaksua",
@@ -9,12 +10,12 @@ export const homepagePricing = {
   },
   google: {
     startup: "590 €",
-    monthly: "290 €/kk",
-    note: "Google-näkyvyyden ylläpito ja kehitys",
+    monthly: "Ylläpito 290 €/kk, valinnainen",
+    note: "Ylläpito sovitaan ja tilataan erikseen",
   },
   website: {
-    startup: "1 500 €",
-    monthly: "Alkaen 500 €/kk",
-    note: "Sivuston ylläpito ja kehitys",
+    startup: "Landing Page + SEO 990 €",
+    monthly: "Laajemmat verkkosivut alk. 1 500 €",
+    note: "Ei automaattista kuukausiylläpitoa",
   },
 } as const;

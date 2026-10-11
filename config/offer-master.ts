@@ -1,4 +1,4 @@
-/** Locked service terms (11 October 2026). The invoice is issued only after written approval. VAT registration must be verified separately. */
+/** Locked service terms (11 October 2026). The invoice is issued only after written approval. Owner confirmed non-VAT-liability on 2026-10-11; monitor any later changes. */
 export const offerMasters = {
   visibility: {
     id: "instagram", version: "2.0", name: "Virella Näkyvyys",
@@ -32,5 +32,5 @@ export const offerMasters = {
   },
 } as const;
 export function requiresWrittenOffer(productId: string): boolean {
-  return productId === offerMasters.visibility.id || productId === offerMasters.landing.id;
+  return productId === offerMasters.visibility.id || productId === offerMasters.landing.id || productId === "linkedin";
 }
