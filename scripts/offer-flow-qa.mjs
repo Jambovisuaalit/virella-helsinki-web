@@ -63,6 +63,14 @@ try {
   await context.close();
   results.push({productId:offer.id,serverDirectCheckout:"blocked_303"});
  }
+ // A forged GET cannot claim an inquiry was stored or fire a successful receipt view.
+ const forged=await browser.newPage({viewport:{width:390,height:844}});
+ await forged.goto(origin+"/aloita?product=instagram&submitted=1&receipt=not-a-real-receipt",{waitUntil:"networkidle"});
+ assert.equal(await forged.getByRole("heading",{name:"Kiitos. Pyyntö on vastaanotettu."}).count(),0,"forged receipt must not display success");
+ assert.equal(await forged.locator('form[action="/api/contact"]').count(),1,"form must remain visible without a valid receipt");
+ await forged.close();
+ results.push({forgedReceipt:"blocked"});
+
  const page=await browser.newPage({viewport:{width:390,height:844}});
  await page.goto(origin+"/sosiaalinen-media",{waitUntil:"networkidle"});
  const social=page.locator('a[href="/aloita?product=instagram"]');
