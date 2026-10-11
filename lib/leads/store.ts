@@ -83,9 +83,13 @@ export async function listLeadRecords(): Promise<LeadRecord[]> {
 export async function updateLeadState(
   id: string,
   next: LeadState,
+  expectedRevision: string,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
   const current = await getLeadRecord(id);
   if (!current) return { ok: false, error: "Liidiä ei löydy." };
+  if (expectedRevision !== (current.updatedAt ?? current.receivedAt)) {
+    return { ok: false, error: "Liidin tiedot ovat muuttuneet toisessa istunnossa. Päivitä sivu ennen tallennusta." };
+  }
   const error = validateUpdate(next, current.state);
   if (error) return { ok: false, error };
   const event: LeadEvent = {
