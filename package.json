@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm run lint && npm run test:contact && npm run build",
-    "test:contact": "node --test tests/contact-route.test.mjs tests/resend-notification.test.mjs"
+    "check": "npm run typecheck && npm run lint && npm run test:contact && npm run test:leads && npm run build",
+    "test:contact": "node --test tests/contact-route.test.mjs tests/resend-notification.test.mjs",
+    "test:leads": "node --test tests/leads.test.mjs"
   },
   "engines": {
     "node": ">=22.0.0"
