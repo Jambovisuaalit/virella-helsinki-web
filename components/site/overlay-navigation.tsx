@@ -52,7 +52,9 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
     const body = document.body;
     const priorOverflow = body.style.overflow;
     body.style.overflow = "hidden";
-    closeRef.current?.focus();
+    // Wait for the opened panel's visibility to reach the browser before
+    // moving focus into it; focusing a hidden close button is ignored.
+    const focusFrame = requestAnimationFrame(() => closeRef.current?.focus());
 
     function onKeydown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -84,6 +86,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
 
     document.addEventListener("keydown", onKeydown);
     return () => {
+      cancelAnimationFrame(focusFrame);
       body.style.overflow = priorOverflow;
       document.removeEventListener("keydown", onKeydown);
     };
@@ -101,7 +104,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
           if (isOpen) dismiss(true);
           else setIsOpen(true);
         }}
-        className="virella-overlay-trigger inline-flex min-h-11 shrink-0 items-center justify-center gap-3 rounded-lg border border-border bg-surface px-4 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-zinc-500 hover:bg-mist focus-visible:outline-offset-4"
+        className="virella-overlay-trigger ui-button ui-button--secondary ui-button--compact shrink-0"
       >
         <span className="inline">{isOpen ? "Sulje" : "Valikko"}</span>
         <span aria-hidden="true" className={`virella-hamburger ${isOpen ? "is-open" : ""}`}>
@@ -129,7 +132,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
                 ref={closeRef}
                 type="button"
                 onClick={() => dismiss(true)}
-                className="inline-flex min-h-11 items-center gap-3 rounded-lg border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:bg-mist focus-visible:outline-offset-4"
+                className="ui-button ui-button--secondary ui-button--compact"
                 aria-label="Sulje valikko"
               >
                 <span className="inline">Sulje</span>
@@ -150,6 +153,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
                           href={item.href}
                           onClick={() => dismiss(true)}
                           className="virella-overlay-link"
+                          aria-current={!item.href.startsWith("#") && pathname === item.href ? "page" : undefined}
                         >
                           <span className="virella-overlay-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                           <span>{item.label}</span>
@@ -168,7 +172,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
                 <Link
                   href={cta.href}
                   onClick={() => dismiss(true)}
-                  className={`mt-6 inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-center text-sm font-bold transition-colors duration-200 focus-visible:outline-offset-4 ${social ? "bg-cyan-400 text-zinc-950 hover:bg-cyan-300" : "bg-action text-white hover:bg-[#ac381d]"}`}
+                  className="ui-button ui-button--primary mt-6"
                 >
                   {cta.label}
                 </Link>

@@ -76,7 +76,7 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
             </p>
 
             {paid && sessionId && productId ? (
-              <Link href={`/alkukysely?session_id=${encodeURIComponent(sessionId)}`} className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-action px-5 py-3 text-sm font-bold text-white sm:w-auto">
+              <Link href={`/alkukysely?session_id=${encodeURIComponent(sessionId)}`} className="mt-8 ui-button ui-button--primary w-full sm:w-auto">
                 Täytä alkukysely
               </Link>
             ) : (

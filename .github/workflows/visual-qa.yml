@@ -29,10 +29,32 @@ jobs:
           npm install --no-save --no-package-lock --ignore-scripts playwright@1.56.1
           npx playwright install chromium
 
+      - name: Capture approved baseline (before UI tokens)
+        env:
+          VERCEL_ENV: production
+        run: |
+          baseline="$RUNNER_TEMP/virella-ui-before"
+          git fetch --depth=1 origin c222996a204dec750ea290047a74ca40d4e0ad97
+          git worktree add --detach "$baseline" c222996a204dec750ea290047a74ca40d4e0ad97
+          cp -al node_modules "$baseline/node_modules"
+          (cd "$baseline" && npm run build)
+          (cd "$baseline" && npm run start -- --port 3001) > /tmp/virella-before-server.log 2>&1 &
+          before_pid=$!
+          trap 'kill $before_pid || true' EXIT
+          for i in $(seq 1 45); do
+            if curl -fsS http://127.0.0.1:3001/ >/dev/null; then break; fi
+            sleep 2
+          done
+          UI_QA_PHASE=before VISUAL_QA_URL=http://127.0.0.1:3001 node scripts/ui-kit-qa.mjs
+
       - name: Build app
+        env:
+          VERCEL_ENV: production
         run: npm run build
 
       - name: Start app and run responsive browser checks
+        env:
+          VERCEL_ENV: production
         run: |
           npm run start > /tmp/virella-visual-server.log 2>&1 &
           server_pid=$!
@@ -43,6 +65,7 @@ jobs:
             fi
             sleep 2
           done
+          node scripts/ui-kit-qa.mjs
           node scripts/visual-qa.mjs
           node scripts/offer-flow-qa.mjs
 

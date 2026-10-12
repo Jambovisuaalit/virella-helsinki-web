@@ -5,7 +5,7 @@ type SectionContainerProps = HTMLAttributes<HTMLDivElement>;
 export function SectionContainer({ className = "", ...props }: SectionContainerProps) {
   return (
     <div
-      className={`mx-auto w-full max-w-[1200px] px-5 sm:px-7 lg:px-10 ${className}`}
+      className={`ui-container ${className}`}
       {...props}
     />
   );

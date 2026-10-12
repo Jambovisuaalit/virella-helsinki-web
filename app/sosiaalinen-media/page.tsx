@@ -67,71 +67,72 @@ export default function SocialMediaPage() {
               Virella suunnittelee, kirjoittaa ja julkaisee yrityksesi somejulkaisut.
               Valitse sinulle sopiva kanava ja hyväksy sisällöt ennen julkaisua.
             </p>
-            <ButtonLink href="#hinnoittelu" className="landing-primary">Katso palvelut ja hinnat</ButtonLink>
+            <ButtonLink href="#hinnoittelu" >Katso palvelut ja hinnat</ButtonLink>
             <p className="landing-hero-price">
-              Alkaen <strong>{euro.format(product.price)} / kk</strong>
+              Instagram + Facebook: <strong>{euro.format(product.price)} / kk</strong>
               <span aria-hidden="true">·</span>{product.commitmentMonths} kk vähimmäisjakso
+              <span aria-hidden="true">·</span> LinkedIn tarjouksen mukaan
             </p>
             <a href="#todisteet" className="landing-text-link">Katso konkreettinen esimerkki</a>
           </SectionContainer>
         </section>
 
-        <section id="todisteet" className="border-y border-zinc-800 bg-zinc-950 py-16 sm:py-20" aria-labelledby="proof-title">
+        <section id="todisteet" className="border-y border-border bg-background py-16 sm:py-20" aria-labelledby="proof-title">
           <SectionContainer>
             <div className="grid items-start gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-14">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">
                   Konkreettinen toimitus
                 </p>
-                <h2 id="proof-title" className="mt-4 text-3xl font-semibold tracking-[-0.045em] text-zinc-100 sm:text-4xl">
+                <h2 id="proof-title" className="mt-4 text-foreground ui-heading-section">
                   Mitä yrityksesi oikeasti saa?
                 </h2>
-                <p className="mt-5 max-w-lg text-base leading-7 text-zinc-300">
+                <p className="mt-5 max-w-lg text-base leading-7 text-muted">
                   Instagram + Facebook -pakettiin sisältyy 12 alkuperäistä sisältöä
                   kuukaudessa. Jokainen julkaistaan molemmissa kanavissa, eli 24 kanavajulkaisua kuukaudessa.
                   Lisäksi saat yhden kootun korjauskierroksen ja kuukausiraportin.
                   LinkedIn-palvelulla on oma sisältönsä ja julkaisumääränsä.
                 </p>
-                <div className="mt-7 grid grid-cols-2 gap-4 border-t border-zinc-800 pt-6">
+                <div className="mt-7 grid grid-cols-2 gap-4 border-t border-border pt-6">
                   <div>
-                    <p className="font-mono text-3xl text-zinc-100">12</p>
-                    <p className="mt-1 text-sm text-zinc-400">Sisältöä / 30 päivää, kumpaankin kanavaan</p>
+                    <p className="font-sans text-3xl text-foreground">12</p>
+                    <p className="mt-1 text-sm text-muted">Sisältöä kuukaudessa, kumpaankin kanavaan</p>
                   </div>
                   <div>
-                    <p className="font-mono text-3xl text-zinc-100">1</p>
-                    <p className="mt-1 text-sm text-zinc-400">Koottu korjauskierros</p>
+                    <p className="font-sans text-3xl text-foreground">1</p>
+                    <p className="mt-1 text-sm text-muted">Koottu korjauskierros</p>
                   </div>
                 </div>
-                <p className="mt-6 text-xs leading-5 text-zinc-400">
+                <p className="mt-6 text-xs leading-5 text-muted">
                   Alla on havainnollistava sisältökalenterin esimerkki, ei
                   asiakkaan referenssi tai toteutunut tulos.
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5 sm:p-8" aria-label="Esimerkki kuukausittaisesta sisältösuunnitelmasta">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800 pb-5">
+              <div className="ui-card ui-service-card" aria-label="Esimerkki kuukausittaisesta sisältösuunnitelmasta">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-5">
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-[0.15em] text-zinc-400">
+                    <p className="text-xs font-medium uppercase tracking-[0.15em] text-muted">
                       Sisältösuunnitelma · esimerkki
                     </p>
-                    <h3 className="mt-2 text-lg font-semibold text-zinc-100">
+                    <h3 className="mt-2 text-lg font-semibold text-foreground">
                       Kuukauden sisältöteemat
                     </h3>
                   </div>
-                  <p className="rounded-full border border-zinc-700 px-3 py-1 text-xs text-zinc-300">
+                  <p className="rounded-full border border-border px-3 py-1 text-xs text-muted">
                     4 viikon näkymä
                   </p>
                 </div>
                 <ol className="mt-5 grid gap-3 sm:grid-cols-2">
                   {sampleCalendar.map((entry) => (
-                    <li key={entry.week} className="min-w-0 rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-                      <span className="font-mono text-xs text-zinc-400">VIIKKO {entry.week}</span>
-                      <p className="mt-2 font-semibold text-zinc-100">{entry.topic}</p>
-                      <p className="mt-2 text-sm leading-6 text-zinc-400">{entry.description}</p>
+                    <li key={entry.week} className="min-w-0 rounded-xl border border-border bg-background p-4">
+                      <span className="font-sans text-xs text-muted">VIIKKO {entry.week}</span>
+                      <p className="mt-2 font-semibold text-foreground">{entry.topic}</p>
+                      <p className="mt-2 text-sm leading-6 text-muted">{entry.description}</p>
                     </li>
                   ))}
                 </ol>
-                <p className="mt-5 text-xs leading-5 text-zinc-400">
+                <p className="mt-5 text-xs leading-5 text-muted">
                   Näiden teemojen pohjalta voidaan suunnitella 12 alkuperäistä sisältöä.
                   Todelliset aiheet määräytyvät asiakkaan palvelujen ja materiaalien mukaan.
                 </p>
@@ -172,22 +173,22 @@ export default function SocialMediaPage() {
           <SectionContainer>
             <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-12">
               <p className="landing-eyebrow">Selkeä hinta. Selkeä sisältö.</p>
-              <h2 id="pricing-title" className="mt-4">Valitse yrityksellesi sopiva kanava.</h2>
-              <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-zinc-300">
+              <h2 id="pricing-title" className="mt-4 ui-heading-section">Valitse yrityksellesi sopiva kanava.</h2>
+              <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-muted">
                 Instagram + Facebook ja LinkedIn ovat erillisiä palveluita.
                 Vertaa molempien sisältöä ja valitse, mistä haluat lähettää aloituspyynnön.
               </p>
             </div>
             <SocialPricingCard />
             <div className="landing-faq mx-auto mt-16 max-w-3xl sm:mt-20">
-              <h3 className="mb-5 text-xl font-semibold text-zinc-100">Usein kysyttyä</h3>
+              <h3 className="mb-5 text-xl font-semibold text-foreground">Usein kysyttyä</h3>
               <details>
                 <summary>Kuuluvatko molemmat kanavat hintaan?</summary>
                 <p>Instagram-paketti sisältää Instagramin ja Facebookin. LinkedIn on erillinen palvelu, eikä kuulu Instagram-paketin hintaan.</p>
               </details>
               <details>
                 <summary>Kuinka pitkä sopimus on?</summary>
-                <p>Molemmissa paketeissa vähimmäisjakso on {product.commitmentMonths} kuukautta. Kummankin hinta on {euro.format(product.price)} kuukaudessa, yhteensä {euro.format(product.totalPrice)}. Maksutapa ja jatkon ehdot vahvistetaan ennen aloitusta.</p>
+                <p>Instagram + Facebook -paketin aloitusjakso on {product.commitmentMonths} kuukautta, {euro.format(product.price)} kuukaudessa eli yhteensä {euro.format(product.totalPrice)}. Sen jälkeen palvelu jatkuu toistaiseksi 30 päivän kirjallisella irtisanomisajalla. LinkedInin hinta, julkaisumäärä ja sopimuskausi määritellään aina kirjallisessa asiakaskohtaisessa tarjouksessa.</p>
               </details>
               <details>
                 <summary>Mitä minulta tarvitaan?</summary>
@@ -209,7 +210,7 @@ export default function SocialMediaPage() {
               <p>Vertaile kahta palvelua tai kysy, kumpi kanava sopii yrityksellesi.</p>
             </div>
             <div className="landing-contact-actions">
-              <ButtonLink href="#hinnoittelu" className="landing-primary">Katso palvelut ja hinnat</ButtonLink>
+              <ButtonLink href="#hinnoittelu" >Katso palvelut ja hinnat</ButtonLink>
               <a href={`tel:${businessConfig.phoneE164}`}>{businessConfig.phone}</a>
             </div>
           </SectionContainer>

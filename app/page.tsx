@@ -3,6 +3,7 @@ import Image from "next/image";
 import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
+import { PriceDisplay } from "@/components/ui/price-display";
 import { ButtonLink } from "@/components/ui/button";
 import { businessConfig } from "@/config/business";
 import { seoConfig } from "@/config/seo";
@@ -99,7 +100,7 @@ export default function Home() {
               <p className="mb-7 max-w-[520px] text-xs font-semibold uppercase leading-6 tracking-[0.10em] text-brand sm:text-sm">
                 Digitaalista näkyvyyttä paikallisille palveluyrityksille
               </p>
-              <h1 id="home-title" className="max-w-[720px] text-[clamp(2.25rem,5.3vw,4.6rem)] font-bold leading-[1.13] tracking-[-0.01em] text-foreground">
+              <h1 id="home-title" className="max-w-[720px] text-foreground ui-heading-hero">
                 Näytä verkossa, miksi asiakkaan kannattaa{ " "}
                 <span className="text-brand">valita sinut.</span>
               </h1>
@@ -126,7 +127,7 @@ export default function Home() {
         <section className="border-b border-border/75 py-12 sm:py-16" aria-labelledby="visibility-title">
           <SectionContainer>
             <div className="max-w-[760px]">
-              <h2 id="visibility-title" className="text-[clamp(2rem,3.8vw,3.2rem)] font-semibold leading-[1.16] tracking-[-0.02em]">Sinä osaat työsi. Näkeekö asiakas sen verkossa?</h2>
+              <h2 id="visibility-title" className=" ui-heading-section">Sinä osaat työsi. Näkeekö asiakas sen verkossa?</h2>
               <p className="mt-7 text-base leading-8 text-muted">Asiakas haluaa tietää, mitä teet, missä palvelet ja miksi sinuun voi luottaa.</p>
               <p className="mt-5 text-base leading-8 text-muted">Vanhentuneet sivut, puutteelliset yritystiedot tai hiljainen some voivat jättää nämä kysymykset auki. Virella auttaa näyttämään työnjälkesi, selkeyttämään palvelusi ja rakentamaan suoran polun tarjouspyyntöön.</p>
             </div>
@@ -138,7 +139,7 @@ export default function Home() {
             <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:gap-20">
               <div className="max-w-[460px]">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Kartoituksen esimerkki</p>
-                <h2 id="preview-title" className="mt-6 text-[clamp(2.05rem,3.8vw,3.25rem)] font-semibold leading-[1.16] tracking-[-0.02em] text-foreground">
+                <h2 id="preview-title" className="mt-6 text-foreground ui-heading-section">
                   Kolme konkreettista korjausta. Selkeässä järjestyksessä.
                 </h2>
                 <p className="mt-7 text-base leading-8 text-muted">
@@ -172,7 +173,7 @@ export default function Home() {
           <SectionContainer>
             <div className="max-w-[670px]">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Virellan palvelut</p>
-              <h2 id="services-title" className="mt-6 text-[clamp(2.05rem,3.9vw,3.25rem)] font-semibold leading-[1.16] tracking-[-0.02em]">
+              <h2 id="services-title" className="mt-6 ui-heading-section">
                 Apua siihen, mikä yrityksesi näkyvyydessä kaipaa korjausta.
               </h2>
               <p className="mt-7 text-base leading-8 text-muted">
@@ -181,17 +182,17 @@ export default function Home() {
             </div>
             <div className="mt-10 grid gap-6 lg:grid-cols-3 lg:gap-7">
               {services.map((service) => (
-                <article key={service.name} className="flex h-full flex-col rounded-2xl border border-border/85 bg-surface px-7 py-9 sm:px-8 sm:py-10">
+                <article key={service.name} className="ui-card ui-service-card flex h-full flex-col">
                   <div className="flex items-center justify-between gap-3">
                     <p className="text-xs font-semibold uppercase tracking-[0.09em] text-muted">{service.name}</p>
-                    <span className="font-mono text-xs text-muted">{service.number}</span>
+                    <span className="font-sans text-xs text-muted">{service.number}</span>
                   </div>
-                  <h3 className="mt-8 text-[1.45rem] font-semibold leading-[1.22] tracking-[-0.015em] text-foreground">{service.headline}</h3>
+                  <h3 className="mt-8 ui-heading-card text-foreground">{service.headline}</h3>
                   <p className="mt-5 text-[15px] leading-[1.8] text-muted">{service.description}</p>
                   <div className="mt-8 border-t border-border pt-7" aria-label={`${service.name} -palvelun hinta`}>
                     <dl className="space-y-4">
-                      <div><dt className="text-sm text-muted">Aloitus</dt><dd className="mt-1 text-xl font-semibold text-foreground">{service.pricing.startup}</dd></div>
-                      <div><dt className="text-sm text-muted">Kuukausipalvelu</dt><dd className="mt-1 text-xl font-semibold text-foreground">{service.pricing.monthly}</dd></div>
+                      <div><dt className="text-sm text-muted">Aloitus</dt><dd><PriceDisplay className="mt-1" amount={service.pricing.startup} size="small" /></dd></div>
+                      <div><dt className="text-sm text-muted">Kuukausipalvelu</dt><dd><PriceDisplay className="mt-1" amount={service.pricing.monthly} size="small" /></dd></div>
                     </dl>
                     <p className="mt-4 text-sm leading-6 text-muted">{service.pricing.note}</p>
                   </div>
@@ -215,7 +216,7 @@ export default function Home() {
             <div className="grid gap-9 md:grid-cols-[1.1fr_0.9fr] md:gap-20">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Näin aloitat</p>
-                <h2 id="process-title" className="mt-6 text-[clamp(2.05rem,3.8vw,3.2rem)] font-semibold leading-[1.16] tracking-[-0.02em]">
+                <h2 id="process-title" className="mt-6 ui-heading-section">
                   Ensin selvitetään tarve. Sitten päätät toteutuksesta.
                 </h2>
               </div>
@@ -226,7 +227,7 @@ export default function Home() {
             <ol className="mt-10 grid gap-10 md:grid-cols-3 md:gap-12">
               {steps.map((step) => (
                 <li key={step.number} className="border-t border-border pt-8">
-                  <span className="font-mono text-sm text-muted">{step.number}</span>
+                  <span className="font-sans text-sm text-muted">{step.number}</span>
                   <h3 className="mt-8 text-xl font-semibold tracking-[-0.01em]">{step.title}</h3>
                   <p className="mt-5 text-[15px] leading-[1.8] text-muted">{step.description}</p>
                 </li>
@@ -238,7 +239,7 @@ export default function Home() {
         <section className="border-t border-border/75 py-12 sm:py-16" aria-labelledby="partner-title">
           <SectionContainer>
             <div className="max-w-[760px]">
-              <h2 id="partner-title" className="text-[clamp(2rem,3.8vw,3.2rem)] font-semibold leading-[1.16] tracking-[-0.02em]">Yksi yhteyshenkilö. Selkeästi sovittu työ.</h2>
+              <h2 id="partner-title" className=" ui-heading-section">Yksi yhteyshenkilö. Selkeästi sovittu työ.</h2>
               <p className="mt-7 text-base leading-8 text-muted">Virella Helsingin takana on {businessConfig.contactName}. Keskustelet suoraan tekijän kanssa ja tiedät, mitä työ sisältää.</p>
               <p className="mt-5 text-base leading-8 text-muted">Sinä tuot yrityksesi osaamisen ja aidot materiaalit. Me autamme muuttamaan ne selkeäksi verkkonäkyvyydeksi.</p>
             </div>
@@ -250,7 +251,7 @@ export default function Home() {
             <div className="flex flex-col gap-10 md:flex-row md:items-center md:justify-between md:gap-20">
               <div className="max-w-[730px]">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Seuraava askel</p>
-                <h2 id="contact-title" className="mt-6 text-[clamp(2.05rem,3.8vw,3.2rem)] font-semibold leading-[1.16] tracking-[-0.02em]">
+                <h2 id="contact-title" className="mt-6 ui-heading-section">
                   Mitä yrityksesi näkyvyydessä kannattaa korjata ensin?
                 </h2>
                 <p className="mt-5 text-base leading-8 text-muted">

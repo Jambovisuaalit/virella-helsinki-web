@@ -60,7 +60,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
   const checkoutError = first(params.checkout_error) === "1";
   const productKey = productId ? getProductKeyById(productId) : undefined;
   const product = productKey ? products[productKey] : undefined;
-  const isSocial = product?.billing === "month";
+  const isSocial = productId === "instagram" || productId === "linkedin";
   const requiresOffer = requiresWrittenOffer(productId);
   const euro = new Intl.NumberFormat("fi-FI", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 
@@ -102,7 +102,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                 <div>
                   <p className="text-sm font-bold text-brand">Lähetys onnistui.</p>
                   <p className="mt-3 text-sm leading-6 text-muted">{isVisibilityAudit ? "Kartoitus toimitetaan antamaasi sähköpostiosoitteeseen. Voit sulkea sivun tai palata etusivulle." : "Voit sulkea sivun tai palata etusivulle."}</p>
-                  <Link href="/" className="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-action px-5 py-3 text-sm font-bold text-white">
+                  <Link href="/" className="mt-6 ui-button ui-button--primary ">
                     Takaisin etusivulle
                   </Link>
                 </div>
@@ -119,7 +119,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                     <div className="rounded-xl border border-brand/15 bg-brand/5 p-4">
                       <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Palvelu</p>
                       <p className="mt-1 font-bold">{product.name}</p>
-                      {productKey === "linkedin" ? <p className="mt-2 text-sm leading-6 text-muted">Hinta, julkaisumäärä ja sopimuskausi sovitaan erillisessä kirjallisessa tarjouksessa.</p> : product.billing === "month" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(product.price)} / kk · {product.commitmentMonths} kk minimi · yhteensä {euro.format(product.totalPrice)}</p> : null}
+                      {productKey === "linkedin" ? <p className="mt-2 text-sm leading-6 text-muted">Hinta, julkaisumäärä ja sopimuskausi sovitaan erillisessä kirjallisessa tarjouksessa.</p> : product.billing === "quote" ? <p className="mt-2 text-sm leading-6 text-muted">Korjausten sisältö, hinta ja aikataulu sovitaan erillisessä kirjallisessa tarjouksessa.</p> : product.billing === "month" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(product.price)} / kk · {product.commitmentMonths} kk minimi · yhteensä {euro.format(product.totalPrice)}</p> : null}
                       {productId === "landing-page-seo" ? <p className="mt-2 text-sm leading-6 text-muted">{euro.format(products.landingPageSeo.price)} kertamaksu · {euro.format(products.landingPageSeo.deposit)} ennakkoon ja {euro.format(products.landingPageSeo.finalPayment)} hyväksytyn esikatselun jälkeen ennen julkaisua.</p> : null}
                       {requiresOffer ? <p className="mt-2 text-sm leading-6 text-muted">Aloituspyyntö ei ole tilaus. Lasku lähetetään vasta, kun yksilöity tarjous on hyväksytty kirjallisesti.</p> : null}
                     </div>

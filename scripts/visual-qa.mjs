@@ -13,6 +13,13 @@ const cases = [
 ];
 
 const browser = await chromium.launch({ headless: true, args: ["--no-sandbox"] });
+// A deliberate QA preference; actual consent is exercised in ui-kit-qa.mjs.
+const originalNewPage = browser.newPage.bind(browser);
+browser.newPage = async (...args) => {
+  const page = await originalNewPage(...args);
+  await page.addInitScript(() => localStorage.setItem("virella_analytics_consent", "denied"));
+  return page;
+};
 const results = [];
 
 try {

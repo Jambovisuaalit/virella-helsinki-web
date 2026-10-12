@@ -48,7 +48,7 @@ export function QuestionnaireForm({ questionnaire, sessionId }: QuestionnaireFor
           Älä lähetä salasanoja tai muita kirjautumistietoja lomakkeella. Tarvittavat käyttöoikeudet voidaan sopia erikseen turvallisesti.
         </p>
 
-        <button type="submit" disabled={!hasOrder} className="min-h-12 w-full rounded-xl bg-action px-5 py-3 text-sm font-bold text-white transition hover:brightness-90 disabled:cursor-not-allowed disabled:bg-mist disabled:text-muted disabled:hover:brightness-100 sm:w-auto">
+        <button type="submit" disabled={!hasOrder} className="ui-button ui-button--primary w-full sm:w-auto">
           {hasOrder ? "Lähetä aloituskysely" : "Maksa palvelu ennen lähettämistä"}
         </button>
       </form>

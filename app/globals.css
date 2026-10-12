@@ -1,24 +1,11 @@
 @import "tailwindcss";
 
-:root {
-  color-scheme: dark;
-  --background: #090b0c;
-  --foreground: #f4f5f2;
-  --surface: #171b1d;
-  --cloud: #101517;
-  --mist: #20282a;
-  --muted: #b0babc;
-  --border: #354043;
-  --brand: #8cddd4;
-  --brand-strong: #b1eee6;
-  --brand-foreground: #091617;
-  --accent: #ed7957;
-  --action: #c74727;
-  --success: #65cf93;
-  --focus: #a8eee5;
-}
+@import "../styles/tokens.css";
+@import "../styles/components.css";
 
 @theme inline {
+  --font-sans: var(--font-body);
+  --color-action-foreground: var(--action-foreground);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
@@ -46,12 +33,11 @@ html {
 
 body {
   margin: 0;
-  overflow-x: hidden;
   background:
     radial-gradient(circle at 50% -10%, rgba(78, 152, 151, 0.095), transparent 36rem),
     var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -78,9 +64,11 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 ::selection {
@@ -89,7 +77,7 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--focus) 78%, white);
+  outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 
@@ -137,14 +125,11 @@ a {
 .landing-navigation { display: none; gap: 24px; align-items: center; font-size: 14px; font-weight: 500; }
 @media (min-width: 1024px) { .landing-navigation { display: flex; } }
 .landing-navigation a:hover { text-decoration: underline; text-underline-offset: 5px; }
-.landing-header-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border-radius: 8px; background: var(--brand); color: var(--brand-foreground); font-size: 14px; font-weight: 600; }
-.landing-eyebrow { margin: 0; color: var(--brand); font-size: 14px; font-weight: 600; letter-spacing: .02em; }
+.landing-eyebrow { margin: 0; color: var(--brand); font-size: var(--type-small); font-weight: var(--weight-semibold); letter-spacing: .02em; }
 .landing-hero { text-align: center; padding: 96px 0 0; }
-.landing-hero h1 { margin: 24px auto 0; max-width: 1050px; font-size: clamp(40px, 5.4vw, 72px); font-weight: 700; letter-spacing: -.055em; line-height: 1.12; }
+.landing-hero h1 { margin: 24px auto 0; max-width: 1050px; font-size: var(--type-hero); font-weight: var(--weight-heading); letter-spacing: var(--tracking-hero); line-height: 1.12; }
 .landing-hero h1 span { color: var(--brand); }
 .landing-lead { max-width: 620px; margin: 28px auto 30px; color: var(--muted); font-size: 18px; line-height: 1.65; }
-.landing-page .landing-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 14px 26px; border: 0; border-radius: 8px; background: var(--action); color: white; font-size: 16px; font-weight: 600; box-shadow: none; cursor: pointer; transition: background .2s; }
-.landing-page .landing-primary:hover { background: #ac381d; transform: none; }
 .landing-hero-price { margin: 16px 0 14px; font-size: 14px; color: var(--muted); }
 .landing-hero-price span { margin: 0 8px; }
 .landing-text-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; color: var(--brand); text-decoration: underline; text-underline-offset: 5px; }
@@ -152,23 +137,23 @@ a {
 .landing-deliverables span + span { border-left: 1px solid var(--border); }
 .landing-process { padding: 96px 0; }
 .landing-section-intro { display: grid; grid-template-columns: 1.2fr 1fr; align-items: end; gap: 60px; }
-.social-landing h2 { margin: 16px 0 0; font-size: clamp(32px, 3.6vw, 46px); font-weight: 600; line-height: 1.15; letter-spacing: -.035em; }
+.social-landing h2 { margin: 16px 0 0; font-size: var(--type-section); font-weight: var(--weight-heading); line-height: 1.16; letter-spacing: var(--tracking-heading); }
 .landing-section-intro > p { max-width: 440px; margin: 0; color: var(--muted); font-size: 17px; line-height: 1.8; }
 .landing-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; margin: 54px 0 0; padding: 0; list-style: none; }
 .landing-steps li { border-top: 1px solid var(--border); padding-top: 24px; }
-.landing-step-number { color: var(--brand); font-size: 14px; font-weight: 600; }
-.landing-steps h3 { margin: 34px 0 14px; font-size: 22px; font-weight: 600; line-height: 1.3; letter-spacing: -.025em; }
+.landing-step-number { color: var(--brand); font-size: var(--type-small); font-weight: var(--weight-semibold); }
+.landing-steps h3 { margin: 34px 0 14px; font-size: var(--type-card); font-weight: var(--weight-semibold); line-height: 1.3; letter-spacing: -.025em; }
 .landing-steps p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
 .landing-process-note { margin: 36px 0 0; padding-top: 24px; border-top: 1px solid var(--border); font-size: 14px; line-height: 1.8; color: var(--muted); }
 .landing-pricing { padding: 96px 0; background: var(--cloud); }
 .landing-pricing-layout { display: grid; grid-template-columns: 1.05fr 1fr; align-items: start; column-gap: 90px; row-gap: 36px; }
 .landing-pricing-copy h2 span { color: var(--brand); }
 .landing-pricing-copy > p:not(.landing-eyebrow) { color: var(--muted); font-size: 17px; line-height: 1.8; margin: 24px 0 0; }
-.landing-price-card { grid-column: 2; grid-row: 1 / span 2; padding: 36px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); box-shadow: 0 18px 50px -30px rgba(0,0,0,.8); }
+.landing-price-card { grid-column: 2; grid-row: 1 / span 2; padding: 36px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-card); }
 .landing-channel-choice { margin: 0; padding: 0; border: 0; }
 .landing-channel-choice legend { margin-bottom: 12px; font-size: 14px; color: var(--muted); }
 .landing-channel-choice > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.landing-channel-choice label { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px 8px; min-width: 0; text-align: center; overflow-wrap: anywhere; border: 1px solid var(--border); border-radius: 8px; min-height: 48px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.landing-channel-choice label { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px 8px; min-width: 0; text-align: center; overflow-wrap: anywhere; border: 1px solid var(--border); border-radius: 8px; min-height: 48px; font-size: var(--type-small); font-weight: var(--weight-semibold); cursor: pointer; }
 .landing-channel-choice label.is-selected { background: var(--brand); border-color: var(--brand); color: var(--brand-foreground); }
 .landing-channel-choice input { width: 16px; height: 16px; accent-color: var(--brand); margin: 0; }
 .landing-channel-choice label:focus-within { outline: 3px solid var(--brand); outline-offset: 3px; }
@@ -189,7 +174,7 @@ a {
 .landing-faq p { margin: 0; padding: 0 4px 20px; color: var(--muted); font-size: 15px; line-height: 1.75; }
 .landing-contact { padding: 80px 0; }
 .landing-contact-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: center; }
-.landing-contact h2 { font-size: clamp(32px, 3.5vw, 42px); }
+.landing-contact h2 { font-size: var(--type-section); }
 .landing-contact p:not(.landing-eyebrow) { font-size: 16px; line-height: 1.8; color: var(--muted); margin: 20px 0 0; }
 .landing-contact-actions { display: flex; flex-direction: column; align-items: center; gap: 20px; }
 .landing-contact-actions > a:last-child { display: inline-flex; align-items: center; min-height: 44px; font-size: 16px; font-weight: 500; color: var(--brand); }
@@ -200,9 +185,8 @@ a {
   .landing-header-inner { padding: 10px 14px; min-height: 68px; gap: 12px; }
   .landing-wordmark { font-size: 24px; }
   .landing-navigation { display: none; }
-  .landing-header-cta { padding: 10px 12px; font-size: 14px; }
   .landing-hero { padding-top: 60px; }
-  .landing-hero h1 { font-size: clamp(36px, 7.4vw, 54px); line-height: 1.15; letter-spacing: -.045em; }
+  .landing-hero h1 { line-height: 1.15; }
   .landing-lead { font-size: 16px; line-height: 1.8; margin-top: 24px; }
   .landing-deliverables { margin-top: 44px; grid-template-columns: 1fr 1fr; gap: 20px 0; padding: 24px 0; }
   .landing-deliverables span:nth-child(3) { border-left: 0; }
@@ -222,16 +206,10 @@ a {
 @media (max-width: 359px) {
   .landing-header-inner { padding: 10px; }
   .landing-wordmark { font-size: 21px; }
-  .landing-header-cta { padding: 10px; font-size: 13px; }
-  .landing-hero h1 { font-size: 34px; }
+  .landing-hero h1 { font-size: var(--type-hero); }
   .landing-price-card { padding: 20px; }
   .landing-price-amount { font-size: 46px; }
 }
-
-/* UI Kit v1.1: shared action and navigation affordances without changing layout. */
-.landing-header-cta:hover { background: var(--brand-strong); }
-.landing-page .landing-primary:focus-visible, .landing-header-cta:focus-visible, .landing-navigation a:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
-@media (max-width: 359px) { .landing-channel-choice > div { grid-template-columns: 1fr; } }
 
 /* Consistent Virella identity and restrained interaction polish. */
 .brand-logo { display: inline-flex; align-items: center; flex: none; line-height: 1; }
@@ -239,16 +217,6 @@ a {
 .brand-logo--landing .brand-logo-image { width: 150px; }
 .brand-logo--inverse .brand-logo-image { filter: brightness(0) invert(1); }
 .brand-logo:focus-visible { outline: 2px solid var(--brand); outline-offset: 6px; border-radius: 2px; }
-@media(max-width: 359px) { .brand-logo--landing .brand-logo-image { width: 126px; } .landing-header-inner { padding-inline: 14px; gap: 8px; } .landing-header-cta { padding-inline: 10px; font-size: 12px; } }
-
-/* Dark surface refinements: keep the existing layout and clear visual hierarchy. */
-.landing-page .landing-header-cta:focus-visible, .landing-page .landing-primary:focus-visible { outline-color: var(--focus); }
-.landing-page .landing-eyebrow, .landing-page .landing-step-number { color: var(--brand); }
-.landing-page .landing-primary { box-shadow: 0 10px 26px -16px rgba(199,71,39,.45); }
-.landing-page .landing-price-card { color: var(--foreground); }
-.landing-page .landing-channel-choice label:not(.is-selected):hover { background: var(--mist); }
-.landing-page .landing-price-content li > span { color: var(--brand); }
-.landing-page .landing-faq summary:hover { color: var(--brand); }
 
 /* Virella v1.2: dark-system refinements and balanced social pricing layout. */
 .landing-pricing-left {
@@ -268,13 +236,6 @@ a {
 .landing-pricing-layout .landing-price-content ul {
   min-height: 0;
 }
-.landing-header-cta {
-  background: var(--action);
-  color: #fff;
-}
-.landing-header-cta:hover {
-  background: #ac381d;
-}
 
 @media (max-width: 767px) {
   .landing-pricing-left {
@@ -286,65 +247,6 @@ a {
   }
 }
 
-/* Social service landing: cyan is reserved for the main action, prices and
-   one emphasized word in the hero. Proof and plan details stay neutral. */
-.social-landing .brand-logo,
-.social-landing .landing-eyebrow,
-.social-landing .landing-step-number,
-.social-landing .landing-text-link,
-.social-landing .landing-contact-actions > a:last-child {
-  color: #e4e4e7;
-}
-
-.social-landing .landing-hero h1 span,
-.social-landing .landing-hero-price strong {
-  color: #22d3ee;
-}
-
-.social-landing .landing-primary,
-.social-landing .landing-header-cta {
-  background: #22d3ee;
-  color: #09090b;
-  box-shadow: none;
-}
-
-.social-landing .landing-primary:hover,
-.social-landing .landing-header-cta:hover {
-  background: #67e8f9;
-  color: #09090b;
-}
-
-.social-landing .landing-faq summary:hover {
-  color: #f4f4f5;
-}
-
-.social-landing .landing-skip-link {
-  border-color: #71717a;
-}
-
-.social-landing .landing-contact-actions > a:last-child:hover,
-.social-landing .landing-text-link:hover {
-  color: #fff;
-}
-
-.social-landing .landing-hero-price {
-  color: #a1a1aa;
-}
-
-.social-landing .landing-hero-price strong {
-  font-weight: 700;
-}
-
-.social-landing .landing-pricing {
-  background: #101012;
-}
-
-.social-landing .landing-faq {
-  grid-column: auto;
-  grid-row: auto;
-}
-
-
 /* Shared logo size and alignment in the closed and open navigation. */
 .virella-nav-shell .brand-logo-image { width: 150px; }
 @media (max-width: 767px) {
@@ -355,12 +257,16 @@ a {
    by the Framer reference; no third-party code, animation runtime or assets. */
 .virella-site-header.landing-header {
   top: 0;
-  z-index: 100;
+  z-index: var(--z-header);
   padding-top: 12px;
   background: transparent;
 }
 .virella-nav-shell {
-  background-color: rgba(23, 27, 29, .95);
+  background-color: color-mix(in srgb, var(--surface) 95%, transparent);
+  min-height: var(--header-height);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-floating);
 }
 .virella-hamburger {
   position: relative;
@@ -390,12 +296,12 @@ a {
 .virella-overlay {
   position: fixed;
   inset: 0;
-  z-index: 110;
+  z-index: var(--z-navigation);
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: #101315;
-  color: #f4f5f2;
+  background: var(--cloud);
+  color: var(--foreground);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -430,7 +336,7 @@ a {
   flex: none;
   align-items: center;
   column-gap: 12px;
-  border-bottom: 1px solid #354043;
+  border-bottom: 1px solid var(--border);
 }
 .virella-overlay-heading > .brand-logo { justify-self: start; }
 .virella-overlay-heading > .brand-logo .brand-logo-image { width: 150px; }
@@ -448,7 +354,7 @@ a {
 }
 .virella-overlay-overline {
   margin-bottom: clamp(28px, 3.5vw, 42px);
-  color: #b0babc;
+  color: var(--muted);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: .09em;
@@ -485,9 +391,9 @@ a {
   grid-template-columns: 26px minmax(0, 1fr) auto;
   align-items: baseline;
   column-gap: clamp(12px, 2vw, 26px);
-  color: #f4f5f2;
+  color: var(--foreground);
   font-size: clamp(2.3rem, 4.5vw, 4.2rem);
-  font-weight: 630;
+  font-weight: var(--weight-semibold);
   letter-spacing: -.02em;
   line-height: 1.14;
   text-decoration: none;
@@ -495,20 +401,20 @@ a {
 }
 .virella-overlay-link:hover,
 .virella-overlay-link:focus-visible {
-  color: #d2dedf;
+  color: var(--brand-strong);
 }
 .virella-overlay-index {
   align-self: baseline;
   padding-top: 4px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-body);
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0;
-  color: #b0babc;
+  color: var(--muted);
 }
 .virella-overlay-link-arrow {
   align-self: center;
-  color: #b0babc;
+  color: var(--muted);
   font-size: clamp(1rem, 1.5vw, 1.5rem);
   font-weight: 400;
   letter-spacing: 0;
@@ -525,7 +431,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border-left: 1px solid #354043;
+  border-left: 1px solid var(--border);
   padding-left: clamp(24px, 4vw, 46px);
 }
 .virella-overlay-bottom {
@@ -535,9 +441,9 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  border-top: 1px solid #354043;
+  border-top: 1px solid var(--border);
   padding-block: 20px 26px;
-  color: #b0babc;
+  color: var(--muted);
   font-size: 13px;
 }
 @media(max-width: 767px) {
@@ -557,7 +463,7 @@ a {
   }
   .virella-overlay-aside {
     border-left: 0;
-    border-top: 1px solid #354043;
+    border-top: 1px solid var(--border);
     padding: 24px 0 0;
   }
   .virella-overlay-overline { margin-bottom: 18px; }
@@ -598,7 +504,7 @@ a {
 /* Photographic landing hero — the image is decorative, the accessible copy
    remains real HTML. The veil protects text contrast on narrow screens. */
 .virella-photographic-hero {
-  background: #090b0c;
+  background: var(--background);
 }
 .virella-hero-photo {
   object-position: center 56%;
@@ -626,7 +532,7 @@ a {
    The safe-area offsets keep the action clear of mobile browser controls. */
 .virella-whatsapp-button {
   position: fixed;
-  z-index: 40;
+  z-index: var(--z-contact);
   right: calc(16px + env(safe-area-inset-right, 0px));
   bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   display: inline-flex;
@@ -644,11 +550,11 @@ a {
   transition: background-color 160ms ease, border-color 160ms ease;
 }
 .virella-whatsapp-button:hover {
-  border-color: #608977;
+  border-color: var(--border-hover);
   background: var(--mist);
 }
 .virella-whatsapp-button .virella-whatsapp-icon {
-  color: #25d366;
+  color: var(--whatsapp);
 }
 @media (min-width: 640px) {
   .virella-whatsapp-button {

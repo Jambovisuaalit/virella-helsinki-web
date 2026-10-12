@@ -1,0 +1,72 @@
+/* Single source of truth for the existing dark Virella interface. */
+:root {
+  color-scheme: dark;
+  --background: #090b0c;
+  --foreground: #f4f5f2;
+  --surface: #171b1d;
+  --cloud: #101517;
+  --mist: #20282a;
+  --muted: #b0babc;
+  --border: #354043;
+  --border-hover: #68767b;
+  --brand: #8cddd4;
+  --brand-strong: #b1eee6;
+  --brand-foreground: #091617;
+  --accent: #ed7957;
+  --action: #c74727;
+  --action-hover: #ac381d;
+  --action-foreground: #ffffff;
+  --success: #65cf93;
+  --focus: #a8eee5;
+  --whatsapp: #25d366;
+
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-heading: 700;
+  --type-hero: clamp(2.25rem, 5.3vw, 4.5rem);
+  --type-hero-narrow: 1.75rem;
+  --type-section: clamp(2rem, 3.6vw, 3rem);
+  --type-card: 1.5rem;
+  --type-price: clamp(2.75rem, 4.5vw, 3.25rem);
+  --type-price-quote: clamp(1.5rem, 2.5vw, 1.75rem);
+  --type-price-small: 1.25rem;
+  --type-small: .875rem;
+  --tracking-heading: -.025em;
+  --tracking-hero: -.01em;
+  --tracking-price: -.035em;
+
+  --radius-button: .5rem;
+  --radius-card: 1rem;
+  --radius-panel: 1.25rem;
+  --shadow-card: 0 18px 50px -30px rgb(0 0 0 / .65);
+  --shadow-floating: 0 12px 38px -20px rgb(0 0 0 / .7);
+  --control-height: 3rem;
+  --control-compact-height: 2.75rem;
+  --card-padding: clamp(1.25rem, 3vw, 2rem);
+  --service-card-padding-x: clamp(1.75rem, 3vw, 2rem);
+  --service-card-padding-y: clamp(2.25rem, 3vw, 2.5rem);
+  --duration-ui: 180ms;
+  --container-width: 1200px;
+  --page-gutter: 20px;
+  --header-height: 72px;
+  --header-offset: calc(var(--header-height) + 24px);
+  --mobile-bar-reserve: 144px;
+  --floating-gap: 16px;
+  --z-contact: 40;
+  --z-inline-panel: 30;
+  --z-purchase: 50;
+  --z-header: 100;
+  --z-consent: 120;
+  --z-navigation: 130;
+}
+
+/* next/font defines --font-inter on body, so resolve the alias there rather
+   than on :root, where the generated font variable is not yet in scope. */
+body { --font-body: var(--font-inter), Arial, Helvetica, sans-serif; }
+
+@media (min-width: 640px) {
+  :root { --page-gutter: 28px; }
+}
+@media (min-width: 1024px) {
+  :root { --page-gutter: 40px; }
+}
