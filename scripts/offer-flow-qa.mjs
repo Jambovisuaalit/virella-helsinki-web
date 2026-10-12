@@ -11,6 +11,13 @@ const origin = process.env.VISUAL_QA_URL ?? "http://127.0.0.1:3000";
 const out = "artifacts/visual-qa";
 mkdirSync(out, {recursive:true});
 const browser = await chromium.launch({headless:true,args:["--no-sandbox"]});
+// A deliberate QA preference; actual consent is exercised in ui-kit-qa.mjs.
+const originalNewPage = browser.newPage.bind(browser);
+browser.newPage = async (...args) => {
+  const page = await originalNewPage(...args);
+  await page.addInitScript(() => localStorage.setItem("virella_analytics_consent", "denied"));
+  return page;
+};
 const results = [];
 const offers = [
  {id:"instagram",path:"/instagram",price:"490",mustInclude:["Facebook","Instagram"]},

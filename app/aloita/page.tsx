@@ -102,7 +102,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                 <div>
                   <p className="text-sm font-bold text-brand">Lähetys onnistui.</p>
                   <p className="mt-3 text-sm leading-6 text-muted">{isVisibilityAudit ? "Kartoitus toimitetaan antamaasi sähköpostiosoitteeseen. Voit sulkea sivun tai palata etusivulle." : "Voit sulkea sivun tai palata etusivulle."}</p>
-                  <Link href="/" className="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-action px-5 py-3 text-sm font-bold text-white">
+                  <Link href="/" className="mt-6 ui-button ui-button--primary ">
                     Takaisin etusivulle
                   </Link>
                 </div>

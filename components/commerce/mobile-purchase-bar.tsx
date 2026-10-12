@@ -1,3 +1,4 @@
+import { PriceDisplay } from "@/components/ui/price-display";
 import { BuyButton } from "@/components/commerce/buy-button";
 import { products, type ProductId } from "@/config/products";
 
@@ -18,15 +19,13 @@ export function MobilePurchaseBar({ currentProduct }: { currentProduct: ProductI
   const isQuote = product.billing === "quote";
 
   return (
-    <aside aria-label="Palvelun aloituspalkki" className="fixed inset-x-0 bottom-0 z-50 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:hidden">
-      <div className="mx-auto max-w-md rounded-[1.35rem] border border-border/80 bg-background/92 p-2 shadow-[0_22px_70px_-28px_rgba(23,33,38,0.5)] backdrop-blur-xl">
-        <div className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-[1rem] bg-surface px-3 py-2.5">
+    <aside aria-label="Palvelun aloituspalkki" className="virella-mobile-bar md:hidden">
+      <div className="virella-mobile-bar-panel ui-card">
+        <div className="virella-mobile-bar-content">
           <div className="min-w-0">
-            <div className="flex items-baseline gap-2">
+            <div className="flex flex-col gap-1">
               <p className="truncate text-xs font-extrabold text-foreground">{shortLabel(currentProduct)}</p>
-              <p className="shrink-0 text-xs font-extrabold text-brand">
-                {isQuote ? "Tarjouksen mukaan" : <>{euro.format(product.price)}{product.billing === "month" ? "/kk" : ""}</>}
-              </p>
+              <PriceDisplay amount={product.price} size="compact" suffix={product.billing === "month" ? "/kk" : undefined} />
             </div>
             <p className="mt-0.5 text-[11px] leading-4 text-muted">
               {isQuote ? "Hinta ja toimitus sovitaan kirjallisesti" : product.billing === "month" ? `${product.commitmentMonths} kk · yht. ${euro.format(product.totalPrice)}` : "kertamaksu"}
@@ -36,7 +35,7 @@ export function MobilePurchaseBar({ currentProduct }: { currentProduct: ProductI
             productId={product.id}
             label="Aloita yhteistyö"
             source="mobile_purchase_bar"
-            buttonClassName="min-h-10 rounded-full bg-action px-4 text-xs font-extrabold text-white shadow-[0_8px_22px_-12px_rgba(216,74,36,0.75)] transition active:scale-[0.98]"
+            buttonClassName="ui-button ui-button--primary ui-button--compact"
           />
         </div>
       </div>

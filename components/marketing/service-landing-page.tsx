@@ -4,6 +4,7 @@ import { MobilePurchaseBar } from "@/components/commerce/mobile-purchase-bar";
 import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
+import { PriceDisplay } from "@/components/ui/price-display";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { products, type ProductId } from "@/config/products";
@@ -33,7 +34,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
     <>
       <FunnelEvent name="service_view" productId={product.id} />
       <SiteHeader />
-      <main className="pb-28 md:pb-0">
+      <main className="virella-service-main">
         <section className="relative overflow-hidden pb-14 pt-8 sm:pb-20 sm:pt-12 lg:pb-24 lg:pt-16">
           {isConversionFix ? <div className="premium-grid pointer-events-none absolute inset-0 -z-20" aria-hidden="true" /> : null}
           <div className="pointer-events-none absolute right-[-9rem] top-[-7rem] -z-10 h-96 w-96 rounded-full bg-brand/8 blur-3xl" aria-hidden="true" />
@@ -46,7 +47,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
                 {content.eyebrow}
               </div>
 
-              <h1 className={`mt-7 font-extrabold leading-[0.96] tracking-[-0.06em] text-foreground ${isConversionFix ? "text-[3.1rem] sm:text-[4.25rem] lg:text-[4.9rem]" : "text-[2.8rem] sm:text-5xl lg:text-[4.25rem]"}`}>
+              <h1 className="mt-7 ui-heading-hero text-foreground">
                 {content.title}
               </h1>
 
@@ -68,14 +69,11 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
               ) : null}
             </div>
 
-            <Card className="soft-ring relative overflow-hidden border-white/80 bg-surface/95 p-6 shadow-[0_34px_90px_-46px_rgba(23,33,38,0.48)] backdrop-blur sm:p-8">
+            <Card className="ui-service-card relative overflow-hidden">
               <div className="absolute right-0 top-0 h-28 w-28 rounded-bl-[5rem] bg-brand/5" aria-hidden="true" />
               <div className="relative">
                 <p className="text-[10px] font-extrabold uppercase tracking-[0.17em] text-brand">{isQuotedPrice ? "Asiakaskohtainen tarjous" : "Vahvistettu hinta"}</p>
-                <div className="mt-5 flex items-end gap-2">
-                  <p className={`${isQuotedPrice ? "text-2xl" : "text-5xl"} font-extrabold tracking-[-0.055em] text-foreground`}>{isQuotedPrice ? "Tarjouksen mukaan" : euro.format(product.price)}</p>
-                  {product.billing === "month" ? <p className="pb-1 text-sm font-semibold text-muted">/ kk</p> : null}
-                </div>
+                <PriceDisplay className="mt-5" amount={product.price} suffix={product.billing === "month" ? "/ kk" : undefined} />
 
                 {isQuotedPrice ? (
                   <p className="mt-2 text-sm text-muted">{isLinkedin ? "Julkaisumäärä, hinta ja sopimuskausi vahvistetaan kirjallisessa tarjouksessa." : "Korjausten sisältö, hinta ja aikataulu vahvistetaan kirjallisessa tarjouksessa."}</p>
@@ -99,7 +97,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
             <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
               <div className="max-w-[540px]">
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand">{isQuotedPrice ? "Mitä sovimme" : "Sisältö"}</p>
-                <h2 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl">{isQuotedPrice ? "Sisältö määräytyy kirjallisen tarjouksen mukaan." : "Näet ennen tilausta, mitä palveluun kuuluu."}</h2>
+                <h2 className="mt-4 ui-heading-section">{isQuotedPrice ? "Sisältö määräytyy kirjallisen tarjouksen mukaan." : "Näet ennen tilausta, mitä palveluun kuuluu."}</h2>
                 <p className="mt-5 text-base leading-7 text-muted sm:text-lg">{content.summary}</p>
               </div>
 
@@ -120,7 +118,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
             <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
               <div>
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand">Kenelle</p>
-                <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.05em] sm:text-5xl">{content.audienceTitle}</h2>
+                <h2 className="mt-4 ui-heading-section">{content.audienceTitle}</h2>
                 <ul className="mt-9 space-y-4">
                   {content.audience.map((item) => (
                     <li key={item} className="flex gap-4 rounded-[1.2rem] border border-border/70 bg-surface/70 px-5 py-4 text-base leading-7 text-muted">
@@ -133,10 +131,10 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
 
               <div>
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand">Näin työ etenee</p>
-                <ol className="mt-7 overflow-hidden rounded-[1.6rem] border border-border/80 bg-surface shadow-[0_24px_70px_-48px_rgba(23,33,38,0.42)]">
+                <ol className="mt-7 overflow-hidden ui-card">
                   {content.process.map((step, index) => (
                     <li key={step.title} className="grid grid-cols-[48px_1fr] gap-4 border-b border-border/70 px-5 py-6 last:border-b-0 sm:px-6">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand text-[11px] font-extrabold text-white">0{index + 1}</span>
+                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand text-[11px] font-semibold text-brand-foreground">0{index + 1}</span>
                       <div>
                         <h3 className="font-extrabold tracking-[-0.015em] text-foreground">{step.title}</h3>
                         <p className="mt-1.5 text-sm leading-6 text-muted">{step.text}</p>
@@ -154,9 +152,9 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
             <div className="grid gap-10 lg:grid-cols-[0.55fr_1fr] lg:gap-16">
               <div>
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand">Usein kysyttyä</p>
-                <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.05em] sm:text-5xl">Selkeät vastaukset ennen tilausta.</h2>
+                <h2 className="mt-4 ui-heading-section">Selkeät vastaukset ennen tilausta.</h2>
               </div>
-              <div className="overflow-hidden rounded-[1.6rem] border border-border/80 bg-surface">
+              <div className="ui-card overflow-hidden">
                 {content.faq.map((item) => (
                   <div key={item.question} className="border-b border-border/70 px-5 py-6 last:border-b-0 sm:px-7">
                     <h3 className="font-extrabold tracking-[-0.015em] text-foreground">{item.question}</h3>
@@ -170,14 +168,14 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
 
         <section className="bg-background py-16 sm:py-20 lg:py-24">
           <SectionContainer>
-            <div className="relative overflow-hidden rounded-[2rem] bg-brand px-6 py-10 text-white shadow-[0_34px_100px_-56px_rgba(23,33,38,0.55)] sm:px-10 sm:py-12 lg:px-14 lg:py-14">
+            <div className="relative overflow-hidden rounded-[var(--radius-panel)] bg-brand px-6 py-10 text-brand-foreground shadow-[var(--shadow-card)] sm:px-10 sm:py-12 lg:px-14 lg:py-14">
               <div className="premium-grid pointer-events-none absolute inset-0 opacity-25" aria-hidden="true" />
               <div className="pointer-events-none absolute -right-12 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
               <div className="relative flex flex-col gap-9 md:flex-row md:items-end md:justify-between">
                 <div className="max-w-[720px]">
-                  <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/60">{quoteOnly ? "Pyydä kirjallinen tarjous" : "Aloita verkossa"}</p>
-                  <h2 className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl">{isConversionFix ? "Tee yhteydenotosta asiakkaalle helpompi." : isLinkedin ? "Sovitaan juuri teille sopiva LinkedIn-palvelu." : quoteOnly ? "Lähetä aloituspyyntö. Hyväksy tarjous ennen laskutusta." : "Maksa verkossa ja täytä aloituskysely."}</h2>
-                  <p className="mt-5 max-w-[680px] text-base leading-7 text-white/70">{isConversionFix ? "Lähetä maksuton aloituspyyntö. Korjausten laajuus, hinta, aikataulu ja mahdolliset käyttöoikeudet sovitaan kirjallisesti ennen työn aloitusta." : isLinkedin ? "Lähetä aloituspyyntö. Määrittelemme julkaisumäärän, hinnan ja työvaiheet kirjallisessa tarjouksessa ennen sitoumusta." : quoteOnly ? "Saat yksilöidyn tarjouksen kirjalliseen hyväksyntään. Lasku lähetetään vasta hyväksynnän jälkeen, ja toteutus alkaa sovittujen maksujen ja materiaalien saavuttua." : "Maksun jälkeen tuotekohtainen aloituskysely avautuu automaattisesti ja toimitus voidaan käynnistää."}</p>
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand-foreground/80">{quoteOnly ? "Pyydä kirjallinen tarjous" : "Aloita verkossa"}</p>
+                  <h2 className="mt-4 ui-heading-section">{isConversionFix ? "Tee yhteydenotosta asiakkaalle helpompi." : isLinkedin ? "Sovitaan juuri teille sopiva LinkedIn-palvelu." : quoteOnly ? "Lähetä aloituspyyntö. Hyväksy tarjous ennen laskutusta." : "Maksa verkossa ja täytä aloituskysely."}</h2>
+                  <p className="mt-5 max-w-[680px] text-base leading-7 text-brand-foreground/80">{isConversionFix ? "Lähetä maksuton aloituspyyntö. Korjausten laajuus, hinta, aikataulu ja mahdolliset käyttöoikeudet sovitaan kirjallisesti ennen työn aloitusta." : isLinkedin ? "Lähetä aloituspyyntö. Määrittelemme julkaisumäärän, hinnan ja työvaiheet kirjallisessa tarjouksessa ennen sitoumusta." : quoteOnly ? "Saat yksilöidyn tarjouksen kirjalliseen hyväksyntään. Lasku lähetetään vasta hyväksynnän jälkeen, ja toteutus alkaa sovittujen maksujen ja materiaalien saavuttua." : "Maksun jälkeen tuotekohtainen aloituskysely avautuu automaattisesti ja toimitus voidaan käynnistää."}</p>
                 </div>
                 <BuyButton productId={product.id} label={quoteOnly ? "Aloita yhteistyö" : "Aloita tästä"} className="shrink-0" source="final_cta" />
               </div>

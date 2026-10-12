@@ -61,10 +61,10 @@ export function AnalyticsPreferences() {
         Nykyinen valinta: <strong className="text-foreground">{consent === "granted" ? "analytiikka sallittu" : consent === "denied" ? "vain välttämättömät" : "ei valintaa"}</strong>.
       </p>
       <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-        <button type="button" onClick={() => update("denied")} className="min-h-11 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-bold text-foreground transition hover:bg-cloud">
+        <button type="button" onClick={() => update("denied")} className="ui-button ui-button--secondary">
           Vain välttämättömät
         </button>
-        <button type="button" onClick={() => update("granted")} className="min-h-11 rounded-xl bg-action px-4 py-2.5 text-sm font-bold text-white transition hover:brightness-90">
+        <button type="button" onClick={() => update("granted")} className="ui-button ui-button--primary ">
           Hyväksy analytiikka
         </button>
       </div>
