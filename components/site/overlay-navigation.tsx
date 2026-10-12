@@ -52,7 +52,9 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
     const body = document.body;
     const priorOverflow = body.style.overflow;
     body.style.overflow = "hidden";
-    closeRef.current?.focus();
+    // Wait for the opened panel's visibility to reach the browser before
+    // moving focus into it; focusing a hidden close button is ignored.
+    const focusFrame = requestAnimationFrame(() => closeRef.current?.focus());
 
     function onKeydown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -84,6 +86,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
 
     document.addEventListener("keydown", onKeydown);
     return () => {
+      cancelAnimationFrame(focusFrame);
       body.style.overflow = priorOverflow;
       document.removeEventListener("keydown", onKeydown);
     };

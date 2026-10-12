@@ -80,13 +80,13 @@ try {
       await shot(page, `${route.name}-${spec.width}-hero`);
       await shot(page, `${route.name}-${spec.width}-full`, true);
       if (route.card) {
-        await page.locator(route.card).screenshot({ path: `${output}/ui-${phase}-${route.name}-${spec.width}-cards.png`, animations: 'disabled' });
+        await page.locator(route.card).screenshot({ path: `${output}/ui-${phase}-${route.name}-${spec.width}-cards.png`, animations: 'disabled', style: '.virella-site-header, .virella-whatsapp-button, .landing-skip-link, .virella-mobile-bar { visibility: hidden !important; }' });
       }
       if (route.name === 'social') {
         await page.getByRole('button', { name: 'Valitse LinkedIn vertailuun' }).click();
         const button = page.getByRole('button', { name: 'Valitse LinkedIn vertailuun' });
         check(await button.getAttribute('aria-pressed') === 'true', 'LinkedIn selected state');
-        await page.locator('#hinnoittelu').screenshot({ path: `${output}/ui-${phase}-social-${spec.width}-selected.png`, animations: 'disabled' });
+        await page.locator('#hinnoittelu').screenshot({ path: `${output}/ui-${phase}-social-${spec.width}-selected.png`, animations: 'disabled', style: '.virella-site-header, .virella-whatsapp-button, .landing-skip-link { visibility: hidden !important; }' });
       }
       await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
       if (verify && state.bar) {
@@ -108,8 +108,14 @@ try {
         // Exercise real keyboard modality; programmatic focus after a mouse
         // click intentionally does not match :focus-visible in Chromium.
         await page.keyboard.press('Tab');
-        await page.keyboard.press('Shift+Tab');
-        check(await close.evaluate(el => getComputedStyle(el).outlineStyle !== 'none'), 'Visible focus');
+        await close.focus();
+        const focus = await close.evaluate(el => ({
+          active: document.activeElement === el,
+          visible: el.matches(':focus-visible'),
+          outline: getComputedStyle(el).outlineStyle,
+        }));
+        check(focus.active && focus.visible && focus.outline !== 'none', `Visible focus: ${JSON.stringify(focus)}`);
+        await shot(page, `${route.name}-${spec.width}-focus`);
         await page.keyboard.press('Escape');
         check(await toggle.evaluate(el => el === document.activeElement), 'Menu focus restoration');
         check(await toggle.getAttribute('aria-expanded') === 'false', 'Menu closed state');
