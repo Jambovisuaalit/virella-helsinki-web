@@ -48,6 +48,11 @@
 .virella-overlay-link[aria-current] .virella-overlay-link-arrow { opacity: 1; transform: none; }
 .virella-overlay-inner { padding-bottom: env(safe-area-inset-bottom, 0px); }
 
+/* Long Finnish service headlines fit the smallest phone without broken words. */
+@media (max-width: 359px) {
+  .virella-service-main .ui-heading-hero { font-size: var(--type-hero-narrow); }
+}
+
 /* Reserve room through the footer, where the final links actually appear. */
 @media (max-width: 767px) {
   body:has(.virella-mobile-bar) footer { padding-bottom: calc(var(--mobile-bar-reserve) + env(safe-area-inset-bottom, 0px)); }

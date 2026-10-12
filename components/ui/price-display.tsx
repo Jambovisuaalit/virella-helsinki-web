@@ -11,9 +11,11 @@ type PriceDisplayProps = HTMLAttributes<HTMLParagraphElement> & {
 };
 
 export function PriceDisplay({ amount, suffix, size = "large", className = "", ...props }: PriceDisplayProps) {
+  const displayAmount = amount === null ? "Tarjouksen mukaan" : typeof amount === "number" ? euro.format(amount)
+    : amount.replace(/\d[\d\s]*€/g, value => value.replace(/\s/g, "\u00a0"));
   return (
     <p className={`ui-price ui-price--${size} ${amount === null ? "ui-price--quote" : ""} ${className}`} {...props}>
-      <span>{amount === null ? "Tarjouksen mukaan" : typeof amount === "number" ? euro.format(amount) : amount}</span>
+      <span>{displayAmount}</span>
       {suffix ? <span className="ui-price-suffix">{suffix}</span> : null}
     </p>
   );
