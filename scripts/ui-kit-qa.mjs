@@ -19,6 +19,7 @@ const routes = [
   { path: '/aloita?kartoitus=1', name: 'intake' },
 ];
 const results = [];
+const failures = [];
 
 async function open(spec, path, consent = 'denied') {
   const page = await browser.newPage({ viewport: spec, reducedMotion: 'reduce', deviceScaleFactor: 1 });
@@ -38,7 +39,7 @@ async function open(spec, path, consent = 'denied') {
 async function shot(page, name, fullPage = false) {
   await page.screenshot({ path: `${output}/ui-${phase}-${name}.png`, fullPage, animations: 'disabled' });
 }
-function check(value, message) { if (verify) assert.ok(value, message); }
+function check(value, message) { if (verify && !value) failures.push(message); }
 
 try {
   for (const spec of sizes) {
@@ -64,11 +65,12 @@ try {
           cards: [...document.querySelectorAll('main .ui-service-card')].map(x => ({ ...box(x), radius: getComputedStyle(x).borderRadius, border: getComputedStyle(x).borderColor })),
         };
       });
+      writeFileSync(`${output}/ui-${phase}-${route.name}-${spec.width}-measurements.json`, JSON.stringify(state, null, 2));
       check(state.documentWidth <= spec.width + 1, `${route.name}/${spec.width}: overflow ${state.documentWidth}`);
       check(state.h1Count === 1, `${route.name}: H1 count`);
       check(state.logoLoaded && state.logo.right < state.trigger.x - 3, `${route.name}/${spec.width}: logo/menu collision`);
       for (const b of state.buttons) {
-        check(b.height >= 44 && b.x >= -1 && b.right <= spec.width + 1, `${route.name}/${spec.width}: CTA bounds`);
+        check(b.height >= 44 && b.x >= -1 && b.right <= spec.width + 1, `${route.name}/${spec.width}: CTA bounds ${JSON.stringify(b)}`);
         check(b.background === 'rgb(199, 71, 39)' && b.radius === '8px', `${route.name}: primary tokens ${JSON.stringify(b)}`);
       }
       for (const c of state.cards) check(c.radius === '16px' && c.border === 'rgb(53, 64, 67)', `${route.name}: card tokens`);
@@ -150,5 +152,7 @@ try {
     }
   }
   writeFileSync(`${output}/ui-${phase}-summary.json`, JSON.stringify(results, null, 2));
+  writeFileSync(`${output}/ui-${phase}-failures.json`, JSON.stringify(failures, null, 2));
+  assert.deepEqual(failures, [], 'Shared UI verification failures');
   console.log(`UI KIT ${phase.toUpperCase()} PASS: ${results.length} page/viewport cases, navigation and consent states`);
 } finally { await browser.close(); }
