@@ -53,11 +53,22 @@ try {
         const bar = document.querySelector('.virella-mobile-bar');
         const wa = document.querySelector('.virella-whatsapp-button');
         const primary = [...document.querySelectorAll('main .ui-button--primary')].filter(visible);
+        const brokenHeadingWords = [];
+        const walker = document.createTreeWalker(document.querySelector('main h1'), NodeFilter.SHOW_TEXT);
+        for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+          for (const word of node.textContent.matchAll(/\S+/g)) {
+            if (word[0].includes('-')) continue; // A real compound-word hyphen is a valid break.
+            const range = document.createRange();
+            range.setStart(node, word.index); range.setEnd(node, word.index + word[0].length);
+            if (range.getClientRects().length > 1) brokenHeadingWords.push(word[0]);
+          }
+        }
         return {
           width: innerWidth, documentWidth: document.documentElement.scrollWidth,
           sectionIds: [...document.querySelectorAll('main > section')].map(x => x.id),
           headings: [...document.querySelectorAll('main h1, main h2')].map(x => x.textContent.replace(/\s+/g,' ').trim()),
           h1Count: document.querySelectorAll('main h1').length,
+          brokenHeadingWords,
           logo: box(logo), logoLoaded: logo.complete && logo.naturalWidth > 0, logoSrc: logo.getAttribute('src'), trigger: box(nav),
           buttons: primary.map(x => ({ ...box(x), background: getComputedStyle(x).backgroundColor, color: getComputedStyle(x).color, radius: getComputedStyle(x).borderRadius, font: getComputedStyle(x).fontFamily })),
           priceFonts: [...document.querySelectorAll('.ui-price')].map(x => getComputedStyle(x).fontFamily),
@@ -68,6 +79,7 @@ try {
       writeFileSync(`${output}/ui-${phase}-${route.name}-${spec.width}-measurements.json`, JSON.stringify(state, null, 2));
       check(state.documentWidth <= spec.width + 1, `${route.name}/${spec.width}: overflow ${state.documentWidth}`);
       check(state.h1Count === 1, `${route.name}: H1 count`);
+      check(state.brokenHeadingWords.length === 0, `${route.name}/${spec.width}: split heading words ${state.brokenHeadingWords.join(', ')}`);
       check(state.logoLoaded && state.logo.right < state.trigger.x - 3, `${route.name}/${spec.width}: logo/menu collision`);
       for (const b of state.buttons) {
         check(b.height >= 44 && b.x >= -1 && b.right <= spec.width + 1, `${route.name}/${spec.width}: CTA bounds ${JSON.stringify(b)}`);

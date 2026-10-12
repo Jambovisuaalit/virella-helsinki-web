@@ -24,7 +24,7 @@
   --weight-semibold: 600;
   --weight-heading: 700;
   --type-hero: clamp(2.25rem, 5.3vw, 4.5rem);
-  --type-hero-narrow: 1.9rem;
+  --type-hero-narrow: 1.75rem;
   --type-section: clamp(2rem, 3.6vw, 3rem);
   --type-card: 1.5rem;
   --type-price: clamp(2.75rem, 4.5vw, 3.25rem);
