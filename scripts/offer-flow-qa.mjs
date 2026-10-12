@@ -124,6 +124,9 @@ try {
 
  const page=await browser.newPage({viewport:{width:390,height:844}});
  await page.goto(origin+"/sosiaalinen-media",{waitUntil:"networkidle"});
+ // The native FAQ starts closed; verify the promise after the same disclosure
+ // interaction a visitor uses, rather than reading hidden innerText.
+ await page.getByText("Kuinka pitkä sopimus on?",{exact:true}).click();
  const socialCopy=await page.locator("main").innerText();
  assert.ok(!socialCopy.includes("Molemmissa paketeissa vähimmäisjakso"),"Legacy LinkedIn commitment claim returned in FAQ");
  assert.ok(!socialCopy.includes("Kummankin hinta"),"Legacy LinkedIn fixed price claim returned in FAQ");
