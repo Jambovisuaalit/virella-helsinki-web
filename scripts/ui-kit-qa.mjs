@@ -47,7 +47,7 @@ try {
       const { page, errors } = await open(spec, route.path);
       const state = await page.evaluate(() => {
         const box = el => { const r = el.getBoundingClientRect(); return { x:r.x, y:r.y, right:r.right, bottom:r.bottom, width:r.width, height:r.height }; };
-        const visible = el => getComputedStyle(el).display !== 'none' && getComputedStyle(el).visibility !== 'hidden';
+        const visible = el => el.getClientRects().length > 0 && getComputedStyle(el).display !== 'none' && getComputedStyle(el).visibility !== 'hidden';
         const nav = document.querySelector('.virella-overlay-trigger');
         const logo = document.querySelector('header .brand-logo-image');
         const bar = document.querySelector('.virella-mobile-bar');
@@ -72,9 +72,10 @@ try {
       for (const b of state.buttons) {
         check(b.height >= 44 && b.x >= -1 && b.right <= spec.width + 1, `${route.name}/${spec.width}: CTA bounds ${JSON.stringify(b)}`);
         check(b.background === 'rgb(199, 71, 39)' && b.radius === '8px', `${route.name}: primary tokens ${JSON.stringify(b)}`);
+        check(/inter/i.test(b.font), `${route.name}: action font must use Inter`);
       }
       for (const c of state.cards) check(c.radius === '16px' && c.border === 'rgb(53, 64, 67)', `${route.name}: card tokens`);
-      check(state.priceFonts.every(f => !/mono/i.test(f)), `${route.name}: price font`);
+      check(state.priceFonts.every(f => /inter/i.test(f) && !/mono/i.test(f)), `${route.name}: price font must use Inter`);
       if (state.bar && state.whatsapp) {
         check(state.bar.height <= 144, `${route.name}/${spec.width}: mobile bar exceeds reserve`);
         check(state.whatsapp.bottom <= state.bar.y, `${route.name}/${spec.width}: floating actions collide`);

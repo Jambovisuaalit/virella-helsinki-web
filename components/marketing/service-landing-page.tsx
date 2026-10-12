@@ -41,7 +41,7 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
           {isConversionFix ? <div className="pointer-events-none absolute -left-20 bottom-0 -z-10 h-64 w-64 rounded-full bg-accent/7 blur-3xl" aria-hidden="true" /> : null}
 
           <SectionContainer className="grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16">
-            <div className="max-w-[760px]">
+            <div className="min-w-0 max-w-[760px]">
               <div className="inline-flex items-center gap-2.5 rounded-full border border-brand/15 bg-surface/80 px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-[0.17em] text-brand shadow-[0_10px_26px_-22px_rgba(23,33,38,0.45)] backdrop-blur">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
                 {content.eyebrow}

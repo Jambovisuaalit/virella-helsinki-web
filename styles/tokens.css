@@ -20,7 +20,6 @@
   --focus: #a8eee5;
   --whatsapp: #25d366;
 
-  --font-body: var(--font-inter), Arial, Helvetica, sans-serif;
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-heading: 700;
@@ -59,6 +58,10 @@
   --z-consent: 120;
   --z-navigation: 130;
 }
+
+/* next/font defines --font-inter on body, so resolve the alias there rather
+   than on :root, where the generated font variable is not yet in scope. */
+body { --font-body: var(--font-inter), Arial, Helvetica, sans-serif; }
 
 @media (min-width: 640px) {
   :root { --page-gutter: 28px; }
