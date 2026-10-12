@@ -105,7 +105,10 @@ try {
         check(await dialog.isVisible(), 'Menu open state');
         await shot(page, `${route.name}-${spec.width}-menu`);
         const close = dialog.getByRole('button', { name: 'Sulje valikko' });
-        await close.focus();
+        // Exercise real keyboard modality; programmatic focus after a mouse
+        // click intentionally does not match :focus-visible in Chromium.
+        await page.keyboard.press('Tab');
+        await page.keyboard.press('Shift+Tab');
         check(await close.evaluate(el => getComputedStyle(el).outlineStyle !== 'none'), 'Visible focus');
         await page.keyboard.press('Escape');
         check(await toggle.evaluate(el => el === document.activeElement), 'Menu focus restoration');
