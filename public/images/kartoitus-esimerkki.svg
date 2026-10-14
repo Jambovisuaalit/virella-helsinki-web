@@ -1,35 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="760" height="648" viewBox="0 0 760 648" fill="none" role="img" aria-labelledby="title desc">
-  <title id="title">Esimerkkikuva Virella Helsingin näkyvyyskartoituksen yhteenvedosta</title>
-  <desc id="desc">Malliraportti: kolme priorisoitua korjausehdotusta verkkosivujen pääviestille, paikalliselle Google-näkyvyydelle ja tarjouspyyntöpolulle. Ei oikea asiakasraportti.</desc>
-  <rect x="1" y="1" width="758" height="646" rx="24" fill="#15191B" stroke="#374145" stroke-width="2"/>
-  <path d="M1 76 H759" stroke="#374145"/>
-  <circle cx="32" cy="38" r="7" fill="#747F82"/>
-  <circle cx="55" cy="38" r="7" fill="#747F82"/>
-  <circle cx="78" cy="38" r="7" fill="#747F82"/>
-  <rect x="152" y="19" width="456" height="37" rx="10" fill="#202629" stroke="#3E494D"/>
-  <text x="380" y="43" fill="#BFC9CC" font-family="Arial, sans-serif" font-size="17" text-anchor="middle">virellahelsinki.com / kartoitus</text>
-  <rect x="27" y="106" width="706" height="515" rx="17" fill="#101315" stroke="#344044"/>
-  <text x="52" y="140" fill="#D8E2E4" font-family="Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="2.1">VIRELLA HELSINKI</text>
-  <rect x="545" y="117" width="157" height="34" rx="17" fill="#263034"/>
-  <text x="624" y="139" fill="#E6ECEE" font-family="Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="600">ESIMERKKI</text>
-  <text x="52" y="195" fill="#F4F5F2" font-family="Arial, sans-serif" font-size="35" font-weight="700">Näkyvyyskartoitus</text>
-  <text x="52" y="229" fill="#B9C4C7" font-family="Arial, sans-serif" font-size="18">Kolme konkreettista korjausehdotusta</text>
-  <g font-family="Arial, sans-serif">
-    <rect x="52" y="263" width="650" height="93" rx="12" fill="#1A2022" stroke="#364145"/>
-    <rect x="67" y="280" width="49" height="29" rx="8" fill="#2D373A"/>
-    <text x="91" y="301" font-size="17" text-anchor="middle" font-weight="700" fill="#F4F5F2">01</text>
-    <text x="136" y="302" font-size="21" font-weight="700" fill="#F4F5F2">Selkeytä etusivun pääviesti</text>
-    <text x="136" y="333" font-size="16" fill="#B9C4C7">Kerro palvelu ja toimialue heti ensisilmäyksellä.</text>
-    <rect x="52" y="370" width="650" height="93" rx="12" fill="#1A2022" stroke="#364145"/>
-    <rect x="67" y="387" width="49" height="29" rx="8" fill="#2D373A"/>
-    <text x="91" y="408" font-size="17" text-anchor="middle" font-weight="700" fill="#F4F5F2">02</text>
-    <text x="136" y="409" font-size="21" font-weight="700" fill="#F4F5F2">Tarkista Google-yritysprofiili</text>
-    <text x="136" y="440" font-size="16" fill="#B9C4C7">Varmista palvelut, toimialue ja yhteystiedot.</text>
-    <rect x="52" y="477" width="650" height="93" rx="12" fill="#1A2022" stroke="#364145"/>
-    <rect x="67" y="494" width="49" height="29" rx="8" fill="#2D373A"/>
-    <text x="91" y="515" font-size="17" text-anchor="middle" font-weight="700" fill="#F4F5F2">03</text>
-    <text x="136" y="516" font-size="21" font-weight="700" fill="#F4F5F2">Helpota tarjouspyynnön tekemistä</text>
-    <text x="136" y="547" font-size="16" fill="#B9C4C7">Nosta selkeä yhteydenottopainike näkyville.</text>
-  </g>
-  <text x="52" y="602" fill="#B9C4C7" font-family="Arial, sans-serif" font-size="15">Malliraportti – ei asiakkaan tietoja tai toteutuneita tuloksia.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700" role="img" aria-labelledby="title desc">
+<title id="title">Virella Helsinki – näkyvyyskartoituksen malliraportti</title>
+<desc id="desc">Havainnollistava raportti, jossa on kolme esimerkkisuositusta: selkeä pääviesti, Google-yritysprofiilin tarkistus ja suora tarjouspyyntö. Ei oikea asiakasraportti tai mitattuja tuloksia.</desc>
+<defs>
+ <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0B141A"/><stop offset="1" stop-color="#101B20"/></linearGradient>
+ <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1A2930"/><stop offset="1" stop-color="#131E24"/></linearGradient>
+ <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#EE522B"/><stop offset="1" stop-color="#FF8757"/></linearGradient>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000" flood-opacity=".35"/></filter>
+</defs>
+<rect width="900" height="700" rx="28" fill="url(#background)"/>
+<circle cx="815" cy="10" r="220" fill="none" stroke="#135B6C" stroke-opacity=".22" stroke-width="2"/>
+<rect x="34" y="34" width="832" height="632" rx="23" fill="#111B20" stroke="#42616B" stroke-width="2" filter="url(#shadow)"/>
+<path d="M34 102H866" stroke="#344A54"/>
+<circle cx="64" cy="68" r="7" fill="#EE6C59"/><circle cx="87" cy="68" r="7" fill="#F2BF50"/><circle cx="110" cy="68" r="7" fill="#47C88A"/>
+<rect x="538" y="51" width="294" height="34" rx="10" fill="#1B292F" stroke="#3B535D"/>
+<text x="685" y="73" fill="#BCCBD1" font-size="15" font-family="Arial, sans-serif" text-anchor="middle">Malliraportti · Virella Helsinki</text>
+<rect x="34" y="102" width="146" height="564" rx="0" fill="#0D171C"/>
+<path d="M180 102V666" stroke="#334D58"/>
+<text x="58" y="150" fill="#F8FAFA" font-size="23" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.5">VIRELLA</text>
+<text x="59" y="170" fill="#A7BBC4" font-size="12" font-family="Arial,sans-serif" letter-spacing="3">HELSINKI</text>
+<rect x="56" y="213" width="46" height="46" rx="12" fill="#2A2624" stroke="#B4553C"/>
+<rect x="69" y="235" width="5" height="12" rx="2" fill="#F1734B"/><rect x="78" y="228" width="5" height="19" rx="2" fill="#F1734B"/><rect x="87" y="220" width="5" height="27" rx="2" fill="#F1734B"/>
+<rect x="56" y="281" width="46" height="46" rx="12" fill="#18262E" stroke="#314952"/>
+<path d="M69 295h19v19H69z M73 302h11 M73 308h9" stroke="#91B0BF" stroke-width="2" fill="none"/>
+<rect x="56" y="349" width="46" height="46" rx="12" fill="#18262E" stroke="#314952"/><circle cx="77" cy="370" r="9" fill="none" stroke="#91B0BF" stroke-width="2"/><path d="m84 377 7 7" stroke="#91B0BF" stroke-width="2"/>
+<text x="218" y="152" fill="#A6C5D0" font-size="13" font-family="Arial,sans-serif" letter-spacing="2.8">VIRELLA HELSINKI</text>
+<text x="218" y="202" fill="#F7F9F9" font-size="42" font-family="Arial,sans-serif" font-weight="700">Näkyvyyskartoitus</text>
+<text x="218" y="236" fill="#B2C3CD" font-size="18" font-family="Arial,sans-serif">Kolme konkreettista korjausehdotusta</text>
+<rect x="716" y="123" width="113" height="32" rx="16" fill="#20333D" stroke="#42606D"/>
+<text x="772" y="144" fill="#DDE9EE" font-size="12" font-family="Arial,sans-serif" text-anchor="middle" font-weight="700" letter-spacing="1.2">ESIMERKKI</text>
+<rect x="218" y="268" width="611" height="83" rx="13" fill="url(#panel)" stroke="#3A505B"/>
+<rect x="236" y="284" width="53" height="51" rx="12" fill="#3E2A26"/>
+<path d="M249 318v-10 M260 318v-18 M271 318v-25" stroke="#FF7C4C" stroke-width="5" stroke-linecap="round"/>
+<text x="305" y="302" fill="#F5F8F9" font-size="20" font-family="Arial,sans-serif" font-weight="700">3 kehityskohdetta</text>
+<text x="305" y="326" fill="#B2C5CD" font-size="16" font-family="Arial,sans-serif">Priorisoitu selkeästi – tärkein ensin</text>
+<rect x="684" y="291" width="125" height="32" rx="16" fill="#203D36"/>
+<text x="746" y="312" fill="#9BE3C2" font-size="13" font-family="Arial,sans-serif" text-anchor="middle" font-weight="700">TOIMENPITEET</text>
+<g font-family="Arial,sans-serif">
+<rect x="218" y="367" width="611" height="85" rx="13" fill="#18262D" stroke="#435860"/>
+<rect x="236" y="385" width="44" height="40" rx="10" fill="#32434C"/><text x="258" y="412" text-anchor="middle" fill="#FFF" font-size="18" font-weight="700">01</text>
+<rect x="296" y="385" width="43" height="42" rx="10" fill="#392B29" stroke="#634035"/><path d="M308 397h19v17h-19z M313 404h10 M313 409h7" fill="none" stroke="#FF855A" stroke-width="2"/>
+<text x="355" y="395" fill="#F9FAFA" font-size="20" font-weight="700">Selkeytä etusivun pääviesti</text><text x="355" y="423" fill="#BED0D6" font-size="16">Kerro palvelu ja toimialue heti ensisilmäyksellä.</text>
+<rect x="218" y="466" width="611" height="85" rx="13" fill="#18262D" stroke="#435860"/>
+<rect x="236" y="484" width="44" height="40" rx="10" fill="#32434C"/><text x="258" y="511" text-anchor="middle" fill="#FFF" font-size="18" font-weight="700">02</text>
+<rect x="296" y="484" width="43" height="42" rx="10" fill="#253B35" stroke="#355B50"/><path d="M317 493c-8 0-12 6-12 12 0 9 12 16 12 16s12-7 12-16c0-6-4-12-12-12z" fill="none" stroke="#65D5A0" stroke-width="2"/><circle cx="317" cy="505" r="3" fill="#65D5A0"/>
+<text x="355" y="494" fill="#F9FAFA" font-size="20" font-weight="700">Tarkista Google-yritysprofiili</text><text x="355" y="522" fill="#BED0D6" font-size="16">Varmista palvelut, toimialue ja yhteystiedot.</text>
+<rect x="218" y="565" width="611" height="85" rx="13" fill="#18262D" stroke="#435860"/>
+<rect x="236" y="583" width="44" height="40" rx="10" fill="#32434C"/><text x="258" y="610" text-anchor="middle" fill="#FFF" font-size="18" font-weight="700">03</text>
+<rect x="296" y="583" width="43" height="42" rx="10" fill="#392B29" stroke="#634035"/><rect x="307" y="594" width="21" height="16" rx="4" fill="none" stroke="#FF855A" stroke-width="2"/><path d="m315 601 5 5 7-8" fill="none" stroke="#FF855A" stroke-width="2"/>
+<text x="355" y="593" fill="#F9FAFA" font-size="20" font-weight="700">Helpota tarjouspyynnön tekemistä</text><text x="355" y="621" fill="#BED0D6" font-size="16">Nosta selkeä yhteydenottopainike näkyville.</text>
+</g>
 </svg>
