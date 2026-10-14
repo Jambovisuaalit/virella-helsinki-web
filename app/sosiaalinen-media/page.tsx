@@ -187,7 +187,7 @@ export default function SocialMediaPage() {
               </details>
               <details>
                 <summary>Kuinka pitkä sopimus on?</summary>
-                <p>Molemmissa paketeissa vähimmäisjakso on {product.commitmentMonths} kuukautta. Kummankin hinta on {euro.format(product.price)} kuukaudessa, yhteensä {euro.format(product.totalPrice)}. Maksutapa ja jatkon ehdot vahvistetaan ennen aloitusta.</p>
+                <p>Instagram + Facebook -paketin vähimmäisjakso on {product.commitmentMonths} kuukautta. Sen hinta on {euro.format(product.price)} kuukaudessa, eli {euro.format(product.totalPrice)} aloitusjaksolta. LinkedIn-palvelun hinta, julkaisumäärä ja sopimuskausi vahvistetaan erillisessä tarjouksessa. Maksutapa ja jatkon ehdot vahvistetaan ennen aloitusta.</p>
               </details>
               <details>
                 <summary>Mitä minulta tarvitaan?</summary>

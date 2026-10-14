@@ -15,7 +15,7 @@ export const homepagePricing = {
   },
   website: {
     startup: "Landing Page + SEO 990 €",
-    monthly: "Laajemmat verkkosivut alk. 1 500 €",
+    monthly: "Laajemmat verkkosivut alk. 1 500 € (kertahinta)",
     note: "Ei automaattista kuukausiylläpitoa",
   },
 } as const;
