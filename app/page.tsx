@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { SiteIcon } from "@/components/ui/site-icon";
 import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
@@ -111,7 +112,7 @@ export default function Home() {
                   Pyydä maksuton näkyvyyskartoitus
                 </ButtonLink>
                 <a href="#palvelut" className="inline-flex min-h-11 items-center text-sm font-semibold text-foreground underline decoration-white/40 underline-offset-[6px] transition-colors hover:decoration-white focus-visible:decoration-white">
-                  Katso palvelut ja hinnat <span aria-hidden="true" className="ml-2 inline-block text-sm">→</span>
+                  Katso palvelut ja hinnat <SiteIcon name="arrow-right" size={17} className="ml-2 inline-block shrink-0" />
                 </a>
               </div>
               <div className="mt-10 max-w-[600px] space-y-1 border-t border-white/20 pt-6 text-sm leading-7 text-foreground/85" aria-label="Näkyvyyskartoituksen toimitus">
@@ -145,7 +146,7 @@ export default function Home() {
                   Esimerkkiraportti näyttää, miten havainto, sen vaikutus ja suositeltu korjaus esitetään.
                 </p>
                 <a href="/aloita?kartoitus=1" className="mt-8 inline-flex min-h-11 items-center text-sm font-semibold text-foreground underline decoration-border underline-offset-[6px] transition-colors hover:decoration-foreground">
-                  Pyydä oma kartoituksesi <span aria-hidden="true" className="ml-2 inline-block text-sm">→</span>
+                  Pyydä oma kartoituksesi <SiteIcon name="arrow-right" size={17} className="ml-2 inline-block shrink-0" />
                 </a>
               </div>
               <figure className="min-w-0">
@@ -197,11 +198,11 @@ export default function Home() {
                   </div>
                   <ul className="mt-8 space-y-3 text-sm leading-6 text-foreground">
                     {service.details.map((detail) => (
-                      <li key={detail} className="flex gap-3"><span className="mt-[0.6rem] h-1.5 w-1.5 shrink-0 rounded-full bg-brand" aria-hidden="true" />{detail}</li>
+                      <li key={detail} className="flex gap-3"><SiteIcon name="check" size={16} className="mt-1 shrink-0 text-brand" />{detail}</li>
                     ))}
                   </ul>
                   <a href={service.href} className="mt-10 inline-flex min-h-11 items-center font-semibold text-foreground underline decoration-border underline-offset-[6px] transition-colors hover:decoration-foreground lg:mt-auto lg:pt-9">
-                    {service.action} <span aria-hidden="true" className="ml-2 inline-block text-sm">→</span>
+                    {service.action} <SiteIcon name="arrow-right" size={17} className="ml-2 inline-block shrink-0" />
                   </a>
                 </article>
               ))}

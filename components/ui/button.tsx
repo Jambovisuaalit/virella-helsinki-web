@@ -8,8 +8,8 @@ type ButtonLinkProps = ComponentProps<typeof Link> & {
 export function ButtonLink({ className = "", variant = "primary", ...props }: ButtonLinkProps) {
   const styles =
     variant === "primary"
-      ? "bg-action text-white hover:bg-[#ac381d]"
-      : "border border-border bg-surface text-foreground hover:border-zinc-500 hover:bg-mist";
+      ? "bg-action text-white shadow-sm hover:bg-[#ac381d] active:translate-y-px"
+      : "border border-border bg-surface text-foreground hover:border-brand hover:bg-mist active:translate-y-px";
 
   return (
     <Link

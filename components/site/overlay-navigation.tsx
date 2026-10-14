@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { BrandLogo } from "@/components/site/brand-logo";
+import { SiteIcon } from "@/components/ui/site-icon";
 
 export type OverlayNavigationItem = {
   label: string;
@@ -153,7 +154,7 @@ export function OverlayNavigation({ items, cta, social = false }: Props) {
                         >
                           <span className="virella-overlay-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                           <span>{item.label}</span>
-                          <span className="virella-overlay-link-arrow" aria-hidden="true">↗</span>
+                          <span className="virella-overlay-link-arrow" aria-hidden="true"><SiteIcon name="arrow-up-right" size={21} /></span>
                         </Link>
                       </li>
                     ))}

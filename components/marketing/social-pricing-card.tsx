@@ -5,6 +5,7 @@ import { useState } from "react";
 import { products } from "@/config/products";
 import { taxConfig } from "@/config/tax";
 import { SocialIcon } from "@/components/site/social-icon";
+import { SiteIcon } from "@/components/ui/site-icon";
 import { trackAnalyticsEvent } from "@/lib/analytics/client";
 import { requiresWrittenOffer } from "@/config/offer-master";
 
@@ -120,7 +121,7 @@ export function SocialPricingCard() {
               <ul className="mt-7 space-y-3 border-t border-zinc-800 pt-6 text-sm leading-6 text-zinc-200">
                 {(channel === "linkedin" ? ["Julkaisumäärä sovitaan asiakaskohtaisesti", "Sisältöstrategia ja mahdollinen profiilin optimointi tarjouksen mukaan", "Raportointi ja hyväksyntä sovitussa laajuudessa"] : product.features).map((feature) => (
                   <li key={feature} className="flex items-start gap-3">
-                    <span aria-hidden="true" className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-400" />
+                    <SiteIcon name="check" size={17} className="mt-1 shrink-0 text-cyan-400" />
                     <span>{feature}</span>
                   </li>
                 ))}
