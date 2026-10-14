@@ -65,7 +65,7 @@ export function ContactForm({ children, initialError, submitLabel = "Lähetä al
     <form action="/api/contact" method="post" onSubmit={submit} className="space-y-5" aria-label={formLabel} aria-busy={pending}>
       {children}
       {error ? <p role="alert" className="rounded-xl border border-action/20 bg-action/5 p-4 text-sm font-semibold text-action">{error}</p> : null}
-      <button type="submit" disabled={pending} className="min-h-12 w-full rounded-full bg-action px-5 py-3 text-sm font-bold text-white transition hover:brightness-95 disabled:cursor-wait disabled:opacity-70 sm:w-auto">
+      <button type="submit" disabled={pending} className="min-h-12 w-full rounded-full bg-action px-5 py-3 text-sm font-bold text-white transition hover:brightness-95 disabled:cursor-wait disabled:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand sm:w-auto">
         {pending ? "Lähetetään…" : submitLabel}
       </button>
       <p role="status" className="sr-only">{pending ? "Aloituspyyntöä lähetetään." : ""}</p>
