@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Virella Helsinki">
+  <title>Virella Helsinki</title>
+  <rect width="80" height="80" rx="15" fill="#FCFAF8"/>
+  <path d="M0 0 H10 L33 57 L55 4 H65 L37 73 H28 Z" fill="#111111" transform="translate(9 7) scale(.94 .88)"/>
+</svg>
