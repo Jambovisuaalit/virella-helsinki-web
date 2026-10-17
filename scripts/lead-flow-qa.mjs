@@ -22,6 +22,15 @@ try {
     const layout = await page.evaluate(() => ({ documentWidth: document.documentElement.scrollWidth, viewport: innerWidth }));
     assert.ok(layout.documentWidth <= layout.viewport + 1, "Horizontal overflow at " + width);
     assert.deepEqual(errors, [], "Browser errors at " + width);
+    await page.getByRole("checkbox", { name: "Yritykselläni ei vielä ole verkkosivuja" }).check();
+    assert.equal(await page.locator('input[name="website"]').isDisabled(), true);
+    await page.getByRole("checkbox", { name: "Yritykselläni ei vielä ole verkkosivuja" }).uncheck();
+    assert.equal(await page.locator('input[name="website"]').isDisabled(), false);
+    assert.equal(await page.locator('input[name="website"]').getAttribute("required"), "");
+    await page.goto(origin + "/landing-page-seo", { waitUntil: "networkidle" });
+    assert.equal(await page.locator("#vertaile article").count(), 3);
+    const comparison = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, viewport: innerWidth }));
+    assert.ok(comparison.width <= comparison.viewport + 1, "Package comparison overflows at " + width);
     await page.close();
   }
 
