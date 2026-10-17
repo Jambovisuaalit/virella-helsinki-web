@@ -10,6 +10,7 @@ type FunnelEventProps = {
   value?: number;
   currency?: string;
   transactionId?: string;
+  eventId?: string;
 };
 
 export function FunnelEvent({
@@ -19,10 +20,17 @@ export function FunnelEvent({
   value,
   currency,
   transactionId,
+  eventId,
 }: FunnelEventProps) {
   useEffect(() => {
-    trackAnalyticsEvent(name, { productId, source, value, currency, transactionId });
-  }, [name, productId, source, value, currency, transactionId]);
+    let recorded = false;
+    const track = () => {
+      if (!recorded) recorded = trackAnalyticsEvent(name, { productId, source, value, currency, transactionId }, eventId);
+    };
+    track();
+    window.addEventListener("virella:analytics-consent", track);
+    return () => window.removeEventListener("virella:analytics-consent", track);
+  }, [name, productId, source, value, currency, transactionId, eventId]);
 
   return null;
 }

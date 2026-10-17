@@ -67,7 +67,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
 
   return (
     <>
-      {submitted ? <FunnelEvent name="contact_submit" productId={productId || undefined} source={isVisibilityAudit ? "visibility_audit" : "project_intake"} /> : null}
+      {submitted ? <FunnelEvent name="contact_submit" eventId={presentedReceipt} productId={productId || undefined} source={isVisibilityAudit ? "visibility_audit" : "project_intake"} /> : null}
       <SiteHeader />
       <main className="bg-background">
         <SectionContainer className="py-14 sm:py-18 md:py-24">

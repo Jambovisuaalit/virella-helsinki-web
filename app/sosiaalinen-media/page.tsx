@@ -95,7 +95,7 @@ export default function SocialMediaPage() {
                 <div className="mt-7 grid grid-cols-2 gap-4 border-t border-zinc-800 pt-6">
                   <div>
                     <p className="font-mono text-3xl text-zinc-100">12</p>
-                    <p className="mt-1 text-sm text-zinc-400">Sisältöä / 30 päivää, kumpaankin kanavaan</p>
+                    <p className="mt-1 text-sm text-zinc-400">Sisältöä / sovittu kuukausijakso, kumpaankin kanavaan</p>
                   </div>
                   <div>
                     <p className="font-mono text-3xl text-zinc-100">1</p>

@@ -4,6 +4,14 @@ export type { AnalyticsEventName } from "@/lib/analytics/events";
 
 const STORAGE_KEY = "virella_analytics_consent";
 const GA_MEASUREMENT_ID = "G-43VQ8505YL";
+const recordedEvents = new Set<string>();
+
+function analyticsPageLocation() {
+  const url = new URL(window.location.href);
+  // Receipt proofs and intake feedback are local navigation state, not campaign data.
+  for (const key of ["receipt", "submitted", "error", "checkout_error"]) url.searchParams.delete(key);
+  return url.href;
+}
 
 type GtagWindow = Window & {
   dataLayer?: unknown[];
@@ -32,7 +40,7 @@ export function initializeAnalytics() {
 
   const gtag = getGtag();
   gtag("js", new Date());
-  gtag("config", GA_MEASUREMENT_ID, { send_page_view: false });
+  gtag("config", GA_MEASUREMENT_ID, { send_page_view: false, page_location: analyticsPageLocation() });
 
   if (document.getElementById("virella-ga4-script")) return;
 
@@ -49,12 +57,22 @@ function eventNameForGa4(name: AnalyticsEventName) {
   return name;
 }
 
-export function trackAnalyticsEvent(name: AnalyticsEventName, data: AnalyticsEventData = {}) {
-  if (typeof window === "undefined" || !hasAnalyticsConsent()) return;
+export function trackAnalyticsEvent(name: AnalyticsEventName, data: AnalyticsEventData = {}, eventId?: string): boolean {
+  if (typeof window === "undefined" || !hasAnalyticsConsent()) return false;
+
+  const dedupKey = eventId ? `virella:event:${name}:${eventId}` : undefined;
+  if (dedupKey) {
+    if (recordedEvents.has(dedupKey)) return false;
+    try {
+      if (window.sessionStorage.getItem(dedupKey)) return false;
+    } catch {
+      // In-memory deduplication still works when session storage is unavailable.
+    }
+  }
 
   const params: Record<string, unknown> = {
     page_path: window.location.pathname,
-    page_location: window.location.href,
+    page_location: analyticsPageLocation(),
   };
 
   if (name === "page_view") params.page_title = document.title;
@@ -68,4 +86,9 @@ export function trackAnalyticsEvent(name: AnalyticsEventName, data: AnalyticsEve
   if (data.transactionId) params.transaction_id = data.transactionId;
 
   getGtag()("event", eventNameForGa4(name), params);
+  if (dedupKey) {
+    recordedEvents.add(dedupKey);
+    try { window.sessionStorage.setItem(dedupKey, "1"); } catch { /* Storage can be disabled. */ }
+  }
+  return true;
 }
