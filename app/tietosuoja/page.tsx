@@ -40,7 +40,7 @@ export default function PrivacyPage() {
 
               <section>
                 <h2 className="text-xl font-bold text-foreground">Palveluntarjoajat</h2>
-                <p className="mt-3">Sivuston teknisessä toteutuksessa käytetään Verceliä. Tilaus- ja aloituskyselytietoja tallennetaan Supabaseen. Maksut käsitellään Stripen kautta. Suostumuksen perusteella käytettävä verkkosivuanalytiikka toteutetaan Google Analyticsilla. Nämä palveluntarjoajat käsittelevät tietoja omien sopimusehtojensa ja tietosuojakäytäntöjensä mukaisesti.</p>
+                <p className="mt-3">Sivuston teknisessä toteutuksessa käytetään Verceliä. Yhteydenotto- ja kartoituspyynnöt tallennetaan yksityiseen Vercel Blob -tallennukseen. Sähköposti-ilmoituksiin käytetään Resendiä. Aloituspyyntö ei ole tilaus eikä käynnistä maksua. Erikseen käytettävissä tilaus- ja aloituskyselytoiminnoissa käytetään Supabasea ja verkkomaksuissa Stripeä. Suostumuksen perusteella käytettävä verkkosivuanalytiikka toteutetaan Google Analyticsilla. Nämä palveluntarjoajat käsittelevät tietoja omien sopimusehtojensa ja tietosuojakäytäntöjensä mukaisesti.</p>
               </section>
 
               <section>
@@ -56,7 +56,7 @@ export default function PrivacyPage() {
 
               <section>
                 <h2 className="text-xl font-bold text-foreground">Päivitetty</h2>
-                <p className="mt-3">12.9.2026</p>
+                <p className="mt-3">17.10.2026</p>
               </section>
             </div>
           </div>

@@ -51,18 +51,18 @@ const services = [
     name: "Virella Verkkosivut",
     headline: "Verkkosivut, joilta on helppo ottaa yhteyttä.",
     pricing: homepagePricing.website,
-    description: "Landing Page + SEO sisältää yhden myyntisivun, toimivan yhteydenottolomakkeen ja teknisen SEO:n perusteet. Laajemmat verkkosivustot, analytiikka ja ylläpito sovitaan erikseen.",
-    details: ["Yksi myyntisivu ja yhteydenottolomake", "Teknisen SEO:n perusteet", "Laajemmat sivustot ja analytiikka erikseen"],
-    href: "/aloita",
-    action: "Kerro sivustotarpeestasi",
+    description: "Landing Page + SEO sisältää yhden myyntisivun, toimivan yhteydenottolomakkeen ja teknisen SEO:n perusteet. 990 € paketin analytiikka ja ylläpito sovitaan erikseen. 1–5 sivun verkkosivustoihin sisältyy analytiikan perusasennus.",
+    details: ["Yksi myyntisivu ja yhteydenottolomake", "Teknisen SEO:n perusteet", "1–5 sivun toteutukset: analytiikan perusasennus mukana"],
+    href: "/landing-page-seo",
+    action: "Vertaa verkkosivupaketteja",
   },
 ] as const;
 
 const steps = [
   {
     number: "01",
-    title: "Lähetä verkkosivusi osoite.",
-    description: "Kerro yrityksestäsi ja siitä, mihin haluat apua. Jos yritykselläsi ei vielä ole verkkosivuja, jätä erillinen aloituspyyntö.",
+    title: "Kerro yrityksesi tilanteesta.",
+    description: "Kerro yrityksesi nimi ja tavoite. Voit pyytää kartoituksen myös ilman nykyistä verkkosivua.",
   },
   {
     number: "02",
@@ -82,7 +82,7 @@ export default function Home() {
       <a href="#main-content" className="landing-skip-link">Siirry sisältöön</a>
       <SiteHeader />
       <main id="main-content">
-        <section className="virella-photographic-hero relative isolate flex min-h-[650px] items-center overflow-hidden py-20 sm:min-h-[700px] sm:py-28 lg:min-h-[740px] lg:py-32" aria-labelledby="home-title">
+        <section className="virella-photographic-hero relative isolate flex min-h-[650px] items-center overflow-hidden py-20 sm:min-h-[700px] sm:py-24 lg:min-h-[680px] lg:py-24" aria-labelledby="home-title">
           <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
             <Image
               src="/images/virella-workspace-hero.webp"
@@ -100,7 +100,7 @@ export default function Home() {
               <p className="mb-7 max-w-[520px] text-xs font-semibold uppercase leading-6 tracking-[0.10em] text-brand sm:text-sm">
                 Digitaalista näkyvyyttä paikallisille palveluyrityksille
               </p>
-              <h1 id="home-title" className="max-w-[720px] text-[clamp(2.25rem,5.3vw,4.6rem)] font-bold leading-[1.13] tracking-[-0.01em] text-foreground">
+              <h1 id="home-title" className="max-w-[720px] text-[clamp(2.25rem,4.4vw,3.8rem)] font-bold leading-[1.13] tracking-[-0.01em] text-foreground">
                 Näytä verkossa, miksi asiakkaan kannattaa{ " "}
                 <span className="text-brand">valita sinut.</span>
               </h1>
@@ -116,7 +116,7 @@ export default function Home() {
                 </a>
               </div>
               <div className="mt-10 max-w-[600px] space-y-1 border-t border-white/20 pt-6 text-sm leading-7 text-foreground/85" aria-label="Näkyvyyskartoituksen toimitus">
-                <p>Lähetä verkkosivusi osoite. <a href="/aloita" className="underline underline-offset-4">Ei vielä verkkosivuja? Jätä aloituspyyntö.</a></p>
+                <p>Kerro yrityksestäsi. Kartoitus onnistuu myös ilman verkkosivuja. <a href="/landing-page-seo" className="underline underline-offset-4">Tutustu verkkosivupaketteihin.</a></p>
                 <p>Tarkistamme sivun, Google-löydettävyyden ja yhteydenottopolun.</p>
                 <p className="font-semibold text-foreground">Saat kolme tärkeintä korjausehdotusta kahdessa arkipäivässä. Maksuton, ei ostopakkoa.</p>
               </div>
@@ -192,7 +192,7 @@ export default function Home() {
                   <div className="mt-8 border-t border-border pt-7" aria-label={`${service.name} -palvelun hinta`}>
                     <dl className="space-y-4">
                       <div><dt className="text-sm text-muted">Aloitus</dt><dd className="mt-1 text-xl font-semibold text-foreground">{service.pricing.startup}</dd></div>
-                      <div><dt className="text-sm text-muted">Kuukausipalvelu</dt><dd className="mt-1 text-xl font-semibold text-foreground">{service.pricing.monthly}</dd></div>
+                      <div><dt className="text-sm text-muted">{service.pricing.secondaryLabel}</dt><dd className="mt-1 text-xl font-semibold text-foreground">{service.pricing.monthly}</dd></div>
                     </dl>
                     <p className="mt-4 text-sm leading-6 text-muted">{service.pricing.note}</p>
                   </div>
@@ -208,6 +208,14 @@ export default function Home() {
               ))}
             </div>
             <p className="mt-7 text-sm leading-6 text-muted">{taxConfig.publicMessage}</p>
+          </SectionContainer>
+        </section>
+
+        <section className="border-b border-border py-12 sm:py-16" aria-labelledby="next-service-title">
+          <SectionContainer>
+            <h2 id="next-service-title" className="text-3xl font-semibold">Ensin toimiva perusta. Sitten jatkuva näkyvyys.</h2>
+            <p className="mt-5 max-w-3xl leading-8 text-muted">Jos verkkosivut puuttuvat, aloitetaan niistä. Sen jälkeen voidaan laittaa Google-yritysprofiili kuntoon ja tuoda työnjälkesi esiin somessa. Valitset palvelut tarpeesi mukaan, ja jokainen jatkopalvelu sovitaan erikseen.</p>
+            <a href="/landing-page-seo#vertaile" className="mt-6 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">Vertaa verkkosivupaketteja</a>
           </SectionContainer>
         </section>
 
@@ -241,6 +249,7 @@ export default function Home() {
             <div className="max-w-[760px]">
               <h2 id="partner-title" className="text-[clamp(2rem,3.8vw,3.2rem)] font-semibold leading-[1.16] tracking-[-0.02em]">Yksi yhteyshenkilö. Selkeästi sovittu työ.</h2>
               <p className="mt-7 text-base leading-8 text-muted">Virella Helsingin takana on {businessConfig.contactName}. Keskustelet suoraan tekijän kanssa ja tiedät, mitä työ sisältää.</p>
+              <p className="mt-5 text-base leading-8 text-muted">Palvelu sopii erityisesti LVI-, sähkö-, rakennus- ja remonttiyrityksille sekä muille paikallisille palveluyrittäjille.</p>
               <p className="mt-5 text-base leading-8 text-muted">Sinä tuot yrityksesi osaamisen ja aidot materiaalit. Me autamme muuttamaan ne selkeäksi verkkonäkyvyydeksi.</p>
             </div>
           </SectionContainer>
@@ -255,7 +264,7 @@ export default function Home() {
                   Mitä yrityksesi näkyvyydessä kannattaa korjata ensin?
                 </h2>
                 <p className="mt-5 text-base leading-8 text-muted">
-                  Lähetä verkkosivusi osoite, niin selvitetään tärkein kehityskohde.
+                  Kerro yrityksesi nimi ja nykytilanne, niin selvitetään tärkein kehityskohde.
                 </p>
               </div>
               <div className="flex shrink-0 flex-col items-start gap-4 md:self-center">

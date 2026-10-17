@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/site/header";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { products, type ProductId } from "@/config/products";
+import { websitePackages } from "@/config/homepage-pricing";
 import { taxConfig } from "@/config/tax";
 import { requiresWrittenOffer } from "@/config/offer-master";
 import { servicePageContent } from "@/content/fi/services";
@@ -98,6 +99,26 @@ export function ServiceLandingPage({ productKey }: ServiceLandingPageProps) {
             </Card>
           </SectionContainer>
         </section>
+
+        {productKey === "landingPageSeo" ? (
+          <section id="vertaile" className="border-t border-border bg-cloud/60" aria-labelledby="website-packages-title">
+            <SectionContainer className="py-14 sm:py-20">
+              <h2 id="website-packages-title" className="text-3xl font-bold">Valitse yrityksesi tarpeeseen sopiva verkkosivu.</h2>
+              <p className="mt-4 max-w-2xl leading-7 text-muted">Myös yritykselle, jolla ei vielä ole sivustoa. Sovimme toimituksen kirjallisessa tarjouksessa ennen työn aloitusta.</p>
+              <div className="mt-8 grid gap-6 lg:grid-cols-3">
+                {websitePackages.map((entry) => (
+                  <article key={entry.name} className="flex flex-col rounded-2xl border border-border bg-surface p-6">
+                    <h3 className="text-xl font-bold">{entry.name}</h3>
+                    <p className="mt-4 text-2xl font-bold">{entry.from ? "Alkaen " : ""}{euro.format(entry.price)} <span className="text-sm font-normal text-muted">kertahinta</span></p>
+                    <p className="my-5 text-sm leading-7 text-muted">{entry.description}</p>
+                    <ButtonLink href={entry.href} className="mt-auto">Pyydä kirjallinen tarjous</ButtonLink>
+                  </article>
+                ))}
+              </div>
+              <p className="mt-5 text-sm leading-6 text-muted">{taxConfig.publicMessage} Domain- ja hostingkulut sovitaan erikseen. Ylläpito ei ala automaattisesti.</p>
+            </SectionContainer>
+          </section>
+        ) : null}
 
         <section id="sisalto" className="border-y border-border/70 bg-surface/75">
           <SectionContainer className="py-20 sm:py-24 lg:py-28">
