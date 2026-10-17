@@ -44,7 +44,7 @@ function handler({ failStorage = false } = {}) {
 
 function request(overrides = {}, json = true) {
   const body = new FormData();
-  const values = { productId: "linkedin", name: "Testi", email: "test@example.com", message: "Yrityksen lähtötiedot", ...overrides };
+  const values = { productId: "linkedin", name: "Testi", company: "Testiyritys", email: "test@example.com", message: "Yrityksen lähtötiedot", ...overrides };
   for (const [key, value] of Object.entries(values)) body.set(key, value);
   return new Request("https://preview.example/api/contact", {
     method: "POST", body, headers: { Accept: json ? "application/json" : "text/html" },
@@ -219,3 +219,21 @@ test("Receipt cookie binds the stored lead to its original service and request t
   assert.equal(cookie.audit,item.expectedAudit);
  }
 });
+
+
+test("audit without a website persists an identifiable company and the no-website context", async () => {
+  const { POST, notifications } = handler();
+  const response = await POST(request({ productId: "", requestType: "visibility_audit", noWebsite: "yes", website: "", company: "Testiyritys Oy", message: "" }));
+  assert.equal(response.status, 200);
+  assert.match(notifications[0].text, /Ei vielä verkkosivuja/);
+  assert.match(notifications[0].text, /Testiyritys Oy/);
+});
+
+for (const override of [{ company: "" }, { website: "https://example.fi" }, { noWebsite: "bad" }]) {
+  test(`invalid no-website context is rejected: ${JSON.stringify(override)}`, async () => {
+    const { POST, notifications } = handler();
+    const response = await POST(request({ productId: "", requestType: "visibility_audit", noWebsite: "yes", website: "", company: "Testiyritys Oy", ...override }));
+    assert.equal(response.status, 400);
+    assert.equal(notifications.length, 0);
+  });
+}

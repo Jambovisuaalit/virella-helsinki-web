@@ -12,5 +12,5 @@ export const taxConfig = {
   registrationEvidence: "YTJ-ote käyttäjän toimittamana 11.10.2026: voimassa vain Verohallinnon perustiedot 24.11.2025 alkaen",
   exemptionEligibilityVerified: false, // Turnover reconciliation is separate from the owner's confirmed non-VAT status.
   confirmationSource: "Yrittäjän nimenomainen vahvistus 11.10.2026: ei ALV-velvollinen",
-  publicMessage: "Myyjä ei ole ALV-rekisterissä toimitetun YTJ-otteen mukaan. Lopullinen verokäsittely vahvistetaan kirjallisessa tarjouksessa.",
+  publicMessage: "Hinnat ovat maksettavia kokonaishintoja. Arvonlisäveroa ei lisätä: myyjä ei ole ALV-rekisterissä.",
 } as const;

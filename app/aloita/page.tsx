@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { FunnelEvent } from "@/components/analytics/funnel-event";
+import { WebsiteField } from "@/components/forms/website-field";
 import { ContactForm } from "@/components/forms/contact-form";
 import { SectionContainer } from "@/components/layout/section-container";
 import { SiteFooter } from "@/components/site/footer";
@@ -82,7 +83,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                     ? "Kartoituspyyntösi on vastaanotettu. Saat kolme tärkeintä korjausehdotusta ja perustelut sähköpostiisi 2 arkipäivässä."
                     : "Virella sai lähtötietosi. Palaamme asiaan sähköpostilla seuraavaa askelta varten."
                   : isVisibilityAudit
-                    ? "Lähetä verkkosivusi osoite ja sähköpostisi. Käymme läpi sivuston, paikallisen Google-näkyvyyden ja yhteydenottopolun. Saat kolme tärkeintä korjausehdotusta perusteluineen 2 arkipäivässä. Maksuton, ei ostopakkoa."
+                    ? "Kerro yrityksesi nimi ja sähköpostisi. Käymme läpi julkisen verkkonäkyvyyden ja yhteydenottopolun. Voit pyytää kartoituksen myös ilman verkkosivuja. Saat kolme tärkeintä korjausehdotusta perusteluineen 2 arkipäivässä. Maksuton, ei ostopakkoa."
                     : isSocial
                     ? "Kerro yrityksestäsi ja siitä, mitä haluat tuoda esiin. Instagram-paketti kattaa myös Facebookin; LinkedIn on erillinen palvelu. Lähetämme kirjallisen tarjouksen hyväksyttäväksi ennen laskutusta."
                     : "Lähetä tärkeimmät lähtötiedot. Saat yksilöidyn kirjallisen tarjouksen tai tarkennuspyynnön. Aloituspyyntö ei ole tilaus."}
@@ -90,7 +91,7 @@ export default async function StartPage({ searchParams }: StartPageProps) {
 
               {!submitted ? (
                 <div className="mt-8 space-y-3 text-sm leading-6 text-muted">
-                  <p className="rounded-xl border border-border bg-surface p-4">1. {isVisibilityAudit ? "Lähetä verkkosivusi osoite ja yhteystietosi." : isSocial ? "Kerro yrityksesi palvelut, kohderyhmä ja tavoite." : "Kerro yritys, verkkosivu ja tärkein tavoite."}</p>
+                  <p className="rounded-xl border border-border bg-surface p-4">1. {isVisibilityAudit ? "Kerro yrityksesi nimi, yhteystiedot ja mahdollinen verkkosivu." : isSocial ? "Kerro yrityksesi palvelut, kohderyhmä ja tavoite." : "Kerro yritys, verkkosivu ja tärkein tavoite."}</p>
                   <p className="rounded-xl border border-border bg-surface p-4">2. {isVisibilityAudit ? "Käymme läpi julkisen sivuston, paikallisen Google-näkyvyyden ja yhteydenottopolun." : isSocial ? "Sovimme materiaalit, käyttöoikeudet ja sisältöjen hyväksynnän." : "Arvioimme sopiiko rajattu toteutus tilanteeseesi."}</p>
                   <p className="rounded-xl border border-border bg-surface p-4">3. {isVisibilityAudit ? "Saat 3 priorisoitua korjausehdotusta sähköpostiin 2 arkipäivässä. Toteutus on erillinen maksullinen päätös." : isSocial ? "Lähetämme yksilöidyn tarjouksen kirjallisesti hyväksyttäväksi." : "Saat kirjallisen tarjouksen tai tarkennuspyynnön. Maksua ei pyydetä ilman hyväksyntää."}</p>
                 </div>
@@ -138,13 +139,10 @@ export default async function StartPage({ searchParams }: StartPageProps) {
                     <label htmlFor="email" className="text-sm font-bold">Sähköposti *</label>
                     <input id="email" name="email" type="email" required maxLength={200} autoComplete="email" className={fieldClassName} />
                   </div>
+                  <WebsiteField audit={isVisibilityAudit} className={fieldClassName} />
                   <div>
-                    <label htmlFor="website" className="text-sm font-bold">{isVisibilityAudit ? "Verkkosivun osoite *" : "Verkkosivu"}</label>
-                    <input id="website" name="website" type="url" required={isVisibilityAudit} maxLength={300} placeholder="https://yritys.fi" className={fieldClassName} />
-                  </div>
-                  <div>
-                    <label htmlFor="company" className="text-sm font-bold">Yritys</label>
-                    <input id="company" name="company" maxLength={160} autoComplete="organization" className={fieldClassName} />
+                    <label htmlFor="company" className="text-sm font-bold">{isVisibilityAudit ? "Yritys *" : "Yritys"}</label>
+                    <input id="company" name="company" required={isVisibilityAudit} maxLength={160} autoComplete="organization" className={fieldClassName} />
                   </div>
                   <div>
                     <label htmlFor="message" className="text-sm font-bold">{isVisibilityAudit ? "Mitä haluaisit kehittää? (vapaaehtoinen)" : isSocial ? "Mitä yrityksesi tekee ja kenelle? *" : "Mitä haluat saada kuntoon? *"}</label>

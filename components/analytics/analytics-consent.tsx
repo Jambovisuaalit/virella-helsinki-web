@@ -48,13 +48,13 @@ export function AnalyticsConsent({ enabled }: { enabled: boolean }) {
   }
 
   return (
-    <div className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-xl rounded-[1.6rem] border border-border bg-surface/96 p-4 shadow-[0_30px_90px_-34px_rgba(23,33,38,0.55)] backdrop-blur-xl sm:inset-x-6 sm:bottom-6 sm:p-5" role="dialog" aria-label="Analytiikka-asetukset">
+    <div className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-xl sm:ml-auto sm:mr-0 sm:max-w-sm rounded-[1.6rem] border border-border bg-surface/96 p-4 shadow-[0_30px_90px_-34px_rgba(23,33,38,0.55)] backdrop-blur-xl sm:inset-x-6 sm:bottom-6 sm:p-5" role="dialog" aria-label="Analytiikka-asetukset">
       <div className="flex items-start gap-3">
         <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-accent shadow-[0_0_0_5px_rgba(232,97,59,0.10)]" aria-hidden="true" />
         <div>
           <p className="font-extrabold tracking-[-0.015em] text-foreground">Analytiikka-asetukset</p>
           <p className="mt-1.5 text-sm leading-6 text-muted">
-            Välttämättömät toiminnot ovat aina käytössä. Google Analytics käynnistyy vain, jos hyväksyt analytiikan. Lue lisää{" "}
+            Saammeko käyttää Google Analyticsia sivuston kehittämiseen? Analytiikka käynnistyy vain luvallasi. Lue lisää{" "}
             <Link href="/tietosuoja" className="font-bold text-brand underline decoration-brand/25 underline-offset-4">tietosuojasta</Link>.
           </p>
         </div>

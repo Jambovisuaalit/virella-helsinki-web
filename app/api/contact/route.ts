@@ -70,6 +70,7 @@ export async function POST(request: Request) {
   const email = safe(formData.get("email"), 200);
   const company = safe(formData.get("company"), 160);
   const website = safe(formData.get("website"), 300);
+  const noWebsite = safe(formData.get("noWebsite"), 3);
   const message = safe(formData.get("message"), 2000);
   const honeypot = safe(formData.get("companyWebsite"), 200);
   const productKey = productId ? getProductKeyById(productId) : undefined;
@@ -83,7 +84,9 @@ export async function POST(request: Request) {
   }
 
   if (!name || !email || !validEmail(email) || (!message && !isVisibilityAudit) ||
-      (isVisibilityAudit && (!website || !validAuditWebsite(website))) ||
+      (isVisibilityAudit && !company) ||
+      (isVisibilityAudit && (noWebsite === "yes" ? (!company || Boolean(website)) : (!website || !validAuditWebsite(website)))) ||
+      noWebsite === undefined || (noWebsite !== "" && noWebsite !== "yes") ||
       company === undefined || website === undefined || productId === undefined ||
       honeypot === undefined || requestType === undefined ||
       (requestType !== "" && !isVisibilityAudit) ||
@@ -110,11 +113,11 @@ export async function POST(request: Request) {
         `Nimi: ${name}`,
         `Sähköposti: ${email}`,
         `Yritys: ${company || "—"}`,
-        `Verkkosivu: ${website || "—"}`,
+        `Verkkosivu: ${noWebsite === "yes" ? "Ei vielä verkkosivuja" : website || "—"}`,
         `Vastaanotettu: ${receivedAt}`,
         ...(isVisibilityAudit ? [
           "Toimituslupaus: kolme priorisoitua korjausehdotusta perusteluineen sähköpostiin 2 arkipäivässä.",
-          "Tarkista julkinen verkkosivu, paikallinen Google-löydettävyys ja yhteydenottopolku.",
+          noWebsite === "yes" ? "Tarkista yrityksen julkinen Google-näkyvyys ja suosittele verkkosivun tärkeimmät lähtökohdat." : "Tarkista julkinen verkkosivu, paikallinen Google-löydettävyys ja yhteydenottopolku.",
           "TOIMENPIDE: käsittele kartoitus ja vastaa asiakkaan sähköpostiin määräajassa. Toimitus ei ole automaattinen.",
         ] : []),
         "",
